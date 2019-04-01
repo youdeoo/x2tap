@@ -28,3 +28,6 @@
 ![](screenshots/3.png)
 
 ![](screenshots/4.png)
+
+# 使用协议
+- 请在遵循当地法律的情况下使用，不得用于违法用途
