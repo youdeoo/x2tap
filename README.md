@@ -30,6 +30,7 @@
 ![](screenshots/4.png)
 
 # 仓库镜像
+- [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
 # 使用协议
