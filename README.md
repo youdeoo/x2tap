@@ -29,5 +29,8 @@
 
 ![](screenshots/4.png)
 
+# 仓库镜像
+- [GitLab](https://gitlab.com/hacking001/x2tap)
+
 # 使用协议
 - 请在遵循当地法律的情况下使用，不得用于违法用途
