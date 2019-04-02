@@ -29,6 +29,9 @@
 
 ![](screenshots/4.png)
 
+# 编译指南
+参见 [BUILD.md](https://github.com/hacking001/x2tap/blob/master/BUILD.md)
+
 # 仓库镜像
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
