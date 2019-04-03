@@ -235,69 +235,11 @@
   </Target>
   <Import Project="..\packages\Grpc.Tools.1.19.0-pre1\build\Grpc.Tools.targets" Condition="Exists('..\packages\Grpc.Tools.1.19.0-pre1\build\Grpc.Tools.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>IF "$(OS)" == "Windows_NT" (
-ECHO 清理目标文件夹中
-RD /S /Q $(TargetDir)\driver &gt; NUL 2&gt;&amp;1
-RD /S /Q $(TargetDir)\logging &gt; NUL 2&gt;&amp;1
-DEL /F /S /Q $(TargetDir)\* &gt; NUL 2&gt;&amp;1
-
-ECHO 复制 TUN/TAP 驱动中
-MKDIR driver
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\tapinstall.exe $(TargetDir) &gt; NUL
-IF "$(PlatformName)" == "x64" (
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\OemVista.inf $(TargetDir)\driver &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\OemWin2k.inf $(TargetDir)\driver &gt; NUL
-) else (
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\OemWin2k.inf $(TargetDir)\driver\OemVista.inf &gt; NUL
-)
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\tap0901.cat $(TargetDir)\driver &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\tap0901.sys $(TargetDir)\driver &gt; NUL
-
-@ECHO 复制依赖文件中
-COPY $(SolutionDir)\binaries\prebuilt\geoip.dat $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\geosite.dat $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\v2ctl.exe $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\v2ray.exe $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\wv2ray.exe $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\$(PlatformName)\tun2socks.exe $(TargetDir) &gt; NUL
-COPY $(SolutionDir)\binaries\prebuilt\RunHiddenConsole.exe $(TargetDir) &gt; NUL
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>IF "$(OS)" == "Windows_NT" (
-IF "$(ConfigurationName)" == "Release" (
-ECHO 清理目标文件夹中
-RD /S /Q x2tap &gt; NUL 2&gt;&amp;1
-MKDIR x2tap &gt; NUL
-MKDIR x2tap\driver &gt; NUL
-
-ECHO 正在打包中
-COPY tapinstall.exe x2tap &gt; NUL
-IF "$(PlatformName)" == "x64" (
-COPY driver\OemVista.inf x2tap\driver &gt; NUL
-COPY driver\OemWin2k.inf x2tap\driver &gt; NUL
-) else (
-COPY driver\OemVista.inf x2tap\driver &gt; NUL
-)
-COPY driver\tap0901.cat x2tap\driver &gt; NUL
-COPY driver\tap0901.sys x2tap\driver &gt; NUL
-COPY geoip.dat x2tap &gt; NUL
-COPY geosite.dat x2tap &gt; NUL
-COPY v2ctl.exe x2tap &gt; NUL
-COPY v2ray.exe x2tap &gt; NUL
-COPY wv2ray.exe x2tap &gt; NUL
-COPY tun2socks.exe x2tap &gt; NUL
-COPY RunHiddenConsole.exe x2tap &gt; NUL
-COPY Google.Protobuf.dll x2tap &gt; NUL
-COPY Grpc.Core.Api.dll x2tap &gt; NUL
-COPY Grpc.Core.dll x2tap &gt; NUL
-COPY grpc_csharp_ext.$(PlatformName).dll x2tap &gt; NUL
-COPY Newtonsoft.Json.dll x2tap &gt; NUL
-COPY System.Interactive.Async.dll x2tap &gt; NUL
-COPY x2tap.exe x2tap &gt; NUL
-CD x2tap
-BC c -r -fmt:7z -l:9 x2tap.$(PlatformName).7z * &gt; NUL
-)
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

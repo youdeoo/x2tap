@@ -1,6 +1,7 @@
-[![](https://img.shields.io/badge/Telegram-Channel-blue.svg)](https://t.me/x2tap)
-[![](https://img.shields.io/badge/Telegram-Chat-blue.svg)](https://t.me/x2tapChat)
-[![](https://img.shields.io/badge/Status-Testing-red.svg)](https://github.com/hacking001/x2tap/releases)
+[![](https://img.shields.io/badge/telegram-channel-blue.svg)](https://t.me/x2tap)
+[![](https://img.shields.io/badge/telegram-chat-blue.svg)](https://t.me/x2tapChat)
+[![](https://img.shields.io/badge/status-testing-red.svg)](https://github.com/hacking001/x2tap/releases)
+[![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
 
 # x2tap
 基于 TUN/TAP、tun2socks、v2ray 实现的 VPN 工具
