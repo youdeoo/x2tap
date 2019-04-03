@@ -6,7 +6,6 @@
 	- prebuilt （预编译文件）
 		- x64 （64 位）
 			- OemVista.inf
-			- OemWin2k.inf
 			- tap0901.cat
 			- tap0901.sys
 			- tapinstall.exe
@@ -15,7 +14,7 @@
 			- v2ray.exe
 			- wv2ray.exe
 		- x86 （32 位）
-			- OemWin2k.inf
+			- OemVista.inf
 			- tap0901.cat
 			- tap0901.sys
 			- tapinstall.exe
@@ -30,10 +29,7 @@
 
 ## 依赖软件
 - VS2017 / VS2019 （已配置 C# 开发支持）
-
-# 准备工作
-- 将 Bandizip 添加到 PATH 中
-
+- 
 ## 开始编译
 - 使用 VS 打开 `x2tap.sln`
 - 开始编译
