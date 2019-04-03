@@ -30,7 +30,6 @@
 
 ## 依赖软件
 - VS2017 / VS2019 （已配置 C# 开发支持）
-- Bandizip （Release 自动打包需要）
 
 # 准备工作
 - 将 Bandizip 添加到 PATH 中
