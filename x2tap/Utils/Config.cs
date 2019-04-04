@@ -28,6 +28,11 @@ namespace x2tap.Utils
             Global.Config.TUNTAP.Gateway = data["TUNTAP"]["Gateway"];
             Global.Config.TUNTAP.Metric = int.Parse(data["TUNTAP"]["Metric"]);
 
+			if (File.Exists("SubscriptionLinks.json"))
+			{
+				Global.SubscriptionLinks = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("SubscriptionLinks.json"));
+			}
+
             if (File.Exists("v2ray.json"))
             {
                 Global.v2rayProxies = JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
@@ -53,6 +58,7 @@ namespace x2tap.Utils
             data["TUNTAP"]["Metric"] = Global.Config.TUNTAP.Metric.ToString();
             parser.WriteFile("x2tap.ini", data);
 
+			File.WriteAllText("SubscriptionLinks.json", JsonConvert.SerializeObject(Global.SubscriptionLinks));
             File.WriteAllText("v2ray.json", JsonConvert.SerializeObject(Global.v2rayProxies));
             File.WriteAllText("Shadowsocks.json", JsonConvert.SerializeObject(Global.ShadowsocksProxies));
         }

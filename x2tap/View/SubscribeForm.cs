@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -16,6 +18,10 @@ namespace x2tap.View
 
         private void SubscribeForm_Load(object sender, EventArgs e)
         {
+			foreach (var link in Global.SubscriptionLinks)
+			{
+				SubscribeLinksListBox.Items.Add(link);
+			}
         }
 
         private void SubscribeForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -23,57 +29,101 @@ namespace x2tap.View
             Global.Views.MainForm.Show();
         }
 
-        private void SubscribeURLButton_Click(object sender, EventArgs e)
+		private void ListBox_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			if (e.Index != -1)
+			{
+				e.DrawBackground();
+				e.DrawFocusRectangle();
+
+				using (var sf = new StringFormat())
+				{
+					sf.Alignment = StringAlignment.Center;
+					sf.LineAlignment = StringAlignment.Center;
+
+					e.Graphics.DrawString(SubscribeLinksListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds, sf);
+				}
+			}
+		}
+
+		private void AddSubscribeLinkButton_Click(object sender, EventArgs e)
+		{
+			string link = Interaction.InputBox("请输入订阅链接", "添加订阅链接", "");
+			if (link != "")
+			{
+				Global.SubscriptionLinks.Add(link);
+				SubscribeLinksListBox.Items.Add(link);
+			}
+		}
+
+		private void DeleteSubscribeLinkButton_Click(object sender, EventArgs e)
+		{
+			if (SubscribeLinksListBox.SelectedIndex != -1)
+			{
+				Global.SubscriptionLinks.RemoveAt(SubscribeLinksListBox.SelectedIndex);
+				SubscribeLinksListBox.Items.RemoveAt(SubscribeLinksListBox.SelectedIndex);
+			}
+			else
+			{
+				MessageBox.Show("请选择一个订阅链接", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		private void SubscribeLinksButton_Click(object sender, EventArgs e)
         {
-            using (var client = new WebClient())
-            {
-                var response = client.DownloadString(SubscribeURLTextBox.Text);
-                if (response != "")
-                {
-                    if (response.Length % 4 != 0)
-                    {
-                        for (var i = 0; i < response.Length % 4; i++)
-                        {
-                            response += "=";
-                        }
-                    }
+			foreach (string link in Global.SubscriptionLinks)
+			{
+				using (var client = new WebClient())
+				{
+					var response = client.DownloadString(link);
+					if (response != "")
+					{
+						if (response.Length % 4 != 0)
+						{
+							for (var i = 0; i < response.Length % 4; i++)
+							{
+								response += "=";
+							}
+						}
 
-                    response = Encoding.UTF8.GetString(Convert.FromBase64String(response));
+						response = Encoding.UTF8.GetString(Convert.FromBase64String(response));
 
-                    Global.v2rayProxies.Clear();
-                    Global.ShadowsocksProxies.Clear();
+						Global.v2rayProxies.Clear();
+						Global.ShadowsocksProxies.Clear();
 
-                    using (var sr = new StringReader(response))
-                    {
-                        var i = 0;
-                        string text;
+						using (var sr = new StringReader(response))
+						{
+							var i = 0;
+							string text;
 
-                        while ((text = sr.ReadLine()) != null)
-                        {
-                            i++;
+							while ((text = sr.ReadLine()) != null)
+							{
+								i++;
 
-                            if (text.StartsWith("vmess://"))
-                            {
-                                Global.v2rayProxies.Add(Parse.v2ray(text));
-                            }
-                            else if (text.StartsWith("ss://"))
-                            {
-                                Global.ShadowsocksProxies.Add(Parse.Shadowsocks(text));
-                            }
-                            else
-                            {
-                                throw new Exception(string.Format("无法解析的地址：{0}", text));
-                            }
-                        }
+								if (text.StartsWith("vmess://"))
+								{
+									Global.v2rayProxies.Add(Parse.v2ray(text));
+								}
+								else if (text.StartsWith("ss://"))
+								{
+									Global.ShadowsocksProxies.Add(Parse.Shadowsocks(text));
+								}
+								else
+								{
+									throw new Exception(string.Format("无法解析的地址：{0}", text));
+								}
+							}
 
-                        MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("订阅链接返回内容为空", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+							MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+					}
+					else
+					{
+						MessageBox.Show("订阅链接返回内容为空", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+				}
+			}
+            
         }
 
         private void SubscribeTextButton_Click(object sender, EventArgs e)
@@ -114,5 +164,5 @@ namespace x2tap.View
                 MessageBox.Show("文本为空", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    }
+	}
 }

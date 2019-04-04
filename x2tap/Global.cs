@@ -6,6 +6,11 @@ namespace x2tap
 {
     public static class Global
     {
+		/// <summary>
+		///		订阅链接
+		/// </summary>
+		public static List<string> SubscriptionLinks = new List<string>();
+
         /// <summary>
         ///     v2ray 代理
         /// </summary>
