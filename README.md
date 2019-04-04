@@ -8,7 +8,7 @@ VPN tools based on TUN/TAP, tun2socks and v2ray implementations
 
 **The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
 
-[简体中文](README.zh-CN.md)
+[简体中文](docs/zh-CN/README.md)
 
 Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 # TODO
