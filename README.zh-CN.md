@@ -4,26 +4,24 @@
 [![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
 
 # x2tap
-VPN tools based on TUN/TAP, tun2socks and v2ray implementations
+基于 TUN/TAP、tun2socks、v2ray 实现的 VPN 工具
 
-**The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
+**最新测试版发布于 [releases](https://github.com/hacking001/x2tap/releases) 中**
 
-[简体中文](README.zh-CN.md)
-
-Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
+支持 Shadowsocks 和 VMess 协议的代理（通过 v2ray 实现）
 # TODO
-- [x] Import subscriptions (Shadowsocks, VMess)
-- [x] Traffic information display (obtained through the v2ray gRPC API)
+- [x] 导入订阅（Shadowsocks、VMess）
+- [x] 流量信息显示（通过 v2ray gRPC API 获取的）
 - [ ] C# tun2socks
-- [ ] List of external rules
-- [ ] Local DNS Agent
+- [ ] 外置规则列表
+- [ ] 本地 DNS 代理
 
-# Depend on
+# 依赖
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 
-# Screenshots
+# 截图
 ![](screenshots/1.png)
 
 ![](screenshots/2.png)
@@ -32,12 +30,12 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 
 ![](screenshots/4.png)
 
-# Compilation Guide
-See [BUILD.md](BUILD.md)
+# 编译指南
+参见 [BUILD.zh-CN.md](BUILD.zh-CN.md)
 
-# Repository Mirroring
+# 仓库镜像
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
-# Usage Agreement
-- Please use it in accordance with local laws and may not be used for illegal purposes
+# 使用协议
+- 请在遵循当地法律的情况下使用，不得用于违法用途
