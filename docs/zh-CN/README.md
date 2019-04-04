@@ -31,7 +31,7 @@
 ![](screenshots/4.png)
 
 # 编译指南
-参见 [BUILD.zh-CN.md](BUILD.md)
+参见 [BUILD.md](BUILD.md)
 
 # 仓库镜像
 - [Github](https://github.com/hacking001/x2tap)
