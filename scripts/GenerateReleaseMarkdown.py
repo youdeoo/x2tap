@@ -25,8 +25,8 @@ def sha1_file(filename):
 def sha256_file(filename):
 	return hash_file(filename, hashlib.sha256())
 
-x2tap_x64_location = '..\\x2tap\\bin\\x64\\Release\\x2tap\\x2tap.x64.7z'
-x2tap_x86_location = '..\\x2tap\\bin\\x86\\Release\\x2tap\\x2tap.x86.7z'
+x2tap_x64_location = 'release/x64/x2tap.x64.7z'
+x2tap_x86_location = 'release/x86/x2tap.x86.7z'
 
 hashs = [
 	md5_file(x2tap_x64_location),
