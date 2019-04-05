@@ -14,7 +14,7 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 # TODO
 - [x] Import subscriptions (Shadowsocks, VMess)
 - [x] Traffic information display (obtained through the v2ray gRPC API)
-- [x] List of external rules
+- [x] List of external rules (See [MODE.md](MODE.md))
 - [ ] Local DNS Agent
 
 # Depend on
