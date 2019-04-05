@@ -21,6 +21,11 @@ namespace x2tap
         /// </summary>
         public static List<Shadowsocks> ShadowsocksProxies = new List<Shadowsocks>();
 
+		/// <summary>
+		///		模式
+		/// </summary>
+		public static List<Objects.Mode> Modes = new List<Objects.Mode>();
+
         /// <summary>
         ///     视图
         /// </summary>

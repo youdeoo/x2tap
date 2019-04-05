@@ -116,6 +116,7 @@
     <Compile Include="3rd\v2ray\Core\App\Stats\Command.cs" />
     <Compile Include="3rd\v2ray\Core\App\Stats\CommandGrpc.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Objects\Mode.cs" />
     <Compile Include="Objects\Server\Shadowsocks.cs" />
     <Compile Include="Objects\Server\v2ray.cs" />
     <Compile Include="Objects\ShellExitCode.cs" />

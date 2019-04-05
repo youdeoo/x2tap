@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using IniParser;
 using Newtonsoft.Json;
@@ -42,6 +43,55 @@ namespace x2tap.Utils
             {
                 Global.ShadowsocksProxies = JsonConvert.DeserializeObject<List<Shadowsocks>>(File.ReadAllText("Shadowsocks.json"));
             }
+
+			if (Directory.Exists("mode"))
+			{
+				foreach (var name in Directory.GetFiles("mode", "*.txt"))
+				{
+					var mode = new Objects.Mode()
+					{
+						Name = name.Substring(5, name.Length - 9)
+					};
+
+					using (var sr = new StringReader(File.ReadAllText(name)))
+					{
+						var i = 0;
+						var ok = true;
+						string text;
+
+						while ((text = sr.ReadLine()) != null)
+						{
+							if (i == 0)
+							{
+								var splited = text.Substring(2).Split(',');
+								if (splited.Length == 2)
+								{
+									mode.Name = splited[0].Trim();
+									mode.Type = int.Parse(splited[1].Trim());
+								}
+								else
+								{
+									ok = false;
+									break;
+								}
+							}
+							else
+							{
+								if (!text.StartsWith("#"))
+								{
+									mode.Rule.Add(text.Trim());
+								}
+							}
+
+							i++;
+						}
+
+						if (!ok) break;
+					}
+
+					Global.Modes.Add(mode);
+				}
+			}
         }
 
         /// <summary>

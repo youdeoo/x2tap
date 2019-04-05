@@ -5,6 +5,9 @@ cd release
 mkdir -p x64/driver
 mkdir -p x86/driver
 
+mkdir -p x64/mode
+mkdir -p x86/mode
+
 echo "Copying x64"
 cp ../../x2tap/bin/x64/Release/*.dll x64
 cp ../../x2tap/bin/x64/Release/x2tap.exe x64
@@ -28,6 +31,10 @@ cp ../../binaries/prebuilt/x86/*.exe x86
 cp ../../binaries/prebuilt/geoip.dat x86
 cp ../../binaries/prebuilt/geosite.dat x86
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x86
+
+echo "Copyring modes"
+cp ../../modes/*.txt x64/mode
+cp ../../modes/*.txt x86/mode
 
 echo "Compressing x64"
 cd x64

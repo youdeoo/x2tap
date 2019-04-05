@@ -40,7 +40,6 @@ namespace x2tap
 					return;
 				}
 			}
-#endif
 
 			// 检查 TUN/TAP 适配器
 			if (TUNTAP.GetComponentId() == "" && !TUNTAP.Create())
@@ -50,8 +49,9 @@ namespace x2tap
                 Application.Exit();
                 return;
             }
+#endif
 
-            Application.EnableVisualStyles();
+			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(Global.Views.MainForm = new MainForm());
         }
