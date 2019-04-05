@@ -18,7 +18,7 @@
 
 The above rules, then, are expressed as：
 - Mode name: `Telegram`
-- The following IP CIDR all use proxies, and mismatched requests bypass the agent
+- The following IP CIDR all use proxies, and mismatched requests bypass the proxies
 
 ```
 # Telegram, 1
