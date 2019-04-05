@@ -12,8 +12,7 @@
 # TODO
 - [x] 导入订阅（Shadowsocks、VMess）
 - [x] 流量信息显示（通过 v2ray gRPC API 获取的）
-- [ ] C# tun2socks
-- [ ] 外置规则列表
+- [x] 外置规则列表
 - [ ] 本地 DNS 代理
 
 # 依赖
