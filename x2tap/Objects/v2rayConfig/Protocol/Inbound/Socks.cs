@@ -12,11 +12,6 @@ namespace x2tap.Objects.v2rayConfig.Protocol.Inbound
 	public class Socks
 	{
 		/// <summary>
-		///		登录方式
-		/// </summary>
-		public string auth = "noauth";
-
-		/// <summary>
 		///		是否开启 UDP
 		/// </summary>
 		public bool udp = true;

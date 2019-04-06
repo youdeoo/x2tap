@@ -41,6 +41,22 @@ namespace x2tap.Objects.v2rayConfig
 					"api"
 				},
 				outboundTag = "api"
+			},
+			new RoutingRule()
+			{
+				ip = new List<string>()
+				{
+					"8.8.8.8"
+				},
+				outboundTag = "defaultOutbound"
+			},
+			new RoutingRule()
+			{
+				ip = new List<string>()
+				{
+					"1.2.4.8"
+				},
+				outboundTag = "directOutbound"
 			}
 		};
 	}
@@ -73,6 +89,6 @@ namespace x2tap.Objects.v2rayConfig
 		/// <summary>
 		///		出口标签
 		/// </summary>
-		public string outboundTag = "defaultOutbound";
+		public string outboundTag;
 	}
 }

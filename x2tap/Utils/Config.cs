@@ -142,7 +142,7 @@ namespace x2tap.Utils
 
 			if (bypassChina)
 			{
-				data.dns.servers.Add(new Objects.v2rayConfig.DnsServer()
+				data.dns.servers.Insert(0, new Objects.v2rayConfig.DnsServer()
 				{
 					address = "1.2.4.8",
 					port = 53,
