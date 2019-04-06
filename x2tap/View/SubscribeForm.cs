@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -71,60 +72,63 @@ namespace x2tap.View
 
 		private void SubscribeLinksButton_Click(object sender, EventArgs e)
         {
+			var count = 0;
+			var v2rayProxies = new List<Objects.Server.v2ray>();
+			var ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
 			foreach (string link in Global.SubscriptionLinks)
 			{
 				using (var client = new WebClient())
 				{
-					var response = client.DownloadString(link);
-					if (response != "")
+					try
 					{
-						if (response.Length % 4 != 0)
+						var response = client.DownloadString(link);
+						if (response != "")
 						{
-							for (var i = 0; i < response.Length % 4; i++)
+							if (response.Length % 4 != 0)
 							{
-								response += "=";
-							}
-						}
-
-						response = Encoding.UTF8.GetString(Convert.FromBase64String(response));
-
-						Global.v2rayProxies.Clear();
-						Global.ShadowsocksProxies.Clear();
-
-						using (var sr = new StringReader(response))
-						{
-							var i = 0;
-							string text;
-
-							while ((text = sr.ReadLine()) != null)
-							{
-								i++;
-
-								if (text.StartsWith("vmess://"))
+								for (var i = 0; i < response.Length % 4; i++)
 								{
-									Global.v2rayProxies.Add(Parse.v2ray(text));
-								}
-								else if (text.StartsWith("ss://"))
-								{
-									Global.ShadowsocksProxies.Add(Parse.Shadowsocks(text));
-								}
-								else
-								{
-									throw new Exception(string.Format("无法解析的地址：{0}", text));
+									response += "=";
 								}
 							}
 
-							MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							response = Encoding.UTF8.GetString(Convert.FromBase64String(response));
+
+							using (var sr = new StringReader(response))
+							{
+								string text;
+
+								while ((text = sr.ReadLine()) != null)
+								{
+									count++;
+
+									if (text.StartsWith("vmess://"))
+									{
+										v2rayProxies.Add(Parse.v2ray(text));
+									}
+									else if (text.StartsWith("ss://"))
+									{
+										ShadowsocksProxies.Add(Parse.Shadowsocks(text));
+									}
+								}
+							}
 						}
 					}
-					else
+					catch (Exception ex)
 					{
-						MessageBox.Show("订阅链接返回内容为空", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						if (MessageBox.Show(string.Format("在处理订阅链接 \"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex.Message), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+						{
+							continue;
+						}
 					}
 				}
 			}
-            
-        }
+
+			Global.v2rayProxies = v2rayProxies;
+			Global.ShadowsocksProxies = ShadowsocksProxies;
+			Global.Views.MainForm.InitProxies();
+			MessageBox.Show(string.Format("成功导入 {0} 条代理", count), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
 
         private void SubscribeTextButton_Click(object sender, EventArgs e)
         {
@@ -150,12 +154,9 @@ namespace x2tap.View
                         {
                             Global.ShadowsocksProxies.Add(Parse.Shadowsocks(text));
                         }
-                        else
-                        {
-                            throw new Exception(string.Format("无法解析的地址：{0}", text));
-                        }
                     }
 
+					Global.Views.MainForm.InitProxies();
                     MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
