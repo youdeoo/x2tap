@@ -324,6 +324,7 @@ namespace x2tap.Utils
 						}
 					}
 				},
+				streamSettings = streamSettings,
 				tag = "defaultOutbound"
 			});
 
