@@ -426,6 +426,10 @@ namespace x2tap.View
 								}
 
 								Thread.Sleep(1000);
+								Status = "正在清理 DNS 缓存中";
+								Shell.ExecuteCommandNoWait("ipconfig", "/flushdns");
+
+								Thread.Sleep(1000);
 								Status = "已启动，请自行检查网络是否正常";
 								Bandwidth = 0;
 								Started = true;
