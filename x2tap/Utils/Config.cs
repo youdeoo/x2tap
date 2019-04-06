@@ -306,7 +306,7 @@ namespace x2tap.Utils
 				streamSettings.security = "tls";
 			}
 
-			data.outbounds.Add(new Objects.v2rayConfig.Outbound()
+			data.outbounds.Insert(0, new Objects.v2rayConfig.Outbound()
 			{
 				protocol = "vmess",
 				settings = new Objects.v2rayConfig.Protocol.Outbound.VMess()
@@ -370,7 +370,7 @@ namespace x2tap.Utils
 					break;
 			}
 
-			data.outbounds.Add(new Objects.v2rayConfig.Outbound()
+			data.outbounds.Insert(0, new Objects.v2rayConfig.Outbound()
 			{
 				protocol = "shadowsocks",
 				settings = new Objects.v2rayConfig.Protocol.Outbound.Shadowsocks()
