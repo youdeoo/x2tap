@@ -13,7 +13,8 @@
 - [x] 导入订阅（Shadowsocks、VMess）
 - [x] 流量信息显示（通过 v2ray gRPC API 获取的）
 - [x] 外置规则列表（参见 [MODE.md](MODE.md)）
-- [ ] 本地 DNS 代理
+- [x] 本地 DNS 代理
+- [ ] IPv6 转发支持
 
 # 依赖
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)

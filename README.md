@@ -15,7 +15,8 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 - [x] Import subscriptions (Shadowsocks, VMess)
 - [x] Traffic information display (obtained through the v2ray gRPC API)
 - [x] List of external rules (See [MODE.md](MODE.md))
-- [ ] Local DNS Agent
+- [x] Local DNS Agent
+- [ ] IPv6 forward support
 
 # Depend on
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
