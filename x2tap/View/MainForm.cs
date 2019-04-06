@@ -400,7 +400,6 @@ namespace x2tap.View
 										var splited = rule.Split('/');
 										if (splited.Length == 2)
 										{
-											MessageBox.Show(splited[0] + " " + Route.TranslateCIDR(splited[1]));
 											if (mode.Type == 0)
 											{
 												Route.Add(splited[0], Route.TranslateCIDR(splited[1]), "10.0.236.1");
