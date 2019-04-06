@@ -120,6 +120,21 @@
     <Compile Include="Objects\Server\Shadowsocks.cs" />
     <Compile Include="Objects\Server\v2ray.cs" />
     <Compile Include="Objects\ShellExitCode.cs" />
+    <Compile Include="Objects\v2rayConfig\Api.cs" />
+    <Compile Include="Objects\v2rayConfig\Dns.cs" />
+    <Compile Include="Objects\v2rayConfig\Inbound.cs" />
+    <Compile Include="Objects\v2rayConfig\Log.cs" />
+    <Compile Include="Objects\v2rayConfig\Mux.cs" />
+    <Compile Include="Objects\v2rayConfig\Outbound.cs" />
+    <Compile Include="Objects\v2rayConfig\Policy.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Api.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Socks.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Shadowsocks.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\VMess.cs" />
+    <Compile Include="Objects\v2rayConfig\Routing.cs" />
+    <Compile Include="Objects\v2rayConfig\Stats.cs" />
+    <Compile Include="Objects\v2rayConfig\StreamSettings.cs" />
+    <Compile Include="Objects\v2rayConfig\v2rayConfig.cs" />
     <Compile Include="Override\WebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -197,10 +212,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\defaultConfig" />
-    <None Include="Resources\ShadowsocksWithBypassChina" />
-    <None Include="Resources\ShadowsocksWithoutBypassChina" />
-    <None Include="Resources\v2rayWithBypassChina" />
-    <None Include="Resources\v2rayWithoutBypassChina" />
     <None Include="x2tap.manifest" />
   </ItemGroup>
   <ItemGroup>

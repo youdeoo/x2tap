@@ -38,6 +38,8 @@ namespace x2tap.View
         public MainForm()
         {
             InitializeComponent();
+
+			CheckForIllegalCrossThreadCalls = false;
         }
 
         /// <summary>
@@ -137,17 +139,14 @@ namespace x2tap.View
                 {
                     try
                     {
-                        Invoke(new MethodInvoker(() =>
-                        {
-                            // 更新标题栏时间
-                            Text = string.Format("x2tap - {0}", DateTime.Now.ToString());
+						// 更新标题栏时间
+						Text = string.Format("x2tap - {0}", DateTime.Now.ToString());
 
-                            // 更新状态信息
-                            StatusLabel.Text = string.Format("状态：{0}", Status);
-                        }));
+						// 更新状态信息
+						StatusLabel.Text = string.Format("状态：{0}", Status);
 
-                        // 更新流量信息
-                        if (Started)
+						// 更新流量信息
+						if (Started)
                         {
                             var channel = new Channel("127.0.0.1:2811", ChannelCredentials.Insecure);
                             var asyncTask = channel.ConnectAsync();
@@ -166,14 +165,11 @@ namespace x2tap.View
                                 Bandwidth += uplink.Stat.Value;
                                 Bandwidth += downlink.Stat.Value;
 
-                                // 更新流量信息
-                                Invoke(new MethodInvoker(() =>
-                                {
-                                    UsedBandwidthLabel.Text = $"已使用：{Util.ComputeBandwidth(Bandwidth)}";
-                                    UplinkSpeedLabel.Text = $"↑：{Util.ComputeBandwidth(uplink.Stat.Value)}/s";
-                                    DownlinkSpeedLabel.Text = $"↓：{Util.ComputeBandwidth(downlink.Stat.Value)}/s";
-                                }));
-                            }
+								// 更新流量信息
+								UsedBandwidthLabel.Text = $"已使用：{Util.ComputeBandwidth(Bandwidth)}";
+								UplinkSpeedLabel.Text = $"↑：{Util.ComputeBandwidth(uplink.Stat.Value)}/s";
+								DownlinkSpeedLabel.Text = $"↓：{Util.ComputeBandwidth(downlink.Stat.Value)}/s";
+							}
                         }
                         else
                         {
@@ -327,106 +323,109 @@ namespace x2tap.View
 
                         Task.Run(() =>
                         {
-                            Thread.Sleep(1000);
-                            Status = "正在生成配置文件中";
-                            Invoke(new MethodInvoker(() =>
-                            {
-                                if (ModeComboBox.SelectedIndex == 0)
-                                {
-                                    File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? v2rayConfig(Encoding.UTF8.GetString(Resources.v2rayWithBypassChina)) : ShadowsocksConfig(Encoding.UTF8.GetString(Resources.ShadowsocksWithBypassChina)));
-                                }
-								else
-                                {
-                                    File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? v2rayConfig(Encoding.UTF8.GetString(Resources.v2rayWithoutBypassChina)) : ShadowsocksConfig(Encoding.UTF8.GetString(Resources.ShadowsocksWithoutBypassChina)));
-                                }
-                            }));
-
-                            Thread.Sleep(1000);
-                            Status = "正在启动 v2ray 中";
-                            Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "v2ray.txt");
-
-                            Thread.Sleep(2000);
-                            try
-                            {
-                                using (var client = new TcpClient())
-                                {
-                                    var task = client.BeginConnect("127.0.0.1", 2810, null, null);
-                                    if (!task.AsyncWaitHandle.WaitOne(1000))
-                                    {
-                                        throw new TimeoutException();
-                                    }
-
-                                    client.EndConnect(task);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                Status = "检测到 v2ray 启动失败";
-								Reset();
-								Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-                                MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-
-                            Thread.Sleep(1000);
-                            Status = "正在启动 tun2socks 中";
-                            Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-public-only", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "114.114.114.114,114.114.115.115");
-
-                            Thread.Sleep(2000);
-                            if (Process.GetProcessesByName("tun2socks").Length == 0)
-                            {
-                                Status = "检测到 tun2socks 启动失败";
-                                Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-                                MessageBox.Show("检测到 tun2socks 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-
-                            Thread.Sleep(1000);
-                            Status = "正在配置 路由表 中";
-							if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
+							try
 							{
-								if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+								Thread.Sleep(1000);
+								Status = "正在生成配置文件中";
+								if (ModeComboBox.SelectedIndex == 0)
 								{
-									Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
-									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-									Status = "在操作路由表时发生错误！";
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
+								}
+								else
+								{
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
+								}
+
+								Thread.Sleep(1000);
+								Status = "正在启动 v2ray 中";
+								Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "v2ray.txt");
+
+								Thread.Sleep(2000);
+								try
+								{
+									using (var client = new TcpClient())
+									{
+										var task = client.BeginConnect("127.0.0.1", 2810, null, null);
+										if (!task.AsyncWaitHandle.WaitOne(1000))
+										{
+											throw new TimeoutException();
+										}
+
+										client.EndConnect(task);
+									}
+								}
+								catch (Exception)
+								{
+									Status = "检测到 v2ray 启动失败";
 									Reset();
-									MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+									MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
 								}
-							}
-							else
-							{
-								var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
 
-								foreach (var rule in mode.Rule)
+								Thread.Sleep(1000);
+								Status = "正在启动 tun2socks 中";
+								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-public-only", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "114.114.114.114,114.114.115.115");
+
+								Thread.Sleep(2000);
+								if (Process.GetProcessesByName("tun2socks").Length == 0)
 								{
-									var splited = rule.Split('/');
-									if (splited.Length == 2)
+									Status = "检测到 tun2socks 启动失败";
+									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+									MessageBox.Show("检测到 tun2socks 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									return;
+								}
+
+								Thread.Sleep(1000);
+								Status = "正在配置 路由表 中";
+								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
+								{
+									if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
 									{
-										MessageBox.Show(splited[0] + " " + Route.TranslateCIDR(splited[1]));
-										if (mode.Type == 0)
+										Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										Status = "在操作路由表时发生错误！";
+										Reset();
+										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										return;
+									}
+								}
+								else
+								{
+									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
+
+									foreach (var rule in mode.Rule)
+									{
+										var splited = rule.Split('/');
+										if (splited.Length == 2)
 										{
-											Route.Add(splited[0], Route.TranslateCIDR(splited[1]), "10.0.236.1");
-										}
-										else
-										{
-											Route.Add(splited[0], Route.TranslateCIDR(splited[1]), Global.Config.adapterGateway);
+											MessageBox.Show(splited[0] + " " + Route.TranslateCIDR(splited[1]));
+											if (mode.Type == 0)
+											{
+												Route.Add(splited[0], Route.TranslateCIDR(splited[1]), "10.0.236.1");
+											}
+											else
+											{
+												Route.Add(splited[0], Route.TranslateCIDR(splited[1]), Global.Config.adapterGateway);
+											}
 										}
 									}
 								}
-							}
 
-                            Thread.Sleep(1000);
-                            Status = "已启动，请自行检查网络是否正常";
-                            Bandwidth = 0;
-                            Started = true;
-                            Invoke(new MethodInvoker(() =>
-                            {
-                                ControlButton.Text = "停止";
-                                ControlButton.Enabled = true;
-                            }));
+								Thread.Sleep(1000);
+								Status = "已启动，请自行检查网络是否正常";
+								Bandwidth = 0;
+								Started = true;
+								ControlButton.Text = "停止";
+								ControlButton.Enabled = true;
+							}
+                            catch (Exception)
+							{
+								Reset(true);
+
+								throw;
+							}
                         });
                     }
                     else
@@ -483,232 +482,16 @@ namespace x2tap.View
 
 		private void Reset(bool type = true)
 		{
-			Invoke(new MethodInvoker(() =>
-			{
-				ProxyComboBox.Enabled = type;
-				ModeComboBox.Enabled = type;
-				Addv2rayServerButton.Enabled = type;
-				AddShadowsocksServerButton.Enabled = type;
-				DeleteButton.Enabled = type;
-				EditButton.Enabled = type;
-				SubscribeButton.Enabled = type;
-				AdvancedButton.Enabled = type;
-				ControlButton.Text = "启动";
-				ControlButton.Enabled = type;
-			}));
+			ProxyComboBox.Enabled = type;
+			ModeComboBox.Enabled = type;
+			Addv2rayServerButton.Enabled = type;
+			AddShadowsocksServerButton.Enabled = type;
+			DeleteButton.Enabled = type;
+			EditButton.Enabled = type;
+			SubscribeButton.Enabled = type;
+			AdvancedButton.Enabled = type;
+			ControlButton.Text = "启动";
+			ControlButton.Enabled = type;
 		}
-
-        public string v2rayConfig(string text)
-        {
-            // v2ray 日志等级
-            switch (Global.Config.v2rayLoggingLevel)
-            {
-                case 0:
-                    text = text.Replace("v2rayLoggingLevel", "debug");
-                    break;
-                case 1:
-                    text = text.Replace("v2rayLoggingLevel", "info");
-                    break;
-                case 2:
-                    text = text.Replace("v2rayLoggingLevel", "warning");
-                    break;
-                case 3:
-                    text = text.Replace("v2rayLoggingLevel", "error");
-                    break;
-                case 4:
-                    text = text.Replace("v2rayLoggingLevel", "none");
-                    break;
-                default:
-                    text = text.Replace("v2rayLoggingLevel", "warning");
-                    break;
-            }
-
-            // v2ray 出口绑定地址
-            using (var client = new UdpClient("114.114.114.114", 53))
-            {
-                text = text.Replace("AdapterAddress", ((IPEndPoint) client.Client.LocalEndPoint).Address.ToString());
-            }
-
-            // v2ray 地址
-            text = text.Replace("v2rayAddress", Global.v2rayProxies[ProxyComboBox.SelectedIndex].Address);
-
-            // v2ray 端口
-            text = text.Replace("v2rayPort", Global.v2rayProxies[ProxyComboBox.SelectedIndex].Port.ToString());
-
-            // v2ray 用户 ID
-            text = text.Replace("v2rayUserID", Global.v2rayProxies[ProxyComboBox.SelectedIndex].UserID);
-
-            // v2ray 额外 ID
-            text = text.Replace("v2rayAlterID", Global.v2rayProxies[ProxyComboBox.SelectedIndex].AlterID.ToString());
-
-            // v2ray 加密方式
-            switch (Global.v2rayProxies[ProxyComboBox.SelectedIndex].EncryptMethod)
-            {
-                case 0:
-                    text = text.Replace("v2rayEncryptMethod", "chacha20-poly1305");
-                    break;
-                case 1:
-                    text = text.Replace("v2rayEncryptMethod", "aes-128-gcm");
-                    break;
-                case 2:
-                    text = text.Replace("v2rayEncryptMethod", "auto");
-                    break;
-                case 3:
-                    text = text.Replace("v2rayEncryptMethod", "none");
-                    break;
-                default:
-                    text = text.Replace("v2rayEncryptMethod", "chacha20-poly1305");
-                    break;
-            }
-
-            // v2ray 传输协议
-            switch (Global.v2rayProxies[ProxyComboBox.SelectedIndex].TransferProtocol)
-            {
-                case 0:
-                    text = text.Replace("v2rayTransferProtocol", "tcp");
-                    break;
-                case 1:
-                    text = text.Replace("v2rayTransferProtocol", "mkcp");
-                    break;
-                case 2:
-                    text = text.Replace("v2rayTransferProtocol", "ws");
-                    break;
-                case 3:
-                    text = text.Replace("v2rayTransferProtocol", "http");
-                    break;
-                case 4:
-                    text = text.Replace("v2rayTransferProtocol", "quic");
-                    break;
-                default:
-                    text = text.Replace("v2rayTransferProtocol", "tcp");
-                    break;
-            }
-
-            // v2ray TLS 底层传输安全
-            if (Global.v2rayProxies[ProxyComboBox.SelectedIndex].TLSSecure)
-            {
-                text = text.Replace("v2rayTLSSecure", "tls");
-            }
-            else
-            {
-                text = text.Replace("v2rayTLSSecure", "none");
-            }
-
-            // v2ray 伪装类型
-            switch (Global.v2rayProxies[ProxyComboBox.SelectedIndex].FakeType)
-            {
-                case 0:
-                    text = text.Replace("v2rayFakeType", "none");
-                    break;
-                case 1:
-                    text = new Regex("v2rayFakeType").Replace(text, "http", 1);
-
-                    text = text.Replace("v2rayFakeType", "none");
-                    text = text.Replace("v2rayFakeDomain", Global.v2rayProxies[ProxyComboBox.SelectedIndex].FakeDomain);
-                    break;
-                case 2:
-                    text = new Regex("v2rayFakeType").Replace(text, "none", 1);
-
-                    text = text.Replace("v2rayFakeType", "srtp");
-                    break;
-                case 3:
-                    text = new Regex("v2rayFakeType").Replace(text, "none", 1);
-
-                    text = text.Replace("v2rayFakeType", "utp");
-                    break;
-                case 4:
-                    text = new Regex("v2rayFakeType").Replace(text, "none", 1);
-
-                    text = text.Replace("v2rayFakeType", "wechat-video");
-                    break;
-                case 5:
-                    text = new Regex("v2rayFakeType").Replace(text, "none", 1);
-
-                    text = text.Replace("v2rayFakeType", "dtls");
-                    break;
-                case 6:
-                    text = new Regex("v2rayFakeType").Replace(text, "none", 1);
-
-                    text = text.Replace("v2rayFakeType", "wireguard");
-                    break;
-                default:
-                    text = text.Replace("v2rayFakeType", "none");
-                    break;
-            }
-
-            // v2ray 路径
-            text = text.Replace("v2rayPath", Global.v2rayProxies[ProxyComboBox.SelectedIndex].Path);
-
-            return text;
-        }
-
-        public string ShadowsocksConfig(string text)
-        {
-            // v2ray 日志等级
-            switch (Global.Config.v2rayLoggingLevel)
-            {
-                case 0:
-                    text = text.Replace("v2rayLoggingLevel", "debug");
-                    break;
-                case 1:
-                    text = text.Replace("v2rayLoggingLevel", "info");
-                    break;
-                case 2:
-                    text = text.Replace("v2rayLoggingLevel", "warning");
-                    break;
-                case 3:
-                    text = text.Replace("v2rayLoggingLevel", "error");
-                    break;
-                case 4:
-                    text = text.Replace("v2rayLoggingLevel", "none");
-                    break;
-                default:
-                    text = text.Replace("v2rayLoggingLevel", "warning");
-                    break;
-            }
-
-            // v2ray 出口绑定地址
-            text = text.Replace("AdapterAddress", Global.Config.adapterAddress);
-
-            // Shadowsocks 地址
-            text = text.Replace("ShadowsocksAddress", Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count].Address);
-
-            // Shadowsocks 端口
-            text = text.Replace("ShadowsocksPort", Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count].Port.ToString());
-
-            // Shadowsocks 加密方式
-            switch (Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count].EncryptMethod)
-            {
-                case 0:
-                    text = text.Replace("ShadowsocksEncryptMethod", "aes-256-cfb");
-                    break;
-                case 1:
-                    text = text.Replace("ShadowsocksEncryptMethod", "aes-128-cfb");
-                    break;
-                case 2:
-                    text = text.Replace("ShadowsocksEncryptMethod", "chacha20");
-                    break;
-                case 3:
-                    text = text.Replace("ShadowsocksEncryptMethod", "chacha20-ietf");
-                    break;
-                case 4:
-                    text = text.Replace("ShadowsocksEncryptMethod", "aes-256-gcm");
-                    break;
-                case 5:
-                    text = text.Replace("ShadowsocksEncryptMethod", "aes-128-gcm");
-                    break;
-                case 6:
-                    text = text.Replace("ShadowsocksEncryptMethod", "chacha20-poly1305");
-                    break;
-                default:
-                    text = text.Replace("ShadowsocksEncryptMethod", "aes-256-cfb");
-                    break;
-            }
-
-            // Shadowsocks 密码
-            text = text.Replace("ShadowsocksPassword", Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count].Password);
-
-            return text;
-        }
     }
 }
