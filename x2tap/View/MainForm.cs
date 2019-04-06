@@ -364,8 +364,21 @@ namespace x2tap.View
 								}
 
 								Thread.Sleep(1000);
+								Status = "正在启动 dnscrypt-proxy 中";
+								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
+
+								Thread.Sleep(2000);
+								if (Process.GetProcessesByName("dnscrypt-proxy").Length == 0)
+								{
+									Status = "检测到 dnscrypt-proxy 启动失败";
+									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+									MessageBox.Show("检测到 dnscrypt-proxy 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									return;
+								}
+
+								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-public-only", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "1.2.4.8");
+								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-public-only", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
 
 								Thread.Sleep(2000);
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
@@ -419,11 +432,11 @@ namespace x2tap.View
 								ControlButton.Text = "停止";
 								ControlButton.Enabled = true;
 							}
-                            catch (Exception)
+                            catch (Exception ex)
 							{
 								Reset(true);
 
-								throw;
+								MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 							}
                         });
                     }
@@ -462,6 +475,10 @@ namespace x2tap.View
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
 					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+
+					Thread.Sleep(1000);
+					Status = "正在停止 dnscrypt-proxy 中";
+					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 
 					Thread.Sleep(1000);
 					Status = "正在停止 v2ray 中";

@@ -19,6 +19,9 @@ cp ../../binaries/prebuilt/x64/*.exe x64
 cp ../../binaries/prebuilt/geoip.dat x64
 cp ../../binaries/prebuilt/geosite.dat x64
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x64
+cp ../../binaries/prebuilt/dnscrypt-forwarding-rules.txt x64
+cp ../../binaries/prebuilt/dnscrypt-proxy.toml x64
+cp ../../binaries/prebuilt/x64/dnscrypt-proxy.exe x64
 
 echo "Copying x86"
 cp ../../x2tap/bin/x86/Release/*.dll x86
@@ -31,6 +34,9 @@ cp ../../binaries/prebuilt/x86/*.exe x86
 cp ../../binaries/prebuilt/geoip.dat x86
 cp ../../binaries/prebuilt/geosite.dat x86
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x86
+cp ../../binaries/prebuilt/dnscrypt-forwarding-rules.txt x86
+cp ../../binaries/prebuilt/dnscrypt-proxy.toml x86
+cp ../../binaries/prebuilt/x86/dnscrypt-proxy.exe x86
 
 echo "Copyring modes"
 cp ../../modes/*.txt x64/mode
