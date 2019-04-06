@@ -4,6 +4,8 @@ doh_servers = true
 
 forwarding_rules = 'dnscrypt-forwarding-rules.txt'
 
+block_ipv6 = true
+
 [static]
 	[static.'ea-dns.rubyfish.cn']
 	stamp = 'sdns://AgUAAAAAAAAAAAASZWEtZG5zLnJ1YnlmaXNoLmNuCi9kbnMtcXVlcnk'
