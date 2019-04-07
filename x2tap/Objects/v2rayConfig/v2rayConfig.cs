@@ -49,6 +49,7 @@ namespace x2tap.Objects.v2rayConfig
 			new Inbound()
 			{
 				port = 2810,
+				listen = "127.0.0.1",
 				protocol = "socks",
 				settings = new Protocol.Inbound.Socks(),
 				sniffing = new InboundSniffing(),
@@ -57,9 +58,23 @@ namespace x2tap.Objects.v2rayConfig
 			new Inbound()
 			{
 				port = 2811,
+				listen = "127.0.0.1",
 				protocol = "dokodemo-door",
 				settings = new Protocol.Inbound.Api(),
 				tag = "api"
+			},
+			new Inbound()
+			{
+				port = 53,
+				listen = "127.0.0.1",
+				protocol = "dokodemo-door",
+				settings = new Protocol.Inbound.Dokodomo()
+				{
+					address = "1.1.1.1",
+					network = "tcp,udp",
+					port = 53
+				},
+				tag = "dnsInbound"
 			}
 		};
 
@@ -73,6 +88,11 @@ namespace x2tap.Objects.v2rayConfig
 				sendThrough = Global.Config.adapterAddress,
 				protocol = "freedom",
 				tag = "directOutbound"
+			},
+			new Outbound()
+			{
+				protocol = "dns",
+				tag = "dnsOutbound"
 			}
 		};
 	}

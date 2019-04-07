@@ -363,6 +363,7 @@ namespace x2tap.View
 									return;
 								}
 
+#if DEBUG
 								Thread.Sleep(1000);
 								Status = "正在启动 dnscrypt-proxy 中";
 								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
@@ -375,10 +376,11 @@ namespace x2tap.View
 									MessageBox.Show("检测到 dnscrypt-proxy 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
 								}
+#endif
 
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-public-only", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
+								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
 
 								Thread.Sleep(2000);
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
@@ -393,8 +395,20 @@ namespace x2tap.View
 								Status = "正在配置 路由表 中";
 								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
 								{
+									if (!Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+									{
+										Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										Status = "在操作路由表时发生错误！";
+										Reset();
+										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										return;
+									}
+
 									if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
 									{
+										Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 										Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
 										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
@@ -463,6 +477,7 @@ namespace x2tap.View
 				{
 					Thread.Sleep(1000);
 					Status = "正在重置 路由表 中";
+					Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 					Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
 					if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 					{
@@ -480,9 +495,11 @@ namespace x2tap.View
 					Status = "正在停止 tun2socks 中";
 					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 
+#if DEBUG
 					Thread.Sleep(1000);
 					Status = "正在停止 dnscrypt-proxy 中";
 					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+#endif
 
 					Thread.Sleep(1000);
 					Status = "正在停止 v2ray 中";

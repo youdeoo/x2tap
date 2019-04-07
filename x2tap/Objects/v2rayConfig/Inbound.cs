@@ -14,12 +14,12 @@ namespace x2tap.Objects.v2rayConfig
 		/// <summary>
 		///		端口
 		/// </summary>
-		public int port = 2810;
+		public int port;
 
 		/// <summary>
 		///		地址
 		/// </summary>
-		public string listen = "127.0.0.1";
+		public string listen;
 
 		/// <summary>
 		///		协议

@@ -128,7 +128,9 @@
     <Compile Include="Objects\v2rayConfig\Outbound.cs" />
     <Compile Include="Objects\v2rayConfig\Policy.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Api.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Dokodomo.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Socks.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Dns.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Shadowsocks.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Outbound\VMess.cs" />
     <Compile Include="Objects\v2rayConfig\Routing.cs" />
