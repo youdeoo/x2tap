@@ -137,6 +137,8 @@ namespace x2tap.View
             {
                 while (true)
                 {
+					var count = 0;
+
                     try
                     {
 						// 更新标题栏时间
@@ -145,30 +147,37 @@ namespace x2tap.View
 						// 更新状态信息
 						StatusLabel.Text = string.Format("状态：{0}", Status);
 
+						
 						// 更新流量信息
 						if (Started)
                         {
-                            var channel = new Channel("127.0.0.1:2811", ChannelCredentials.Insecure);
-                            var asyncTask = channel.ConnectAsync();
+							if (count % 10 == 0)
+							{
+								Task.Run(() =>
+								{
+									var channel = new Channel("127.0.0.1:2811", ChannelCredentials.Insecure);
+									var asyncTask = channel.ConnectAsync();
 
-                            asyncTask.Wait(100);
-                            if (asyncTask.IsCompleted)
-                            {
-                                // 创建客户端实例
-                                var client = new StatsService.StatsServiceClient(channel);
+									asyncTask.Wait(100);
+									if (asyncTask.IsCompleted)
+									{
+										// 创建客户端实例
+										var client = new StatsService.StatsServiceClient(channel);
 
-                                // 获取并重置 上行/下行 统计信息
-                                var uplink = client.GetStats(new GetStatsRequest {Name = "inbound>>>defaultInbound>>>traffic>>>uplink", Reset = true});
-                                var downlink = client.GetStats(new GetStatsRequest {Name = "inbound>>>defaultInbound>>>traffic>>>downlink", Reset = true});
+										// 获取并重置 上行/下行 统计信息
+										var uplink = client.GetStats(new GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>uplink", Reset = true });
+										var downlink = client.GetStats(new GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>downlink", Reset = true });
 
-                                // 加入总流量
-                                Bandwidth += uplink.Stat.Value;
-                                Bandwidth += downlink.Stat.Value;
+										// 加入总流量
+										Bandwidth += uplink.Stat.Value;
+										Bandwidth += downlink.Stat.Value;
 
-								// 更新流量信息
-								UsedBandwidthLabel.Text = $"已使用：{Util.ComputeBandwidth(Bandwidth)}";
-								UplinkSpeedLabel.Text = $"↑：{Util.ComputeBandwidth(uplink.Stat.Value)}/s";
-								DownlinkSpeedLabel.Text = $"↓：{Util.ComputeBandwidth(downlink.Stat.Value)}/s";
+										// 更新流量信息
+										UsedBandwidthLabel.Text = $"已使用：{Util.ComputeBandwidth(Bandwidth)}";
+										UplinkSpeedLabel.Text = $"↑：{Util.ComputeBandwidth(uplink.Stat.Value)}/s";
+										DownlinkSpeedLabel.Text = $"↓：{Util.ComputeBandwidth(downlink.Stat.Value)}/s";
+									}
+								});
 							}
                         }
                         else
@@ -179,8 +188,17 @@ namespace x2tap.View
                             DownlinkSpeedLabel.Text = "↓：0 KB/s";
                         }
 
-                        // 休眠 1000 毫秒
-                        Thread.Sleep(1000);
+						if (count > 100000)
+						{
+							count = 0;
+						}
+						else
+						{
+							count++;
+						}
+
+                        // 休眠 100 毫秒
+                        Thread.Sleep(100);
                     }
                     catch (Exception)
                     {
@@ -363,21 +381,6 @@ namespace x2tap.View
 									return;
 								}
 
-#if DEBUG
-								Thread.Sleep(1000);
-								Status = "正在启动 dnscrypt-proxy 中";
-								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
-
-								Thread.Sleep(2000);
-								if (Process.GetProcessesByName("dnscrypt-proxy").Length == 0)
-								{
-									Status = "检测到 dnscrypt-proxy 启动失败";
-									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-									MessageBox.Show("检测到 dnscrypt-proxy 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									return;
-								}
-#endif
-
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
 								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
@@ -421,6 +424,31 @@ namespace x2tap.View
 								else
 								{
 									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
+									if (mode.Type == 1)
+									{
+										if (!Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+										{
+											Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+											Status = "在操作路由表时发生错误！";
+											Reset();
+											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											return;
+										}
+
+										if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+										{
+											Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+											Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+											Status = "在操作路由表时发生错误！";
+											Reset();
+											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											return;
+										}
+									}
 
 									foreach (var rule in mode.Rule)
 									{
@@ -494,12 +522,6 @@ namespace x2tap.View
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
 					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-
-#if DEBUG
-					Thread.Sleep(1000);
-					Status = "正在停止 dnscrypt-proxy 中";
-					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-#endif
 
 					Thread.Sleep(1000);
 					Status = "正在停止 v2ray 中";
