@@ -230,11 +230,9 @@ namespace x2tap.Utils
 			{
 				case 0:
 					streamSettings.network = "tcp";
-					var tcpSettings = new Objects.v2rayConfig.TCP();
-
 					if (v2rayGetFakeType(v2ray.FakeType) == "http")
 					{
-						var tcpHeader = new Objects.v2rayConfig.TCPHTTPHeader()
+						var tcpSettings = new Objects.v2rayConfig.TCPHTTPHeader()
 						{
 							request = new Objects.v2rayConfig.TCPHTTPRequestHeader()
 							{
@@ -245,9 +243,8 @@ namespace x2tap.Utils
 								path = new List<string>() { v2ray.Path == "/" ? "/" : v2ray.Path }
 							}
 						};
-						tcpSettings.header = tcpHeader;
+						streamSettings.tcpSettings = tcpSettings;
 					}
-					streamSettings.tcpSettings = tcpSettings;
 					break;
 				case 1:
 					streamSettings.network = "kcp";

@@ -29,7 +29,7 @@ namespace x2tap.Objects.v2rayConfig
 		/// <summary>
 		///		TCP 流
 		/// </summary>
-		public TCP tcpSettings;
+		public object tcpSettings;
 
 		/// <summary>
 		///		KCP 流
@@ -71,17 +71,6 @@ namespace x2tap.Objects.v2rayConfig
 		///		是否允许不安全的加密方式
 		/// </summary>
 		public bool allowInsecureCiphers = false;
-	}
-
-	/// <summary>
-	///		TCP 流
-	/// </summary>
-	public class TCP
-	{
-		/// <summary>
-		///		数据包头部伪装
-		/// </summary>
-		public object header;
 	}
 
 	/// <summary>

@@ -135,10 +135,10 @@ namespace x2tap.View
             // 后台工作
             Task.Run(() =>
             {
-                while (true)
-                {
-					var count = 0;
+				var count = 0;
 
+				while (true)
+                {
                     try
                     {
 						// 更新标题栏时间
