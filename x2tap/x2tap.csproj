@@ -117,6 +117,7 @@
     <Compile Include="3rd\v2ray\Core\App\Stats\CommandGrpc.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Objects\Mode.cs" />
+    <Compile Include="Objects\Server\ShadowsocksR.cs" />
     <Compile Include="Objects\Server\Shadowsocks.cs" />
     <Compile Include="Objects\Server\v2ray.cs" />
     <Compile Include="Objects\ShellExitCode.cs" />
@@ -151,6 +152,12 @@
     </Compile>
     <Compile Include="View\AdvancedForm.Designer.cs">
       <DependentUpon>AdvancedForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Server\ShadowsocksR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Server\ShadowsocksR.Designer.cs">
+      <DependentUpon>ShadowsocksR.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Server\Shadowsocks.cs">
       <SubType>Form</SubType>
@@ -193,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Server\ShadowsocksR.resx">
+      <DependentUpon>ShadowsocksR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Server\Shadowsocks.resx">
       <DependentUpon>Shadowsocks.cs</DependentUpon>

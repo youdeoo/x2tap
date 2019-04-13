@@ -77,7 +77,7 @@ namespace x2tap.Utils
 
         public static Shadowsocks Shadowsocks(string text)
         {
-            var data = new Uri(text);
+            var data = new Uri(Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 5))));
             var shadowsocks = new Shadowsocks();
 
             shadowsocks.Remark = Uri.UnescapeDataString(data.Fragment.Remove(0, 1));
@@ -117,5 +117,13 @@ namespace x2tap.Utils
 
             return shadowsocks;
         }
+
+		public static ShadowsocksR ShadowsocksR(string text)
+		{
+			var data = new Uri(Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 6))));
+			var shadowsocksr = new ShadowsocksR();
+
+			return shadowsocksr;
+		}
     }
 }

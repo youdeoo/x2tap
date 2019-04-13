@@ -61,6 +61,12 @@ namespace x2tap.View
                 ProxyComboBox.Items.Add(string.Format("[Shadowsocks] {0}", shadowsocks.Remark));
             }
 
+			// 添加 ShadowsocksR 代理
+			foreach (var shadowsocksr in Global.ShadowsocksRProxies)
+			{
+				ProxyComboBox.Items.Add(string.Format("[ShadowsocksR] {0}", shadowsocksr.Remark));
+			}
+
             if (ProxyComboBox.Items.Count > 0)
             {
                 ProxyComboBox.SelectedIndex = 0;
@@ -146,7 +152,6 @@ namespace x2tap.View
 
 						// 更新状态信息
 						StatusLabel.Text = string.Format("状态：{0}", Status);
-
 						
 						// 更新流量信息
 						if (Started)
@@ -219,6 +224,7 @@ namespace x2tap.View
             else
             {
                 Config.SaveToFile();
+				Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
             }
         }
 
@@ -259,7 +265,13 @@ namespace x2tap.View
             Hide();
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+		private void AddShadowsocksRServerButton_Click(object sender, EventArgs e)
+		{
+			(Global.Views.Server.ShadowsocksR = new ShadowsocksR()).Show();
+			Hide();
+		}
+
+		private void DeleteButton_Click(object sender, EventArgs e)
         {
             var index = ProxyComboBox.SelectedIndex;
             if (index != -1)
@@ -270,10 +282,14 @@ namespace x2tap.View
                 {
                     Global.v2rayProxies.RemoveAt(index);
                 }
-                else
+                else if (index < Global.v2rayProxies.Count + Global.ShadowsocksProxies.Count)
                 {
                     Global.ShadowsocksProxies.RemoveAt(index - Global.v2rayProxies.Count);
                 }
+				else
+				{
+					Global.ShadowsocksRProxies.RemoveAt(index - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count);
+				}
 
                 if (ProxyComboBox.Items.Count < index)
                 {
@@ -302,10 +318,14 @@ namespace x2tap.View
                 {
                     (Global.Views.Server.v2ray = new Server.v2ray(true, ProxyComboBox.SelectedIndex)).Show();
                 }
-                else
+                else if (ProxyComboBox.SelectedIndex < Global.v2rayProxies.Count)
                 {
                     (Global.Views.Server.Shadowsocks = new Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count)).Show();
                 }
+				else
+				{
+					(Global.Views.Server.ShadowsocksR = new ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
+				}
 
                 Hide();
             }
@@ -552,5 +572,5 @@ namespace x2tap.View
 			ControlButton.Text = "启动";
 			ControlButton.Enabled = type;
 		}
-    }
+	}
 }

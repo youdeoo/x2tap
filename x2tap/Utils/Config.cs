@@ -45,6 +45,11 @@ namespace x2tap.Utils
                 Global.ShadowsocksProxies = JsonConvert.DeserializeObject<List<Shadowsocks>>(File.ReadAllText("Shadowsocks.json"));
             }
 
+			if (File.Exists("ShadowsocksR.json"))
+			{
+				Global.ShadowsocksRProxies = JsonConvert.DeserializeObject<List<ShadowsocksR>>(File.ReadAllText("ShadowsocksR.json"));
+			}
+
 			if (Directory.Exists("mode"))
 			{
 				foreach (var name in Directory.GetFiles("mode", "*.txt"))
@@ -112,6 +117,7 @@ namespace x2tap.Utils
 			File.WriteAllText("SubscriptionLinks.json", JsonConvert.SerializeObject(Global.SubscriptionLinks));
             File.WriteAllText("v2ray.json", JsonConvert.SerializeObject(Global.v2rayProxies));
             File.WriteAllText("Shadowsocks.json", JsonConvert.SerializeObject(Global.ShadowsocksProxies));
+			File.WriteAllText("ShadowsocksR.json", JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
         }
 
 		public static Objects.v2rayConfig.v2rayConfig GetGeneric(bool bypassChina = true)

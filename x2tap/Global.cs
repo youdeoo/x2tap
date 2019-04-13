@@ -22,6 +22,11 @@ namespace x2tap
         public static List<Shadowsocks> ShadowsocksProxies = new List<Shadowsocks>();
 
 		/// <summary>
+		///		ShadowsocksR 代理
+		/// </summary>
+		public static List<ShadowsocksR> ShadowsocksRProxies = new List<ShadowsocksR>();
+
+		/// <summary>
 		///		模式
 		/// </summary>
 		public static List<Objects.Mode> Modes = new List<Objects.Mode>();
@@ -60,6 +65,11 @@ namespace x2tap
                 ///     Shadowsocks
                 /// </summary>
                 public static View.Server.Shadowsocks Shadowsocks;
+
+				/// <summary>
+				///		ShadowsocksR
+				/// </summary>
+				public static View.Server.ShadowsocksR ShadowsocksR;
             }
         }
 

@@ -75,6 +75,7 @@ namespace x2tap.View
 			var count = 0;
 			var v2rayProxies = new List<Objects.Server.v2ray>();
 			var ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
+			var ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
 			foreach (string link in Global.SubscriptionLinks)
 			{
 				using (var client = new WebClient())
@@ -110,13 +111,17 @@ namespace x2tap.View
 									{
 										ShadowsocksProxies.Add(Parse.Shadowsocks(text));
 									}
+									else if (text.StartsWith("ssr://"))
+									{
+										ShadowsocksRProxies.Add(Parse.ShadowsocksR(text));
+									}
 								}
 							}
 						}
 					}
 					catch (Exception ex)
 					{
-						if (MessageBox.Show(string.Format("在处理订阅链接 \"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex.Message), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+						if (MessageBox.Show(string.Format("在处理订阅链接：\"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex.Message), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
 						{
 							continue;
 						}
@@ -126,6 +131,7 @@ namespace x2tap.View
 
 			Global.v2rayProxies = v2rayProxies;
 			Global.ShadowsocksProxies = ShadowsocksProxies;
+			Global.ShadowsocksRProxies = ShadowsocksRProxies;
 			Global.Views.MainForm.InitProxies();
 			MessageBox.Show(string.Format("成功导入 {0} 条代理", count), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
