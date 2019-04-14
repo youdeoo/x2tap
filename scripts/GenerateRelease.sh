@@ -21,6 +21,8 @@ cp ../../binaries/prebuilt/x64/*.exe x64
 cp ../../binaries/prebuilt/geoip.dat x64
 cp ../../binaries/prebuilt/geosite.dat x64
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x64
+cp ../../binaries/prebuilt/dnscrypt-proxy.toml x64
+cp ../../binaries/prebuilt/dnscrypt-forwarding-rules.txt x64
 echo "------------------------------------------------------------"
 echo "Copying x86"
 echo "------------------------------------------------------------"
@@ -34,6 +36,8 @@ cp ../../binaries/prebuilt/x86/*.exe x86
 cp ../../binaries/prebuilt/geoip.dat x86
 cp ../../binaries/prebuilt/geosite.dat x86
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x86
+cp ../../binaries/prebuilt/dnscrypt-proxy.toml x86
+cp ../../binaries/prebuilt/dnscrypt-forwarding-rules.txt x86
 echo "------------------------------------------------------------"
 echo "Copying modes"
 echo "------------------------------------------------------------"

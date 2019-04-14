@@ -13,10 +13,15 @@ namespace x2tap.View
 {
     public partial class MainForm : Form
     {
-        /// <summary>
-        ///     流量
-        /// </summary>
-        public long Bandwidth;
+		/// <summary>
+		///		上行流量
+		/// </summary>
+		public long UplinkBandwidth = 0;
+
+		/// <summary>
+		///		下行流量
+		/// </summary>
+		public long DownlinkBandwidth = 0;
 
         /// <summary>
         ///     启动状态
@@ -153,35 +158,29 @@ namespace x2tap.View
 							{
 								Task.Run(() =>
 								{
-									var channel = new Grpc.Core.Channel("127.0.0.1:2811", Grpc.Core.ChannelCredentials.Insecure);
-									var asyncTask = channel.ConnectAsync();
-
-									asyncTask.Wait(100);
-									if (asyncTask.IsCompleted)
+									var adapters = NetworkInterface.GetAllNetworkInterfaces();
+									foreach (var adapter in adapters)
 									{
-										// 创建客户端实例
-										var client = new v2ray.Core.App.Stats.Command.StatsService.StatsServiceClient(channel);
+										if (adapter.Name == Utils.TUNTAP.GetName(Utils.TUNTAP.GetComponentID()))
+										{
+											var stats = adapter.GetIPv4Statistics();
 
-										// 获取并重置 上行/下行 统计信息
-										var uplink = client.GetStats(new v2ray.Core.App.Stats.Command.GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>uplink", Reset = true });
-										var downlink = client.GetStats(new v2ray.Core.App.Stats.Command.GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>downlink", Reset = true });
+											UsedBandwidthLabel.Text = $"已使用：{Utils.Util.ComputeBandwidth(stats.BytesReceived + stats.BytesSent)}";
+											UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}";
+											DownlinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}";
 
-										// 加入总流量
-										Bandwidth += uplink.Stat.Value;
-										Bandwidth += downlink.Stat.Value;
-
-										// 更新流量信息
-										UsedBandwidthLabel.Text = $"已使用：{Utils.Util.ComputeBandwidth(Bandwidth)}";
-										UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(uplink.Stat.Value)}/s";
-										DownlinkSpeedLabel.Text = $"↓：{Utils.Util.ComputeBandwidth(downlink.Stat.Value)}/s";
+											UplinkBandwidth = stats.BytesSent;
+											DownlinkBandwidth = stats.BytesReceived;
+										}
 									}
 								});
 							}
                         }
                         else
                         {
-                            Bandwidth = 0;
-                            UsedBandwidthLabel.Text = "已使用：0 KB";
+							UplinkBandwidth = 0;
+							DownlinkBandwidth = 0;
+							UsedBandwidthLabel.Text = "已使用：0 KB";
                             UplinkSpeedLabel.Text = "↑：0 KB/s";
                             DownlinkSpeedLabel.Text = "↓：0 KB/s";
                         }
@@ -486,7 +485,6 @@ namespace x2tap.View
 
 								Thread.Sleep(1000);
 								Status = "已启动，请自行检查网络是否正常";
-								Bandwidth = 0;
 								Started = true;
 								ControlButton.Text = "停止";
 								ControlButton.Enabled = true;
