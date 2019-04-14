@@ -31,19 +31,7 @@ namespace x2tap.Utils
 		/// <returns>解密后的结果</returns>
 		public static string UrlSafeBase64Decode(string text)
 		{
-			text = text.Replace("-", "+").Replace("_", "/");
-
-			if (text.Length % 4 != 0)
-			{
-				var length = 4 - (text.Length % 4);
-
-				for (int i = 0; i < length; i++)
-				{
-					text += '=';
-				}
-			}
-
-			return Encoding.UTF8.GetString(Convert.FromBase64String(text));
+			return Encoding.UTF8.GetString(Convert.FromBase64String(text.Replace("-", "+").Replace("_", "/").PadRight(text.Length + (4 - text.Length % 4) % 4, '=')));
 		}
     }
 }

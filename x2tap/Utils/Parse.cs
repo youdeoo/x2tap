@@ -119,7 +119,7 @@ namespace x2tap.Utils
 
 		public static Objects.Server.ShadowsocksR ShadowsocksR(string text)
 		{
-			var data = Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 6))).Split(':');
+			var data = Utils.Util.UrlSafeBase64Decode(text.Remove(0, 6)).Split(':');
 			var shadowsocksr = new Objects.Server.ShadowsocksR();
 
 			shadowsocksr.Address = data[0];
@@ -244,7 +244,6 @@ namespace x2tap.Utils
 
 			var info = data[5].Split('/');
 			shadowsocksr.Password = Util.UrlSafeBase64Decode(info[0]);
-			shadowsocksr.Remark = Util.UrlSafeBase64Decode(info[1].Remove(0, 9));
 
 			var dict = new Dictionary<string, string>();
 			foreach (var str in info[1].Remove(0, 1).Split('&'))

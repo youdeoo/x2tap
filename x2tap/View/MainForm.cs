@@ -5,16 +5,9 @@ using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Grpc.Core;
-using v2ray.Core.App.Stats.Command;
-using x2tap.Properties;
-using x2tap.Utils;
-using x2tap.View.Server;
 
 namespace x2tap.View
 {
@@ -81,8 +74,8 @@ namespace x2tap.View
                 Directory.CreateDirectory("logging");
             }
 
-            // 初始化配置
-            Config.InitFromFile();
+			// 初始化配置
+			Utils.Config.InitFromFile();
 
             // 初始化代理
             InitProxies();
@@ -160,27 +153,27 @@ namespace x2tap.View
 							{
 								Task.Run(() =>
 								{
-									var channel = new Channel("127.0.0.1:2811", ChannelCredentials.Insecure);
+									var channel = new Grpc.Core.Channel("127.0.0.1:2811", Grpc.Core.ChannelCredentials.Insecure);
 									var asyncTask = channel.ConnectAsync();
 
 									asyncTask.Wait(100);
 									if (asyncTask.IsCompleted)
 									{
 										// 创建客户端实例
-										var client = new StatsService.StatsServiceClient(channel);
+										var client = new v2ray.Core.App.Stats.Command.StatsService.StatsServiceClient(channel);
 
 										// 获取并重置 上行/下行 统计信息
-										var uplink = client.GetStats(new GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>uplink", Reset = true });
-										var downlink = client.GetStats(new GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>downlink", Reset = true });
+										var uplink = client.GetStats(new v2ray.Core.App.Stats.Command.GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>uplink", Reset = true });
+										var downlink = client.GetStats(new v2ray.Core.App.Stats.Command.GetStatsRequest { Name = "inbound>>>defaultInbound>>>traffic>>>downlink", Reset = true });
 
 										// 加入总流量
 										Bandwidth += uplink.Stat.Value;
 										Bandwidth += downlink.Stat.Value;
 
 										// 更新流量信息
-										UsedBandwidthLabel.Text = $"已使用：{Util.ComputeBandwidth(Bandwidth)}";
-										UplinkSpeedLabel.Text = $"↑：{Util.ComputeBandwidth(uplink.Stat.Value)}/s";
-										DownlinkSpeedLabel.Text = $"↓：{Util.ComputeBandwidth(downlink.Stat.Value)}/s";
+										UsedBandwidthLabel.Text = $"已使用：{Utils.Util.ComputeBandwidth(Bandwidth)}";
+										UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(uplink.Stat.Value)}/s";
+										DownlinkSpeedLabel.Text = $"↓：{Utils.Util.ComputeBandwidth(downlink.Stat.Value)}/s";
 									}
 								});
 							}
@@ -223,8 +216,8 @@ namespace x2tap.View
             }
             else
             {
-                Config.SaveToFile();
-				Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
+				Utils.Config.SaveToFile();
+				Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
             }
         }
 
@@ -261,13 +254,13 @@ namespace x2tap.View
 
         private void AddShadowsocksServerButton_Click(object sender, EventArgs e)
         {
-            (Global.Views.Server.Shadowsocks = new Shadowsocks()).Show();
+            (Global.Views.Server.Shadowsocks = new Server.Shadowsocks()).Show();
             Hide();
         }
 
 		private void AddShadowsocksRServerButton_Click(object sender, EventArgs e)
 		{
-			(Global.Views.Server.ShadowsocksR = new ShadowsocksR()).Show();
+			(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR()).Show();
 			Hide();
 		}
 
@@ -320,11 +313,11 @@ namespace x2tap.View
                 }
                 else if (ProxyComboBox.SelectedIndex < Global.v2rayProxies.Count)
                 {
-                    (Global.Views.Server.Shadowsocks = new Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count)).Show();
+                    (Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count)).Show();
                 }
 				else
 				{
-					(Global.Views.Server.ShadowsocksR = new ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
+					(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
 				}
 
                 Hide();
@@ -353,7 +346,7 @@ namespace x2tap.View
             {
                 if (ProxyComboBox.SelectedIndex != -1)
                 {
-                    if (TUNTAP.GetComponentId() != "")
+                    if (Utils.TUNTAP.GetComponentId() != "")
                     {
                         Status = "执行中";
 						Reset(false);
@@ -367,16 +360,16 @@ namespace x2tap.View
 								Status = "正在生成配置文件中";
 								if (ModeComboBox.SelectedIndex == 0)
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Utils.Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
 								}
 								else
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Utils.Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
 								}
 
 								Thread.Sleep(1000);
 								Status = "正在启动 v2ray 中";
-								Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "v2ray.txt");
+								Utils.Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "v2ray.txt");
 
 								Thread.Sleep(2000);
 								try
@@ -396,20 +389,20 @@ namespace x2tap.View
 								{
 									Status = "检测到 v2ray 启动失败";
 									Reset();
-									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 									MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
 								}
 
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
+								Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
 
 								Thread.Sleep(2000);
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
 								{
 									Status = "检测到 tun2socks 启动失败";
-									Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 									MessageBox.Show("检测到 tun2socks 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
 								}
@@ -418,23 +411,23 @@ namespace x2tap.View
 								Status = "正在配置 路由表 中";
 								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
 								{
-									if (!Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+									if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
 									{
-										Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 										Status = "在操作路由表时发生错误！";
 										Reset();
 										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 										return;
 									}
 
-									if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+									if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
 									{
-										Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-										Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
-										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+										Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 										Status = "在操作路由表时发生错误！";
 										Reset();
 										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -446,23 +439,23 @@ namespace x2tap.View
 									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
 									if (mode.Type == 1)
 									{
-										if (!Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+										if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
 										{
-											Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 											Status = "在操作路由表时发生错误！";
 											Reset();
 											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 											return;
 										}
 
-										if (!Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+										if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
 										{
-											Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-											Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
-											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-											Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+											Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 											Status = "在操作路由表时发生错误！";
 											Reset();
 											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -477,11 +470,11 @@ namespace x2tap.View
 										{
 											if (mode.Type == 0)
 											{
-												Route.Add(splited[0], Route.TranslateCIDR(splited[1]), "10.0.236.1");
+												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), "10.0.236.1");
 											}
 											else
 											{
-												Route.Add(splited[0], Route.TranslateCIDR(splited[1]), Global.Config.adapterGateway);
+												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.adapterGateway);
 											}
 										}
 									}
@@ -489,7 +482,7 @@ namespace x2tap.View
 
 								Thread.Sleep(1000);
 								Status = "正在清理 DNS 缓存中";
-								Shell.ExecuteCommandNoWait("ipconfig", "/flushdns");
+								Utils.Shell.ExecuteCommandNoWait("ipconfig", "/flushdns");
 
 								Thread.Sleep(1000);
 								Status = "已启动，请自行检查网络是否正常";
@@ -525,8 +518,8 @@ namespace x2tap.View
 				{
 					Thread.Sleep(1000);
 					Status = "正在重置 路由表 中";
-					Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-					Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+					Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+					Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
 					if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 					{
 						foreach (var rule in Global.Modes[ModeComboBox.SelectedIndex - 2].Rule)
@@ -534,18 +527,18 @@ namespace x2tap.View
 							var splited = rule.Split('/');
 							if (splited.Length == 2)
 							{
-								Route.Delete(splited[0]);
+								Utils.Route.Delete(splited[0]);
 							}
 						}
 					}
 
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
-					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 
 					Thread.Sleep(1000);
 					Status = "正在停止 v2ray 中";
-					Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 
 					Status = "已停止";
 					Started = false;
@@ -556,7 +549,7 @@ namespace x2tap.View
 
         private void ProjectLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Shell.ExecuteCommandNoWait("start", "https://github.com/hacking001/x2tap");
+			Utils.Shell.ExecuteCommandNoWait("start", "https://github.com/hacking001/x2tap");
         }
 
 		private void Reset(bool type = true)
