@@ -42,7 +42,7 @@ namespace x2tap
 			}
 
 			// 检查 TUN/TAP 适配器
-			if (TUNTAP.GetComponentId() == "" && !TUNTAP.Create())
+			if (TUNTAP.GetComponentID() == "" && !TUNTAP.Create())
             {
                 MessageBox.Show("尝试安装 TUN/TAP 适配器时失败！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
