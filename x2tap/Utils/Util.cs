@@ -21,7 +21,7 @@ namespace x2tap.Utils
                 i++;
             } while ((result /= 1024) > 1024);
 
-            return string.Format("{0} {1}", Math.Round(result, 2), units[i]);
+            return String.Format("{0} {1}", Math.Round(result, 2), units[i]);
         }
 
 		/// <summary>

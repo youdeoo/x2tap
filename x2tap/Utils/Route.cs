@@ -8,7 +8,12 @@ namespace x2tap.Utils
         ///     路由工具位置
         /// </summary>
         public static string Location = "C:\\Windows\\System32\\route.exe";
-
+		
+		/// <summary>
+		///		将 CIDR 翻译成掩码
+		/// </summary>
+		/// <param name="cidr">CIDR</param>
+		/// <returns>掩码</returns>
 		public static string TranslateCIDR(string cidr)
 		{
 			cidr = "/" + cidr;

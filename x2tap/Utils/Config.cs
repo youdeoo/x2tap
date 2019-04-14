@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
-using IniParser;
-using Newtonsoft.Json;
-using x2tap.Objects.Server;
-using x2tap.Properties;
 
 namespace x2tap.Utils
 {
@@ -19,10 +14,10 @@ namespace x2tap.Utils
             // 检查配置文件是否存在，如果不存在则写入一个默认的配置
             if (!File.Exists("x2tap.ini"))
             {
-                File.WriteAllBytes("x2tap.ini", Resources.defaultConfig);
+                File.WriteAllBytes("x2tap.ini", Properties.Resources.defaultConfig);
             }
 
-            var parser = new FileIniDataParser();
+            var parser = new IniParser.FileIniDataParser();
             var data = parser.ReadFile("x2tap.ini");
             Global.Config.v2rayLoggingLevel = int.Parse(data["x2tap"]["v2rayLoggingLevel"]);
             Global.Config.TUNTAP.Address = data["TUNTAP"]["Address"];
@@ -32,22 +27,22 @@ namespace x2tap.Utils
 
 			if (File.Exists("SubscriptionLinks.json"))
 			{
-				Global.SubscriptionLinks = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("SubscriptionLinks.json"));
+				Global.SubscriptionLinks = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("SubscriptionLinks.json"));
 			}
 
             if (File.Exists("v2ray.json"))
             {
-                Global.v2rayProxies = JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
+                Global.v2rayProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
             }
 
             if (File.Exists("Shadowsocks.json"))
             {
-                Global.ShadowsocksProxies = JsonConvert.DeserializeObject<List<Shadowsocks>>(File.ReadAllText("Shadowsocks.json"));
+                Global.ShadowsocksProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.Shadowsocks>>(File.ReadAllText("Shadowsocks.json"));
             }
 
 			if (File.Exists("ShadowsocksR.json"))
 			{
-				Global.ShadowsocksRProxies = JsonConvert.DeserializeObject<List<ShadowsocksR>>(File.ReadAllText("ShadowsocksR.json"));
+				Global.ShadowsocksRProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.ShadowsocksR>>(File.ReadAllText("ShadowsocksR.json"));
 			}
 
 			if (Directory.Exists("mode"))
@@ -105,7 +100,7 @@ namespace x2tap.Utils
         /// </summary>
         public static void SaveToFile()
         {
-            var parser = new FileIniDataParser();
+            var parser = new IniParser.FileIniDataParser();
             var data = parser.ReadFile("x2tap.ini");
             data["x2tap"]["v2rayLoggingLevel"] = Global.Config.v2rayLoggingLevel.ToString();
             data["TUNTAP"]["Address"] = Global.Config.TUNTAP.Address;
@@ -114,12 +109,17 @@ namespace x2tap.Utils
             data["TUNTAP"]["Metric"] = Global.Config.TUNTAP.Metric.ToString();
             parser.WriteFile("x2tap.ini", data);
 
-			File.WriteAllText("SubscriptionLinks.json", JsonConvert.SerializeObject(Global.SubscriptionLinks));
-            File.WriteAllText("v2ray.json", JsonConvert.SerializeObject(Global.v2rayProxies));
-            File.WriteAllText("Shadowsocks.json", JsonConvert.SerializeObject(Global.ShadowsocksProxies));
-			File.WriteAllText("ShadowsocksR.json", JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
+			File.WriteAllText("SubscriptionLinks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.SubscriptionLinks));
+            File.WriteAllText("v2ray.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.v2rayProxies));
+            File.WriteAllText("Shadowsocks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksProxies));
+			File.WriteAllText("ShadowsocksR.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
         }
 
+		/// <summary>
+		///		获取 v2ray 通用配置文件
+		/// </summary>
+		/// <param name="bypassChina">是否需要绕过中国</param>
+		/// <returns></returns>
 		public static Objects.v2rayConfig.v2rayConfig GetGeneric(bool bypassChina = true)
 		{
 			var data = new Objects.v2rayConfig.v2rayConfig();
@@ -179,7 +179,12 @@ namespace x2tap.Utils
 			return data;
 		}
 
-		public static string v2rayGetFakeType(int type)
+		/// <summary>
+		///		取 v2ray 伪装类型
+		/// </summary>
+		/// <param name="type">伪装类型</param>
+		/// <returns></returns>
+		public static string GetFakeType(int type)
 		{
 			switch (type)
 			{
@@ -202,7 +207,7 @@ namespace x2tap.Utils
 			}
 		}
 
-		public static string v2rayGet(Objects.Server.v2ray v2ray, bool bypassChina = true)
+		public static string GetV2Ray(Objects.Server.v2ray v2ray, bool bypassChina = true)
 		{
 			var data = GetGeneric(bypassChina);
 
@@ -236,7 +241,7 @@ namespace x2tap.Utils
 			{
 				case 0:
 					streamSettings.network = "tcp";
-					if (v2rayGetFakeType(v2ray.FakeType) == "http")
+					if (GetFakeType(v2ray.FakeType) == "http")
 					{
 						var tcpSettings = new Objects.v2rayConfig.TCPHTTPHeader()
 						{
@@ -258,7 +263,7 @@ namespace x2tap.Utils
 					{
 						header = new Dictionary<string, string>()
 						{
-							{ "type", v2rayGetFakeType(v2ray.FakeType) }
+							{ "type", GetFakeType(v2ray.FakeType) }
 						}
 					};
 					break;
@@ -295,7 +300,7 @@ namespace x2tap.Utils
 					{
 						header = new Dictionary<string, string>()
 						{
-							{ "type", v2rayGetFakeType(v2ray.FakeType) }
+							{ "type", GetFakeType(v2ray.FakeType) }
 						}
 					};
 					break;
@@ -331,10 +336,10 @@ namespace x2tap.Utils
 				tag = "defaultOutbound"
 			});
 
-			return JsonConvert.SerializeObject(data);
+			return Newtonsoft.Json.JsonConvert.SerializeObject(data);
 		}
 
-		public static string ShadowsocksGet(Shadowsocks shadowsocks, bool bypassChina = true)
+		public static string GetShadowsocks(Objects.Server.Shadowsocks shadowsocks, bool bypassChina = true)
 		{
 			var data = GetGeneric(bypassChina);
 
@@ -386,7 +391,7 @@ namespace x2tap.Utils
 				tag = "defaultOutbound"
 			});
 
-			return JsonConvert.SerializeObject(data);
+			return Newtonsoft.Json.JsonConvert.SerializeObject(data);
 		}
     }
 }

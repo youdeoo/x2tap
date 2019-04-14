@@ -35,9 +35,8 @@ namespace x2tap.Utils
                     v2ray.TransferProtocol = 4;
                     break;
                 default:
-                    v2ray.TransferProtocol = 0;
-                    break;
-            }
+					throw new NotSupportedException(String.Format("不支持的传输协议：{0}", data["net"].Value));
+			}
 
             switch (data["type"].Value)
             {
@@ -63,8 +62,7 @@ namespace x2tap.Utils
                     v2ray.FakeType = 6;
                     break;
                 default:
-                    v2ray.FakeType = 0;
-                    break;
+					throw new NotSupportedException(String.Format("不支持的伪装类型：{0}", data["type"].Value));
             }
 
             v2ray.FakeDomain = data["host"].Value;
@@ -109,7 +107,7 @@ namespace x2tap.Utils
                     shadowsocks.EncryptMethod = 6;
                     break;
                 default:
-                    throw new Exception(string.Format("不支持的加密方式：{0}", info[0]));
+                    throw new Exception(String.Format("不支持的加密方式：{0}", info[0]));
             }
 
             shadowsocks.Password = info[1];
@@ -158,7 +156,7 @@ namespace x2tap.Utils
 					shadowsocksr.Protocol = 9;
 					break;
 				default:
-					throw new NotSupportedException(string.Format("不支持的协议：{0}", data[2]));
+					throw new NotSupportedException(String.Format("不支持的协议：{0}", data[2]));
 			}
 
 			switch (data[3])
@@ -173,49 +171,49 @@ namespace x2tap.Utils
 					shadowsocksr.EncryptMethod = 2;
 					break;
 				case "rc4-md5":
-					shadowsocksr.EncryptMethod = 4;
+					shadowsocksr.EncryptMethod = 3;
 					break;
 				case "rc4-md5-6":
-					shadowsocksr.EncryptMethod = 5;
+					shadowsocksr.EncryptMethod = 4;
 					break;
 				case "aes-128-cfb":
-					shadowsocksr.EncryptMethod = 6;
+					shadowsocksr.EncryptMethod = 5;
 					break;
 				case "aes-192-cfb":
-					shadowsocksr.EncryptMethod = 7;
+					shadowsocksr.EncryptMethod = 6;
 					break;
 				case "aes-256-cfb":
-					shadowsocksr.EncryptMethod = 8;
+					shadowsocksr.EncryptMethod = 7;
 					break;
 				case "aes-128-ctr":
-					shadowsocksr.EncryptMethod = 9;
+					shadowsocksr.EncryptMethod = 8;
 					break;
 				case "aes-192-ctr":
-					shadowsocksr.EncryptMethod = 10;
+					shadowsocksr.EncryptMethod = 9;
 					break;
 				case "bf-cfb":
-					shadowsocksr.EncryptMethod = 11;
+					shadowsocksr.EncryptMethod = 10;
 					break;
 				case "camellia-128-cfb":
-					shadowsocksr.EncryptMethod = 12;
+					shadowsocksr.EncryptMethod = 11;
 					break;
 				case "camellia-192-cfb":
-					shadowsocksr.EncryptMethod = 13;
+					shadowsocksr.EncryptMethod = 12;
 					break;
 				case "camellia-256-cfb":
-					shadowsocksr.EncryptMethod = 14;
+					shadowsocksr.EncryptMethod = 13;
 					break;
 				case "salsa20":
-					shadowsocksr.EncryptMethod = 15;
+					shadowsocksr.EncryptMethod = 14;
 					break;
 				case "chacha20":
-					shadowsocksr.EncryptMethod = 16;
+					shadowsocksr.EncryptMethod = 15;
 					break;
 				case "chacha20-ietf":
-					shadowsocksr.EncryptMethod = 17;
+					shadowsocksr.EncryptMethod = 16;
 					break;
 				default:
-					throw new NotSupportedException(string.Format("不支持的加密方式：{0}", data[3]));
+					throw new NotSupportedException(String.Format("不支持的加密方式：{0}", data[3]));
 			}
 
 			switch (data[4])
@@ -239,7 +237,7 @@ namespace x2tap.Utils
 					shadowsocksr.OBFS = 5;
 					break;
 				default:
-					throw new NotSupportedException(string.Format("不支持的混淆方式：{0}", data[4]));
+					throw new NotSupportedException(String.Format("不支持的混淆方式：{0}", data[4]));
 			}
 
 			var info = data[5].Split('/');

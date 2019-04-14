@@ -14,7 +14,7 @@ namespace x2tap.Utils
         ///     获取 TUN/TAP 适配器 ID
         /// </summary>
         /// <returns>适配器 ID</returns>
-        public static string GetComponentId()
+        public static string GetComponentID()
         {
             var adaptersRegistry = Registry.LocalMachine.OpenSubKey(ADAPTER_KEY);
 

@@ -346,7 +346,7 @@ namespace x2tap.View
             {
                 if (ProxyComboBox.SelectedIndex != -1)
                 {
-                    if (Utils.TUNTAP.GetComponentId() != "")
+                    if (Utils.TUNTAP.GetComponentID() != "")
                     {
                         Status = "执行中";
 						Reset(false);
@@ -360,11 +360,11 @@ namespace x2tap.View
 								Status = "正在生成配置文件中";
 								if (ModeComboBox.SelectedIndex == 0)
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Utils.Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.GetV2Ray(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
 								}
 								else
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.v2rayGet(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Utils.Config.ShadowsocksGet(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
+									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.GetV2Ray(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
 								}
 
 								Thread.Sleep(1000);

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using x2tap.Objects;
 
 namespace x2tap.Utils
 {
@@ -9,7 +8,7 @@ namespace x2tap.Utils
         ///     执行
         /// </summary>
         /// <param name="content">内容</param>
-        public static ShellExitCode Execute(params string[] content)
+        public static Objects.ShellExitCode Execute(params string[] content)
         {
             var process = new Process();
             process.StartInfo.FileName = content[0];
@@ -23,7 +22,7 @@ namespace x2tap.Utils
             process.Start();
 
             process.WaitForExit();
-            return new ShellExitCode
+            return new Objects.ShellExitCode
             {
                 ExitCode = process.ExitCode,
 
@@ -35,7 +34,7 @@ namespace x2tap.Utils
         ///     执行命令
         /// </summary>
         /// <param name="content">内容</param>
-        public static ShellExitCode ExecuteCommand(params string[] content)
+        public static Objects.ShellExitCode ExecuteCommand(params string[] content)
         {
             var process = new Process();
             process.StartInfo.FileName = "cmd.exe";
@@ -51,7 +50,7 @@ namespace x2tap.Utils
             process.Start();
 
             process.WaitForExit();
-            return new ShellExitCode
+            return new Objects.ShellExitCode
             {
                 ExitCode = process.ExitCode,
 

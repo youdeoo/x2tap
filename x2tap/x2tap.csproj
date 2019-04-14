@@ -133,6 +133,7 @@
     <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Socks.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Dns.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Shadowsocks.cs" />
+    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Socks.cs" />
     <Compile Include="Objects\v2rayConfig\Protocol\Outbound\VMess.cs" />
     <Compile Include="Objects\v2rayConfig\Routing.cs" />
     <Compile Include="Objects\v2rayConfig\Stats.cs" />
