@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using x2tap.Objects.Server;
-using x2tap.View;
 
 namespace x2tap
 {
@@ -14,17 +12,17 @@ namespace x2tap
         /// <summary>
         ///     v2ray 代理
         /// </summary>
-        public static List<Objects.Server.v2ray> v2rayProxies = new List<Objects.Server.v2ray>();
+        public static List<Objects.Server.v2ray> V2RayProxies = new List<Objects.Server.v2ray>();
 
         /// <summary>
         ///     Shadowsocks 代理
         /// </summary>
-        public static List<Shadowsocks> ShadowsocksProxies = new List<Shadowsocks>();
+        public static List<Objects.Server.Shadowsocks> ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
 
 		/// <summary>
 		///		ShadowsocksR 代理
 		/// </summary>
-		public static List<ShadowsocksR> ShadowsocksRProxies = new List<ShadowsocksR>();
+		public static List<Objects.Server.ShadowsocksR> ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
 
 		/// <summary>
 		///		模式
@@ -39,17 +37,17 @@ namespace x2tap
             /// <summary>
             ///     主窗体
             /// </summary>
-            public static MainForm MainForm;
+            public static View.MainForm MainForm;
 
             /// <summary>
             ///     高级设置
             /// </summary>
-            public static AdvancedForm AdvancedForm;
+            public static View.AdvancedForm AdvancedForm;
 
             /// <summary>
             ///     订阅窗体
             /// </summary>
-            public static SubscribeForm SubscribeForm;
+            public static View.SubscribeForm SubscribeForm;
 
             /// <summary>
             ///     服务器配置窗体
@@ -112,11 +110,6 @@ namespace x2tap
                 ///     网关
                 /// </summary>
                 public static string Gateway = "10.153.1.1";
-
-                /// <summary>
-                ///     跃点数
-                /// </summary>
-                public static int Metric = 100;
             }
         }
     }

@@ -48,7 +48,7 @@ namespace x2tap.View
             // 先清空掉内容
             ProxyComboBox.Items.Clear();
             // 添加 v2ray 代理
-            foreach (var v2ray in Global.v2rayProxies)
+            foreach (var v2ray in Global.V2RayProxies)
             {
                 ProxyComboBox.Items.Add(string.Format("[v2ray] {0}", v2ray.Remark));
             }
@@ -56,13 +56,13 @@ namespace x2tap.View
             // 添加 Shadowsocks 代理
             foreach (var shadowsocks in Global.ShadowsocksProxies)
             {
-                ProxyComboBox.Items.Add(string.Format("[Shadowsocks] {0}", shadowsocks.Remark));
+                ProxyComboBox.Items.Add(string.Format("[SS] {0}", shadowsocks.Remark));
             }
 
 			// 添加 ShadowsocksR 代理
 			foreach (var shadowsocksr in Global.ShadowsocksRProxies)
 			{
-				ProxyComboBox.Items.Add(string.Format("[ShadowsocksR] {0}", shadowsocksr.Remark));
+				ProxyComboBox.Items.Add(string.Format("[SSR] {0}", shadowsocksr.Remark));
 			}
 
             if (ProxyComboBox.Items.Count > 0)
@@ -270,17 +270,17 @@ namespace x2tap.View
             {
                 ProxyComboBox.Items.RemoveAt(index);
 
-                if (index < Global.v2rayProxies.Count)
+                if (index < Global.V2RayProxies.Count)
                 {
-                    Global.v2rayProxies.RemoveAt(index);
+                    Global.V2RayProxies.RemoveAt(index);
                 }
-                else if (index < Global.v2rayProxies.Count + Global.ShadowsocksProxies.Count)
+                else if (index < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
                 {
-                    Global.ShadowsocksProxies.RemoveAt(index - Global.v2rayProxies.Count);
+                    Global.ShadowsocksProxies.RemoveAt(index - Global.V2RayProxies.Count);
                 }
 				else
 				{
-					Global.ShadowsocksRProxies.RemoveAt(index - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count);
+					Global.ShadowsocksRProxies.RemoveAt(index - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count);
 				}
 
                 if (ProxyComboBox.Items.Count < index)
@@ -306,17 +306,17 @@ namespace x2tap.View
         {
             if (ProxyComboBox.SelectedIndex != -1)
             {
-                if (ProxyComboBox.SelectedIndex < Global.v2rayProxies.Count)
+                if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {
                     (Global.Views.Server.v2ray = new Server.v2ray(true, ProxyComboBox.SelectedIndex)).Show();
                 }
-                else if (ProxyComboBox.SelectedIndex < Global.v2rayProxies.Count)
+                else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {
-                    (Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count)).Show();
+                    (Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count)).Show();
                 }
 				else
 				{
-					(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
+					(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
 				}
 
                 Hide();
@@ -359,16 +359,46 @@ namespace x2tap.View
 								Status = "正在生成配置文件中";
 								if (ModeComboBox.SelectedIndex == 0)
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.GetV2Ray(Global.v2rayProxies[ProxyComboBox.SelectedIndex]) : Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count]));
+									if (ProxyComboBox.Text.StartsWith("[v2ray]"))
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex]));
+									}
+									else if (ProxyComboBox.Text.StartsWith("[SS]"))
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count]));
+									}
+									else
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocksR(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count]));
+									}
 								}
 								else
 								{
-									File.WriteAllText("v2ray.txt", ProxyComboBox.Text.StartsWith("[v2ray]") ? Utils.Config.GetV2Ray(Global.v2rayProxies[ProxyComboBox.SelectedIndex], false) : Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.v2rayProxies.Count], false));
+									if (ProxyComboBox.Text.StartsWith("[v2ray]"))
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex], false));
+									}
+									else if (ProxyComboBox.Text.StartsWith("[SS]"))
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count], false));
+									}
+									else
+									{
+										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocksR(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count]));
+									}
 								}
 
 								Thread.Sleep(1000);
-								Status = "正在启动 v2ray 中";
-								Utils.Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "v2ray.txt");
+								if (!ProxyComboBox.Text.StartsWith("[SSR]"))
+								{
+									Status = "正在启动 v2ray 中";
+									Utils.Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "x2tap.txt");
+								}
+								else
+								{
+									Status = "正在启动 SSR 中";
+									Utils.Shell.ExecuteCommandNoWait("start", "ssr-local.exe", "-d", "-c", "x2tap.txt");
+								}
 
 								Thread.Sleep(2000);
 								try
@@ -386,11 +416,45 @@ namespace x2tap.View
 								}
 								catch (Exception)
 								{
-									Status = "检测到 v2ray 启动失败";
+									if (!ProxyComboBox.Text.StartsWith("[SSR]"))
+									{
+										Status = "检测到 v2ray 启动失败";
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									}
+									else
+									{
+										Status = "检测到 SSR 启动失败";
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										MessageBox.Show("检测到 SSR 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									}
 									Reset();
-									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-									MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
+								}
+
+								if (ProxyComboBox.Text.StartsWith("[SSR]"))
+								{
+									Thread.Sleep(1000);
+									Status = "正在启动 dnscrypt-proxy 中";
+									Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
+
+									Thread.Sleep(2000);
+									if (Process.GetProcessesByName("dnscrypt-proxy").Length == 0)
+									{
+										Status = "检测到 dnscrypt-proxy 启动失败";
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										MessageBox.Show("检测到 dnscrypt-proxy 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										return;
+									}
 								}
 
 								Thread.Sleep(1000);
@@ -401,6 +465,9 @@ namespace x2tap.View
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
 								{
 									Status = "检测到 tun2socks 启动失败";
+									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 									MessageBox.Show("检测到 tun2socks 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									return;
@@ -414,6 +481,8 @@ namespace x2tap.View
 									{
 										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 										Status = "在操作路由表时发生错误！";
 										Reset();
@@ -426,6 +495,8 @@ namespace x2tap.View
 										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 										Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 										Status = "在操作路由表时发生错误！";
 										Reset();
@@ -442,6 +513,8 @@ namespace x2tap.View
 										{
 											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 											Status = "在操作路由表时发生错误！";
 											Reset();
@@ -454,6 +527,8 @@ namespace x2tap.View
 											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
 											Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 											Status = "在操作路由表时发生错误！";
 											Reset();
@@ -532,11 +607,26 @@ namespace x2tap.View
 
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
-					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+
+					if (ProxyComboBox.Text.StartsWith("[SSR]"))
+					{
+						Thread.Sleep(1000);
+						Status = "正在停止 dnscrypt-proxy 中";
+						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+					}
 
 					Thread.Sleep(1000);
-					Status = "正在停止 v2ray 中";
-					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+					if (!ProxyComboBox.Text.StartsWith("[SSR]"))
+					{
+						Status = "正在停止 v2ray 中";
+						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+					}
+					else
+					{
+						Status = "正在停止 SSR 中";
+						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+					}
 
 					Status = "已停止";
 					Started = false;

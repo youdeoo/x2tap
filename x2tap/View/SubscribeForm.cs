@@ -127,7 +127,7 @@ namespace x2tap.View
 				}
 			}
 
-			Global.v2rayProxies = v2rayProxies;
+			Global.V2RayProxies = v2rayProxies;
 			Global.ShadowsocksProxies = ShadowsocksProxies;
 			Global.ShadowsocksRProxies = ShadowsocksRProxies;
 			Global.Views.MainForm.InitProxies();
@@ -138,7 +138,7 @@ namespace x2tap.View
         {
             if (SubscribeTextTextBox.Text != "")
             {
-                Global.v2rayProxies.Clear();
+                Global.V2RayProxies.Clear();
                 Global.ShadowsocksProxies.Clear();
 
                 using (var sr = new StringReader(SubscribeTextTextBox.Text))
@@ -152,7 +152,7 @@ namespace x2tap.View
 
                         if (text.StartsWith("vmess://"))
                         {
-                            Global.v2rayProxies.Add(Utils.Parse.v2ray(text));
+                            Global.V2RayProxies.Add(Utils.Parse.v2ray(text));
                         }
                         else if (text.StartsWith("ss://"))
                         {

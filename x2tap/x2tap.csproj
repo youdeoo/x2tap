@@ -120,6 +120,7 @@
     <Compile Include="Objects\Server\ShadowsocksR.cs" />
     <Compile Include="Objects\Server\Shadowsocks.cs" />
     <Compile Include="Objects\Server\v2ray.cs" />
+    <Compile Include="Objects\ShadowsocksRConfig.cs" />
     <Compile Include="Objects\ShellExitCode.cs" />
     <Compile Include="Objects\v2rayConfig\Api.cs" />
     <Compile Include="Objects\v2rayConfig\Dns.cs" />

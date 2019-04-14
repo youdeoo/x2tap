@@ -30,17 +30,17 @@ namespace x2tap.View.Server
 
             if (Mode)
             {
-                RemarkTextBox.Text = Global.v2rayProxies[index].Remark;
-                AddressTextBox.Text = Global.v2rayProxies[index].Address;
-                PortTextBox.Text = Global.v2rayProxies[index].Port.ToString();
-                UserIDTextBox.Text = Global.v2rayProxies[index].UserID;
-                AlterIDTextBox.Text = Global.v2rayProxies[index].AlterID.ToString();
-                TransferProtocolComboBox.SelectedIndex = Global.v2rayProxies[index].TransferProtocol;
-                EncryptMethodComboBox.SelectedIndex = Global.v2rayProxies[index].EncryptMethod;
-                FakeTypeComboBox.SelectedIndex = Global.v2rayProxies[index].FakeType;
-                FakeDomainTextBox.Text = Global.v2rayProxies[index].FakeDomain;
-                PathTextBox.Text = Global.v2rayProxies[index].Path;
-                TLSSecureCheckBox.Checked = Global.v2rayProxies[index].TLSSecure;
+                RemarkTextBox.Text = Global.V2RayProxies[index].Remark;
+                AddressTextBox.Text = Global.V2RayProxies[index].Address;
+                PortTextBox.Text = Global.V2RayProxies[index].Port.ToString();
+                UserIDTextBox.Text = Global.V2RayProxies[index].UserID;
+                AlterIDTextBox.Text = Global.V2RayProxies[index].AlterID.ToString();
+                TransferProtocolComboBox.SelectedIndex = Global.V2RayProxies[index].TransferProtocol;
+                EncryptMethodComboBox.SelectedIndex = Global.V2RayProxies[index].EncryptMethod;
+                FakeTypeComboBox.SelectedIndex = Global.V2RayProxies[index].FakeType;
+                FakeDomainTextBox.Text = Global.V2RayProxies[index].FakeDomain;
+                PathTextBox.Text = Global.V2RayProxies[index].Path;
+                TLSSecureCheckBox.Checked = Global.V2RayProxies[index].TLSSecure;
                 ControlButton.Text = "保存";
             }
             else
@@ -90,7 +90,7 @@ namespace x2tap.View.Server
         {
             if (Mode)
             {
-                Global.v2rayProxies[Index] = new Objects.Server.v2ray
+                Global.V2RayProxies[Index] = new Objects.Server.v2ray
                 {
                     Remark = RemarkTextBox.Text,
                     Address = AddressTextBox.Text,
@@ -109,7 +109,7 @@ namespace x2tap.View.Server
             }
             else
             {
-                Global.v2rayProxies.Add(new Objects.Server.v2ray
+                Global.V2RayProxies.Add(new Objects.Server.v2ray
                 {
                     Remark = RemarkTextBox.Text,
                     Address = AddressTextBox.Text,

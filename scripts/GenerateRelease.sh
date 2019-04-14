@@ -18,6 +18,7 @@ cp ../../binaries/prebuilt/x64/OemVista.inf x64/driver
 cp ../../binaries/prebuilt/x64/tap0901.cat x64/driver
 cp ../../binaries/prebuilt/x64/tap0901.sys x64/driver
 cp ../../binaries/prebuilt/x64/*.exe x64
+cp ../../binaries/prebuilt/x64/*.dll x64
 cp ../../binaries/prebuilt/geoip.dat x64
 cp ../../binaries/prebuilt/geosite.dat x64
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x64
@@ -33,6 +34,7 @@ cp ../../binaries/prebuilt/x64/OemVista.inf x86/driver
 cp ../../binaries/prebuilt/x64/tap0901.cat x86/driver
 cp ../../binaries/prebuilt/x64/tap0901.sys x86/driver
 cp ../../binaries/prebuilt/x86/*.exe x86
+cp ../../binaries/prebuilt/x86/*.dll x86
 cp ../../binaries/prebuilt/geoip.dat x86
 cp ../../binaries/prebuilt/geosite.dat x86
 cp ../../binaries/prebuilt/RunHiddenConsole.exe x86

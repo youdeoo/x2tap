@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using x2tap.Utils;
-using x2tap.View;
 
 namespace x2tap
 {
@@ -42,7 +40,7 @@ namespace x2tap
 			}
 
 			// 检查 TUN/TAP 适配器
-			if (TUNTAP.GetComponentID() == "" && !TUNTAP.Create())
+			if (Utils.TUNTAP.GetComponentID() == "" && !Utils.TUNTAP.Create())
             {
                 MessageBox.Show("尝试安装 TUN/TAP 适配器时失败！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -53,7 +51,7 @@ namespace x2tap
 
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(Global.Views.MainForm = new MainForm());
+            Application.Run(Global.Views.MainForm = new View.MainForm());
         }
     }
 }

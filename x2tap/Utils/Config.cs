@@ -23,7 +23,6 @@ namespace x2tap.Utils
             Global.Config.TUNTAP.Address = data["TUNTAP"]["Address"];
             Global.Config.TUNTAP.Netmask = data["TUNTAP"]["Netmask"];
             Global.Config.TUNTAP.Gateway = data["TUNTAP"]["Gateway"];
-            Global.Config.TUNTAP.Metric = int.Parse(data["TUNTAP"]["Metric"]);
 
 			if (File.Exists("SubscriptionLinks.json"))
 			{
@@ -32,7 +31,7 @@ namespace x2tap.Utils
 
             if (File.Exists("v2ray.json"))
             {
-                Global.v2rayProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
+                Global.V2RayProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
             }
 
             if (File.Exists("Shadowsocks.json"))
@@ -106,11 +105,10 @@ namespace x2tap.Utils
             data["TUNTAP"]["Address"] = Global.Config.TUNTAP.Address;
             data["TUNTAP"]["Netmask"] = Global.Config.TUNTAP.Netmask;
             data["TUNTAP"]["Gateway"] = Global.Config.TUNTAP.Gateway;
-            data["TUNTAP"]["Metric"] = Global.Config.TUNTAP.Metric.ToString();
             parser.WriteFile("x2tap.ini", data);
 
 			File.WriteAllText("SubscriptionLinks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.SubscriptionLinks));
-            File.WriteAllText("v2ray.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.v2rayProxies));
+            File.WriteAllText("v2ray.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.V2RayProxies));
             File.WriteAllText("Shadowsocks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksProxies));
 			File.WriteAllText("ShadowsocksR.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
         }
@@ -390,6 +388,139 @@ namespace x2tap.Utils
 				},
 				tag = "defaultOutbound"
 			});
+
+			return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+		}
+
+		public static string GetShadowsocksR(Objects.Server.ShadowsocksR shadowsocksr)
+		{
+			var data = new Objects.ShadowsocksRConfig();
+
+			data.server = shadowsocksr.Address;
+			data.server_port = shadowsocksr.Port;
+
+			switch (shadowsocksr.EncryptMethod)
+			{
+				case 0:
+					data.method = "none";
+					break;
+				case 1:
+					data.method = "table";
+					break;
+				case 2:
+					data.method = "rc4";
+					break;
+				case 3:
+					data.method = "rc4-md5";
+					break;
+				case 4:
+					data.method = "rc4-md5-6";
+					break;
+				case 5:
+					data.method = "aes-128-cfb";
+					break;
+				case 6:
+					data.method = "aes-192-cfb";
+					break;
+				case 7:
+					data.method = "aes-256-cfb";
+					break;
+				case 8:
+					data.method = "aes-128-ctr";
+					break;
+				case 9:
+					data.method = "aes-192-ctr";
+					break;
+				case 10:
+					data.method = "bf-cfb";
+					break;
+				case 11:
+					data.method = "camellia-128-cfb";
+					break;
+				case 12:
+					data.method = "camellia-192-cfb";
+					break;
+				case 13:
+					data.method = "camellia-256-cfb";
+					break;
+				case 14:
+					data.method = "salsa20";
+					break;
+				case 15:
+					data.method = "chacha20";
+					break;
+				case 16:
+					data.method = "chacha20-ietf";
+					break;
+				default:
+					throw new NotSupportedException(String.Format("不支持的加密方式：{0}", shadowsocksr.EncryptMethod));
+			}
+
+			data.password = shadowsocksr.Password;
+
+			switch (shadowsocksr.Protocol)
+			{
+				case 0:
+					data.protocol = "origin";
+					break;
+				case 1:
+					data.protocol = "auth_sha1_v4";
+					break;
+				case 2:
+					data.protocol = "auth_aes128_sha1";
+					break;
+				case 3:
+					data.protocol = "auth_aes128_md5";
+					break;
+				case 4:
+					data.protocol = "auth_chain_a";
+					break;
+				case 5:
+					data.protocol = "auth_chain_b";
+					break;
+				case 6:
+					data.protocol = "auth_chain_c";
+					break;
+				case 7:
+					data.protocol = "auth_chain_d";
+					break;
+				case 8:
+					data.protocol = "auth_chain_e";
+					break;
+				case 9:
+					data.protocol = "auth_chain_f";
+					break;
+				default:
+					throw new NotSupportedException(String.Format("不支持的协议：{0}", shadowsocksr.Protocol));
+			}
+
+			data.protocol_param = shadowsocksr.ProtocolParam;
+
+			switch (shadowsocksr.OBFS)
+			{
+				case 0:
+					data.obfs = "plain";
+					break;
+				case 1:
+					data.obfs = "http_simple";
+					break;
+				case 2:
+					data.obfs = "http_post";
+					break;
+				case 3:
+					data.obfs = "http_mix";
+					break;
+				case 4:
+					data.obfs = "tls1.2_ticket_auth";
+					break;
+				case 5:
+					data.obfs = "tls1.2_ticket_fastauth";
+					break;
+				default:
+					throw new NotSupportedException(String.Format("不支持的混淆方式：{0}", shadowsocksr.Protocol));
+			}
+
+			data.obfs_param = shadowsocksr.OBFSParam;
 
 			return Newtonsoft.Json.JsonConvert.SerializeObject(data);
 		}
