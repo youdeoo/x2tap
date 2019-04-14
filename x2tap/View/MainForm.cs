@@ -166,8 +166,8 @@ namespace x2tap.View
 											var stats = adapter.GetIPv4Statistics();
 
 											UsedBandwidthLabel.Text = $"已使用：{Utils.Util.ComputeBandwidth(stats.BytesReceived + stats.BytesSent)}";
-											UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}";
-											DownlinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}";
+											UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}/s";
+											DownlinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}/s";
 
 											UplinkBandwidth = stats.BytesSent;
 											DownlinkBandwidth = stats.BytesReceived;
