@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace x2tap.Utils
 {
@@ -22,5 +23,27 @@ namespace x2tap.Utils
 
             return string.Format("{0} {1}", Math.Round(result, 2), units[i]);
         }
+
+		/// <summary>
+		///		URL 安全的 Base64 解密
+		/// </summary>
+		/// <param name="text">Base64 后的字符串</param>
+		/// <returns>解密后的结果</returns>
+		public static string UrlSafeBase64Decode(string text)
+		{
+			text = text.Replace("-", "+").Replace("_", "/");
+
+			if (text.Length % 4 != 0)
+			{
+				var length = 4 - (text.Length % 4);
+
+				for (int i = 0; i < length; i++)
+				{
+					text += '=';
+				}
+			}
+
+			return Encoding.UTF8.GetString(Convert.FromBase64String(text));
+		}
     }
 }

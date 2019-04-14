@@ -111,6 +111,7 @@
 			this.OBFSComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.OBFSComboBox.FormattingEnabled = true;
 			this.OBFSComboBox.Items.AddRange(new object[] {
+            "plain",
             "http_simple",
             "http_post",
             "http_mix",
@@ -136,6 +137,7 @@
 			this.ProtocolComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ProtocolComboBox.FormattingEnabled = true;
 			this.ProtocolComboBox.Items.AddRange(new object[] {
+            "origin",
             "auth_sha1_v4",
             "auth_aes128_sha1",
             "auth_aes128_md5",
@@ -174,13 +176,23 @@
 			this.EncryptMethodComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.EncryptMethodComboBox.FormattingEnabled = true;
 			this.EncryptMethodComboBox.Items.AddRange(new object[] {
-            "AES-256-CFB",
-            "AES-128-CFB",
-            "CHACHA20",
-            "CHACHA20-IETF",
-            "AES-256-GCM",
-            "AES-128-GCM",
-            "CHACHA20-POLY1305"});
+            "none",
+            "table",
+            "rc4",
+            "rc4-md5",
+            "rc4-md5-6",
+            "aes-128-cfb",
+            "aes-192-cfb",
+            "aes-256-cfb",
+            "aes-128-ctr",
+            "aes-192-ctr",
+            "bf-cfb",
+            "camellia-128-cfb",
+            "camellia-192-cfb",
+            "camellia-256-cfb",
+            "salsa20",
+            "chacha20",
+            "chacha20-ietf"});
 			this.EncryptMethodComboBox.Location = new System.Drawing.Point(69, 76);
 			this.EncryptMethodComboBox.Name = "EncryptMethodComboBox";
 			this.EncryptMethodComboBox.Size = new System.Drawing.Size(344, 24);

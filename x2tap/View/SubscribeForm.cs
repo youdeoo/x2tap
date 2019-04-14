@@ -5,8 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using x2tap.Override;
-using x2tap.Utils;
 
 namespace x2tap.View
 {
@@ -78,7 +76,7 @@ namespace x2tap.View
 			var ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
 			foreach (string link in Global.SubscriptionLinks)
 			{
-				using (var client = new WebClient())
+				using (var client = new Override.WebClient())
 				{
 					try
 					{
@@ -105,15 +103,15 @@ namespace x2tap.View
 
 									if (text.StartsWith("vmess://"))
 									{
-										v2rayProxies.Add(Parse.v2ray(text));
+										v2rayProxies.Add(Utils.Parse.v2ray(text));
 									}
 									else if (text.StartsWith("ss://"))
 									{
-										ShadowsocksProxies.Add(Parse.Shadowsocks(text));
+										ShadowsocksProxies.Add(Utils.Parse.Shadowsocks(text));
 									}
 									else if (text.StartsWith("ssr://"))
 									{
-										ShadowsocksRProxies.Add(Parse.ShadowsocksR(text));
+										ShadowsocksRProxies.Add(Utils.Parse.ShadowsocksR(text));
 									}
 								}
 							}
@@ -154,13 +152,17 @@ namespace x2tap.View
 
                         if (text.StartsWith("vmess://"))
                         {
-                            Global.v2rayProxies.Add(Parse.v2ray(text));
+                            Global.v2rayProxies.Add(Utils.Parse.v2ray(text));
                         }
                         else if (text.StartsWith("ss://"))
                         {
-                            Global.ShadowsocksProxies.Add(Parse.Shadowsocks(text));
+                            Global.ShadowsocksProxies.Add(Utils.Parse.Shadowsocks(text));
                         }
-                    }
+						else if (text.StartsWith("ssr://"))
+						{
+							Global.ShadowsocksRProxies.Add(Utils.Parse.ShadowsocksR(text));
+						}
+					}
 
 					Global.Views.MainForm.InitProxies();
                     MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
