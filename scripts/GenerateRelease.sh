@@ -13,7 +13,6 @@ echo "Copying x64"
 echo "------------------------------------------------------------"
 cp ../../x2tap/bin/x64/Release/*.dll x64
 cp ../../x2tap/bin/x64/Release/x2tap.exe x64
-rm x64/grpc_csharp_ext.x86.dll
 cp ../../binaries/prebuilt/x64/OemVista.inf x64/driver
 cp ../../binaries/prebuilt/x64/tap0901.cat x64/driver
 cp ../../binaries/prebuilt/x64/tap0901.sys x64/driver
@@ -30,7 +29,6 @@ echo "Copying x86"
 echo "------------------------------------------------------------"
 cp ../../x2tap/bin/x86/Release/*.dll x86
 cp ../../x2tap/bin/x86/Release/x2tap.exe x86
-rm x86/grpc_csharp_ext.x64.dll
 cp ../../binaries/prebuilt/x64/OemVista.inf x86/driver
 cp ../../binaries/prebuilt/x64/tap0901.cat x86/driver
 cp ../../binaries/prebuilt/x64/tap0901.sys x86/driver
