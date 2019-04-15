@@ -32,25 +32,10 @@ namespace x2tap.Objects.v2rayConfig
 		{
 			new RoutingRule()
 			{
-				inboundTag = new List<string>()
-				{
-					"api"
-				},
-				outboundTag = "api"
-			},
-			new RoutingRule()
-			{
-				inboundTag = new List<string>()
-				{
-					"dnsInbound"
-				},
-				outboundTag = "dnsOutbound"
-			},
-			new RoutingRule()
-			{
 				ip = new List<string>()
 				{
-					"1.1.1.1"
+					"1.1.1.1",
+					"8.8.8.8"
 				},
 				outboundTag = "defaultOutbound"
 			},
@@ -58,7 +43,8 @@ namespace x2tap.Objects.v2rayConfig
 			{
 				ip = new List<string>()
 				{
-					"1.2.4.8"
+					"1.2.4.8",
+					"114.114.114.114"
 				},
 				outboundTag = "directOutbound"
 			}

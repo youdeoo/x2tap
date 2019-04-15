@@ -397,7 +397,7 @@ namespace x2tap.View
 								else
 								{
 									Status = "正在启动 SSR 中";
-									Utils.Shell.ExecuteCommandNoWait("start", "ssr-local.exe", "-d", "-c", "x2tap.txt");
+									Utils.Shell.ExecuteCommandNoWait("start", "ssr-local.exe", "-c", "x2tap.txt");
 								}
 
 								Thread.Sleep(2000);
