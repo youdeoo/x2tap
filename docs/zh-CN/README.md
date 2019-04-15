@@ -11,7 +11,7 @@
 支持 Shadowsocks 和 VMess 协议的代理（通过 v2ray 实现）
 # TODO
 - [x] 导入订阅（Shadowsocks、VMess）
-- [x] 直接使用 Windows API 获取网卡流量信息
+- [x] 直接使用 Windows API 获取流量信息
 - [x] 外置规则列表（参见 [MODE.md](MODE.md)）
 - [x] 本地 DNS 代理
 - [x] 添加 ShadowsocksR 支持
