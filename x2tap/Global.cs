@@ -84,12 +84,12 @@ namespace x2tap
             /// <summary>
             ///     适配器地址
             /// </summary>
-            public static string adapterAddress = "";
+            public static string AdapterAddress = "";
 
             /// <summary>
             ///     适配器网关
             /// </summary>
-            public static string adapterGateway = "";
+            public static string AdapterGateway = "";
 
             /// <summary>
             ///     TUN/TAP
@@ -99,7 +99,7 @@ namespace x2tap
                 /// <summary>
                 ///     地址
                 /// </summary>
-                public static string Address = "10.153.1.10";
+                public static string Address = "10.0.236.10";
 
                 /// <summary>
                 ///     掩码
@@ -109,7 +109,7 @@ namespace x2tap
                 /// <summary>
                 ///     网关
                 /// </summary>
-                public static string Gateway = "10.153.1.1";
+                public static string Gateway = "10.0.236.1";
             }
         }
     }

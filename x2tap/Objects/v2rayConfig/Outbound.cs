@@ -8,7 +8,7 @@
 		/// <summary>
 		///		用于发送数据的 IP 地址
 		/// </summary>
-		public string sendThrough = Global.Config.adapterAddress;
+		public string sendThrough = Global.Config.AdapterAddress;
 
 		/// <summary>
 		///		协议

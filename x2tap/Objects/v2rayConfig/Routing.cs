@@ -47,7 +47,15 @@ namespace x2tap.Objects.v2rayConfig
 					"114.114.114.114"
 				},
 				outboundTag = "directOutbound"
-			}
+			},
+			new RoutingRule()
+			{
+				inboundTag = new List<string>()
+				{
+					"dnsInbound"
+				},
+				outboundTag = "dnsOutbound"
+			},
 		};
 	}
 

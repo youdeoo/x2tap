@@ -10,7 +10,7 @@ namespace x2tap.Objects.v2rayConfig
 		/// <summary>
 		///		客户端绑定 IP
 		/// </summary>
-		public string clientIp = Global.Config.adapterAddress;
+		public string clientIp = Global.Config.AdapterAddress;
 
 		/// <summary>
 		///		域名到 IP 绑定列表

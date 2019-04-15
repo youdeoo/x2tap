@@ -102,7 +102,7 @@ namespace x2tap.View
                 using (var client = new UdpClient("114.114.114.114", 53))
                 {
                     var address = ((IPEndPoint) client.Client.LocalEndPoint).Address;
-                    Global.Config.adapterAddress = address.ToString();
+                    Global.Config.AdapterAddress = address.ToString();
 
                     var addressGeted = false;
 
@@ -123,7 +123,7 @@ namespace x2tap.View
                         {
                             if (addressGeted)
                             {
-                                Global.Config.adapterGateway = information.Address.ToString();
+                                Global.Config.AdapterGateway = information.Address.ToString();
                                 break;
                             }
                         }
@@ -165,9 +165,9 @@ namespace x2tap.View
 										{
 											var stats = adapter.GetIPv4Statistics();
 
-											UsedBandwidthLabel.Text = $"已使用：{Utils.Util.ComputeBandwidth(stats.BytesReceived + stats.BytesSent)}";
-											UplinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}/s";
-											DownlinkSpeedLabel.Text = $"↑：{Utils.Util.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}/s";
+											UsedBandwidthLabel.Text = $"已使用：{Utils.ComputeBandwidth(stats.BytesReceived + stats.BytesSent)}";
+											UplinkSpeedLabel.Text = $"↑：{Utils.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}/s";
+											DownlinkSpeedLabel.Text = $"↑：{Utils.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}/s";
 
 											UplinkBandwidth = stats.BytesSent;
 											DownlinkBandwidth = stats.BytesReceived;
@@ -351,265 +351,268 @@ namespace x2tap.View
 						Reset(false);
                         ControlButton.Text = "执行中";
 
-                        Task.Run(() =>
-                        {
+						Task.Run(() =>
+						{
 							try
 							{
-								Thread.Sleep(1000);
-								Status = "正在生成配置文件中";
-								if (ModeComboBox.SelectedIndex == 0)
+								if (ProxyComboBox.Text.StartsWith("[v2ray]") || ProxyComboBox.Text.StartsWith("[SS]"))
 								{
+									//////////////////////////////////////////////////
+									// 处理配置文件
+									//////////////////////////////////////////////////
+									Thread.Sleep(1000);
+									Status = "正在生成配置文件中";
 									if (ProxyComboBox.Text.StartsWith("[v2ray]"))
 									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex]));
-									}
-									else if (ProxyComboBox.Text.StartsWith("[SS]"))
-									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count]));
-									}
-									else
-									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocksR(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count]));
-									}
-								}
-								else
-								{
-									if (ProxyComboBox.Text.StartsWith("[v2ray]"))
-									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex], false));
-									}
-									else if (ProxyComboBox.Text.StartsWith("[SS]"))
-									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count], false));
-									}
-									else
-									{
-										File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocksR(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count]));
-									}
-								}
-
-								Thread.Sleep(1000);
-								if (!ProxyComboBox.Text.StartsWith("[SSR]"))
-								{
-									Status = "正在启动 v2ray 中";
-									Utils.Shell.ExecuteCommandNoWait("start", "wv2ray.exe", "-config", "x2tap.txt");
-								}
-								else
-								{
-									Status = "正在启动 SSR 中";
-									Utils.Shell.ExecuteCommandNoWait("start", "ssr-local.exe", "-c", "x2tap.txt");
-								}
-
-								Thread.Sleep(2000);
-								try
-								{
-									using (var client = new TcpClient())
-									{
-										var task = client.BeginConnect("127.0.0.1", 2810, null, null);
-										if (!task.AsyncWaitHandle.WaitOne(1000))
+										if (ModeComboBox.SelectedIndex == 0)      // [内置规则] 绕过局域网和中国
 										{
-											throw new TimeoutException();
+											File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex]));
 										}
-
-										client.EndConnect(task);
+										else if (ModeComboBox.SelectedIndex == 1) // [内置规则] 绕过局域网
+										{
+											File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex], false));
+										}
+										else                                      // [外置规则]
+										{
+											if (Global.Modes[ModeComboBox.SelectedIndex - 2].BypassChina)
+											{
+												File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex]));
+											}
+											else
+											{
+												File.WriteAllText("x2tap.txt", Utils.Config.GetV2Ray(Global.V2RayProxies[ProxyComboBox.SelectedIndex], false));
+											}
+										}
 									}
-								}
-								catch (Exception)
-								{
-									if (!ProxyComboBox.Text.StartsWith("[SSR]"))
+									else
+									{
+										if (ModeComboBox.SelectedIndex == 0)      // [内置规则] 绕过局域网和中国
+										{
+											File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count]));
+										}
+										else if (ModeComboBox.SelectedIndex == 1) // [内置规则] 绕过局域网
+										{
+											File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count], false));
+										}
+										else                                      // [外置规则]
+										{
+											if (Global.Modes[ModeComboBox.SelectedIndex - 2].BypassChina)
+											{
+												File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count]));
+											}
+											else
+											{
+												File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocks(Global.ShadowsocksProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count], false));
+											}
+										}
+									}
+
+									//////////////////////////////////////////////////
+									// 启动 v2ray 程序
+									//////////////////////////////////////////////////
+									Thread.Sleep(1000);
+									Status = "正在启动 v2ray 中";
+									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "wv2ray.exe", "-config", "x2tap.txt");
+
+									//////////////////////////////////////////////////
+									// 检查 v2ray 状态
+									//////////////////////////////////////////////////
+									Thread.Sleep(2000);
+									if (!Utils.CheckTCPPortOpen(2810))
 									{
 										Status = "检测到 v2ray 启动失败";
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										MessageBox.Show("检测到 v2ray 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "wv2ray.exe");
+										throw new InvalidOperationException();
+									}
+								}
+								else if (ProxyComboBox.Text.StartsWith("[SSR]"))
+								{
+									//////////////////////////////////////////////////
+									// 处理配置文件
+									//////////////////////////////////////////////////
+									Thread.Sleep(1000);
+									Status = "正在生成配置文件中";
+									File.WriteAllText("x2tap.txt", Utils.Config.GetShadowsocksR(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count]));
+
+									//////////////////////////////////////////////////
+									// 启动 SSR 程序
+									//////////////////////////////////////////////////
+									Thread.Sleep(1000);
+									Status = "正在启动 SSR 中";
+									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "ssr-local.exe", "-c", "x2tap.txt");
+
+									//////////////////////////////////////////////////
+									// 检查 SSR 状态
+									//////////////////////////////////////////////////
+									Thread.Sleep(4000);
+									if (!Utils.CheckTCPPortOpen(2810))
+									{
+										Status = "检测到 SSR 启动失败";
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+										throw new InvalidOperationException();
+									}
+
+									//////////////////////////////////////////////////
+									// 启动 dnscrypt-proxy 程序
+									//////////////////////////////////////////////////
+									Thread.Sleep(1000);
+									Status = "正在启动 dnscrypt-proxy 中";
+									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
+
+									//////////////////////////////////////////////////
+									// 检查 dnscrypt-proxy 状态
+									//////////////////////////////////////////////////
+									Thread.Sleep(2000);
+									if (Process.GetProcessesByName("dnscrypt-proxy").Length != 0)
+									{
+										foreach (var address in Dns.GetHostAddresses("ea-dns.rubyfish.cn"))
+										{
+											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+										}
+
+										foreach (var address in Dns.GetHostAddresses("uw-dns.rubyfish.cn"))
+										{
+											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+										}
+
+										Utils.Route.Add("1.2.4.8", "255.255.255.255", Global.Config.AdapterGateway);
+										Utils.Route.Add("8.8.8.8", "255.255.255.255", Global.Config.TUNTAP.Gateway);
 									}
 									else
 									{
-										Status = "检测到 SSR 启动失败";
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										MessageBox.Show("检测到 SSR 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									}
-									Reset();
-									return;
-								}
-
-								if (ProxyComboBox.Text.StartsWith("[SSR]"))
-								{
-									Thread.Sleep(1000);
-									Status = "正在启动 dnscrypt-proxy 中";
-									try
-									{
-										var addresses = Dns.GetHostAddresses(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count].Address);
-										foreach (var address in addresses)
-										{
-											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
-										}
-
-										if (ModeComboBox.SelectedIndex != 0)
-										{
-											addresses = Dns.GetHostAddresses("ea-dns.rubyfish.cn");
-											foreach (var address in addresses)
-											{
-												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
-											}
-
-											addresses = Dns.GetHostAddresses("uw-dns.rubyfish.cn");
-											foreach (var address in addresses)
-											{
-												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
-											}
-										}
-										else
-										{
-
-										}
-									}
-									catch (SocketException)
-									{
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										Status = "在启动 dnscrypt-proxy 时发生错误！";
-										Reset();
-										MessageBox.Show("在启动 dnscrypt-proxy 时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-										return;
-									}
-
-									Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
-
-									Thread.Sleep(2000);
-									if (Process.GetProcessesByName("dnscrypt-proxy").Length == 0)
-									{
 										Status = "检测到 dnscrypt-proxy 启动失败";
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										MessageBox.Show("检测到 dnscrypt-proxy 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-										return;
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+										throw new InvalidOperationException();
 									}
 								}
+								else
+								{
+									throw new NotSupportedException(String.Format("不支持的代理：{0}", ProxyComboBox.Text));
+								}
 
+								//////////////////////////////////////////////////
+								// 启动 tun2socks 程序
+								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", "255.255.255.0", "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", "127.0.0.1");
+								Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", Global.Config.TUNTAP.Netmask, "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", "127.0.0.1");
 
+								//////////////////////////////////////////////////
+								// 检查 tun2socks 状态
+								//////////////////////////////////////////////////
 								Thread.Sleep(2000);
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
 								{
 									Status = "检测到 tun2socks 启动失败";
-									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-									Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-									MessageBox.Show("检测到 tun2socks 启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									return;
+									Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
+									Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+									throw new InvalidOperationException();
 								}
 
+								//////////////////////////////////////////////////
+								// 配置路由表
+								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "正在配置 路由表 中";
-								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
+								if (ProxyComboBox.Text.StartsWith("[SSR]"))
+								{
+									foreach (var address in Dns.GetHostAddresses(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count].Address))
+									{
+										Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+									}
+								}
+
+								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1 || Global.Modes[ModeComboBox.SelectedIndex - 2].Type == 0)
 								{
 									if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway))
 									{
 										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										Status = "在操作路由表时发生错误！";
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+										Status = "在操作路由表时发生错误";
 										Reset();
-										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-										return;
+										MessageBox.Show("在操作路由表时发生错误", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										throw new InvalidOperationException();
 									}
 
 									if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway))
 									{
 										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
 										Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-										Status = "在操作路由表时发生错误！";
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+										Status = "在操作路由表时发生错误";
 										Reset();
-										MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-										return;
+										MessageBox.Show("在操作路由表时发生错误", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										throw new InvalidOperationException();
 									}
 								}
-								else
+
+								//////////////////////////////////////////////////
+								// 配置路由表 - 处理 SSR 的绕过中国
+								//////////////////////////////////////////////////
+								if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 1)
+								{
+
+								}
+
+								//////////////////////////////////////////////////
+								// 配置路由表 - 处理外置规则
+								//////////////////////////////////////////////////
+								if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 								{
 									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
-									if (mode.Type == 1)
-									{
-										if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway))
-										{
-											Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-											Status = "在操作路由表时发生错误！";
-											Reset();
-											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-											return;
-										}
-
-										if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway))
-										{
-											Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
-											Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
-											Status = "在操作路由表时发生错误！";
-											Reset();
-											MessageBox.Show("在操作路由表时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-											return;
-										}
-									}
-
 									foreach (var rule in mode.Rule)
 									{
 										var splited = rule.Split('/');
 										if (splited.Length == 2)
 										{
-											if (mode.Type == 0)
+											if (mode.Type == 1)
 											{
 												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.TUNTAP.Gateway);
 											}
 											else
 											{
-												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.adapterGateway);
+												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.AdapterGateway);
 											}
 										}
 									}
 								}
 
+								//////////////////////////////////////////////////
+								// 清理 DNS 缓存
+								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "正在清理 DNS 缓存中";
-								Utils.Shell.ExecuteCommandNoWait("ipconfig", "/flushdns");
+								Utils.Shell.ExecuteCommandNoWait("IPCONFIG", "/FLUSHDNS");
 
+								//////////////////////////////////////////////////
+								// 最后的操作
+								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "已启动，请自行检查网络是否正常";
 								Started = true;
 								ControlButton.Text = "停止";
 								ControlButton.Enabled = true;
 							}
-                            catch (Exception ex)
+							catch (InvalidOperationException)
 							{
-								Reset(true);
-
-								MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								Reset();
+								ControlButton.Text = "启动";
 							}
-                        });
+							catch (Exception ex)
+							{
+								MessageBox.Show(ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
+								Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
+								Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "wv2ray.exe");
+								Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+								Reset();
+								ControlButton.Text = "启动";
+							}
+						});
                     }
                     else
                     {
@@ -628,10 +631,13 @@ namespace x2tap.View
 
 				Task.Run(() =>
 				{
+					//////////////////////////////////////////////////
+					// 配置路由表
+					//////////////////////////////////////////////////
 					Thread.Sleep(1000);
 					Status = "正在重置 路由表 中";
-					Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-					Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+					Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
+					Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
 					if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 					{
 						foreach (var rule in Global.Modes[ModeComboBox.SelectedIndex - 2].Rule)
@@ -644,25 +650,37 @@ namespace x2tap.View
 						}
 					}
 
+					//////////////////////////////////////////////////
+					// 配置路由表 - 处理 SSR 的绕过中国
+					//////////////////////////////////////////////////
+					if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 1)
+					{
+
+					}
+
+					//////////////////////////////////////////////////
+					// 关闭 tun2socks 程序
+					//////////////////////////////////////////////////
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
 					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
 
-					if (ProxyComboBox.Text.StartsWith("[SSR]"))
-					{
-						Thread.Sleep(1000);
-						Status = "正在停止 dnscrypt-proxy 中";
-						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
-					}
-
-					Thread.Sleep(1000);
+					//////////////////////////////////////////////////
+					// 停止 SSR 程序
+					//////////////////////////////////////////////////
 					if (!ProxyComboBox.Text.StartsWith("[SSR]"))
 					{
+						Thread.Sleep(1000);
 						Status = "正在停止 v2ray 中";
 						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 					}
 					else
 					{
+						Thread.Sleep(1000);
+						Status = "正在停止 dnscrypt-proxy 中";
+						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+
+						Thread.Sleep(1000);
 						Status = "正在停止 SSR 中";
 						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
 					}
