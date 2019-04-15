@@ -442,6 +442,45 @@ namespace x2tap.View
 								{
 									Thread.Sleep(1000);
 									Status = "正在启动 dnscrypt-proxy 中";
+									try
+									{
+										var addresses = Dns.GetHostAddresses(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count].Address);
+										foreach (var address in addresses)
+										{
+											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
+										}
+
+										if (ModeComboBox.SelectedIndex != 0)
+										{
+											addresses = Dns.GetHostAddresses("ea-dns.rubyfish.cn");
+											foreach (var address in addresses)
+											{
+												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
+											}
+
+											addresses = Dns.GetHostAddresses("uw-dns.rubyfish.cn");
+											foreach (var address in addresses)
+											{
+												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.adapterGateway);
+											}
+										}
+										else
+										{
+
+										}
+									}
+									catch (SocketException)
+									{
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+										Status = "在启动 dnscrypt-proxy 时发生错误！";
+										Reset();
+										MessageBox.Show("在启动 dnscrypt-proxy 时发生错误！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										return;
+									}
+
 									Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
 
 									Thread.Sleep(2000);
@@ -459,7 +498,7 @@ namespace x2tap.View
 
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", "10.0.236.10", "-tun-mask", "255.255.255.0", "-tun-gw", "10.0.236.1", "-tun-dns", "127.0.0.1");
+								Utils.Shell.ExecuteCommandNoWait("start", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", "255.255.255.0", "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", "127.0.0.1");
 
 								Thread.Sleep(2000);
 								if (Process.GetProcessesByName("tun2socks").Length == 0)
@@ -477,9 +516,9 @@ namespace x2tap.View
 								Status = "正在配置 路由表 中";
 								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1)
 								{
-									if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+									if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway))
 									{
-										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
@@ -490,10 +529,10 @@ namespace x2tap.View
 										return;
 									}
 
-									if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+									if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway))
 									{
-										Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-										Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
+										Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
 										Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
@@ -509,9 +548,9 @@ namespace x2tap.View
 									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
 									if (mode.Type == 1)
 									{
-										if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", "10.0.236.1"))
+										if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway))
 										{
-											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
+											Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
@@ -522,10 +561,10 @@ namespace x2tap.View
 											return;
 										}
 
-										if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", "10.0.236.1"))
+										if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway))
 										{
-											Utils.Route.Delete("0.0.0.0", "0.0.0.0", "10.0.236.1");
-											Utils.Route.Delete("0.0.0.0", "128.0.0.0", "10.0.236.1");
+											Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
+											Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
 											Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
@@ -544,7 +583,7 @@ namespace x2tap.View
 										{
 											if (mode.Type == 0)
 											{
-												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), "10.0.236.1");
+												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.TUNTAP.Gateway);
 											}
 											else
 											{
@@ -646,6 +685,7 @@ namespace x2tap.View
 			ModeComboBox.Enabled = type;
 			Addv2rayServerButton.Enabled = type;
 			AddShadowsocksServerButton.Enabled = type;
+			AddShadowsocksRServerButton.Enabled = type;
 			DeleteButton.Enabled = type;
 			EditButton.Enabled = type;
 			SubscribeButton.Enabled = type;
