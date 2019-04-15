@@ -57,7 +57,7 @@ namespace x2tap
                 /// <summary>
                 ///     v2ray
                 /// </summary>
-                public static View.Server.v2ray v2ray;
+                public static View.Server.V2Ray v2ray;
 
                 /// <summary>
                 ///     Shadowsocks
@@ -110,6 +110,16 @@ namespace x2tap
                 ///     网关
                 /// </summary>
                 public static string Gateway = "10.0.236.1";
+
+				/// <summary>
+				///		DNS
+				/// </summary>
+				public static string DNS = "127.0.0.1";
+
+				/// <summary>
+				///		使用自定义 DNS 设置
+				/// </summary>
+				public static bool UseCustomDNS = false;
             }
         }
     }

@@ -245,13 +245,13 @@ namespace x2tap.View
             }
         }
 
-        private void Addv2rayServerButton_Click(object sender, EventArgs e)
+        private void AddV2RayServerButton_Click(object sender, EventArgs e)
         {
-            (Global.Views.Server.v2ray = new Server.v2ray()).Show();
-            Hide();
-        }
+			(Global.Views.Server.v2ray = new Server.V2Ray()).Show();
+			Hide();
+		}
 
-        private void AddShadowsocksServerButton_Click(object sender, EventArgs e)
+		private void AddShadowsocksServerButton_Click(object sender, EventArgs e)
         {
             (Global.Views.Server.Shadowsocks = new Server.Shadowsocks()).Show();
             Hide();
@@ -261,6 +261,26 @@ namespace x2tap.View
 		{
 			(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR()).Show();
 			Hide();
+		}
+
+		private void AddSocks5ServerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void TelegramGroupButton_Click(object sender, EventArgs e)
+		{
+			Utils.Shell.ExecuteCommandNoWait("START", "https://t.me/x2tapChat");
+		}
+
+		private void TelegramChannelButton_Click(object sender, EventArgs e)
+		{
+			Utils.Shell.ExecuteCommandNoWait("START", "https://t.me/x2tap");
+		}
+
+		private void GithubButton_Click(object sender, EventArgs e)
+		{
+			Utils.Shell.ExecuteCommandNoWait("START", "https://github.com/hacking001/x2tap");
 		}
 
 		private void DeleteButton_Click(object sender, EventArgs e)
@@ -308,7 +328,7 @@ namespace x2tap.View
             {
                 if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {
-                    (Global.Views.Server.v2ray = new Server.v2ray(true, ProxyComboBox.SelectedIndex)).Show();
+                    (Global.Views.Server.v2ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
                 }
                 else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {
@@ -452,37 +472,47 @@ namespace x2tap.View
 										throw new InvalidOperationException();
 									}
 
-									//////////////////////////////////////////////////
-									// 启动 dnscrypt-proxy 程序
-									//////////////////////////////////////////////////
-									Thread.Sleep(1000);
-									Status = "正在启动 dnscrypt-proxy 中";
-									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
-
-									//////////////////////////////////////////////////
-									// 检查 dnscrypt-proxy 状态
-									//////////////////////////////////////////////////
-									Thread.Sleep(2000);
-									if (Process.GetProcessesByName("dnscrypt-proxy").Length != 0)
+									if (!Global.Config.TUNTAP.UseCustomDNS)
 									{
-										foreach (var address in Dns.GetHostAddresses("ea-dns.rubyfish.cn"))
-										{
-											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
-										}
+										//////////////////////////////////////////////////
+										// 启动 dnscrypt-proxy 程序
+										//////////////////////////////////////////////////
+										Thread.Sleep(1000);
+										Status = "正在启动 dnscrypt-proxy 中";
+										Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "dnscrypt-proxy.exe");
 
-										foreach (var address in Dns.GetHostAddresses("uw-dns.rubyfish.cn"))
+										//////////////////////////////////////////////////
+										// 检查 dnscrypt-proxy 状态
+										//////////////////////////////////////////////////
+										Thread.Sleep(2000);
+										if (Process.GetProcessesByName("dnscrypt-proxy").Length != 0)
 										{
-											Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
-										}
+											foreach (var address in Dns.GetHostAddresses("ea-dns.rubyfish.cn"))
+											{
+												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+											}
 
-										Utils.Route.Add("1.2.4.8", "255.255.255.255", Global.Config.AdapterGateway);
-										Utils.Route.Add("8.8.8.8", "255.255.255.255", Global.Config.TUNTAP.Gateway);
+											foreach (var address in Dns.GetHostAddresses("uw-dns.rubyfish.cn"))
+											{
+												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+											}
+
+											Utils.Route.Add("1.2.4.8", "255.255.255.255", Global.Config.AdapterGateway);
+											Utils.Route.Add("8.8.8.8", "255.255.255.255", Global.Config.TUNTAP.Gateway);
+										}
+										else
+										{
+											Status = "检测到 dnscrypt-proxy 启动失败";
+											Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
+											throw new InvalidOperationException();
+										}
 									}
 									else
 									{
-										Status = "检测到 dnscrypt-proxy 启动失败";
-										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
-										throw new InvalidOperationException();
+										foreach (var address in Global.Config.TUNTAP.DNS.Split(','))
+										{
+											Utils.Route.Add(address, "255.255.255.255", Global.Config.AdapterGateway);
+										}
 									}
 								}
 								else
@@ -495,7 +525,7 @@ namespace x2tap.View
 								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", Global.Config.TUNTAP.Netmask, "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", "127.0.0.1");
+								Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", Global.Config.TUNTAP.Netmask, "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", Global.Config.TUNTAP.DNS);
 
 								//////////////////////////////////////////////////
 								// 检查 tun2socks 状态
@@ -663,7 +693,7 @@ namespace x2tap.View
 					//////////////////////////////////////////////////
 					Thread.Sleep(1000);
 					Status = "正在停止 tun2socks 中";
-					Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "tun2socks.exe");
+					Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
 
 					//////////////////////////////////////////////////
 					// 停止 SSR 程序
@@ -672,17 +702,17 @@ namespace x2tap.View
 					{
 						Thread.Sleep(1000);
 						Status = "正在停止 v2ray 中";
-						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "wv2ray.exe");
+						Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "wv2ray.exe");
 					}
 					else
 					{
 						Thread.Sleep(1000);
 						Status = "正在停止 dnscrypt-proxy 中";
-						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "dnscrypt-proxy.exe");
+						Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
 
 						Thread.Sleep(1000);
 						Status = "正在停止 SSR 中";
-						Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "ssr-local.exe");
+						Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
 					}
 
 					Status = "已停止";
@@ -692,16 +722,11 @@ namespace x2tap.View
             }
         }
 
-        private void ProjectLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-			Utils.Shell.ExecuteCommandNoWait("start", "https://github.com/hacking001/x2tap");
-        }
-
 		private void Reset(bool type = true)
 		{
 			ProxyComboBox.Enabled = type;
 			ModeComboBox.Enabled = type;
-			Addv2rayServerButton.Enabled = type;
+			AddV2RayServerButton.Enabled = type;
 			AddShadowsocksServerButton.Enabled = type;
 			AddShadowsocksRServerButton.Enabled = type;
 			DeleteButton.Enabled = type;

@@ -28,75 +28,195 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvancedForm));
-            this.v2rayLoggingLevelGroupBox = new System.Windows.Forms.GroupBox();
-            this.v2rayLoggingLevelComboBox = new System.Windows.Forms.ComboBox();
-            this.ControlButton = new System.Windows.Forms.Button();
-            this.v2rayLoggingLevelGroupBox.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // v2rayLoggingLevelGroupBox
-            // 
-            this.v2rayLoggingLevelGroupBox.Controls.Add(this.v2rayLoggingLevelComboBox);
-            this.v2rayLoggingLevelGroupBox.Location = new System.Drawing.Point(12, 12);
-            this.v2rayLoggingLevelGroupBox.Name = "v2rayLoggingLevelGroupBox";
-            this.v2rayLoggingLevelGroupBox.Size = new System.Drawing.Size(363, 56);
-            this.v2rayLoggingLevelGroupBox.TabIndex = 0;
-            this.v2rayLoggingLevelGroupBox.TabStop = false;
-            this.v2rayLoggingLevelGroupBox.Text = "v2ray 日志等级";
-            // 
-            // v2rayLoggingLevelComboBox
-            // 
-            this.v2rayLoggingLevelComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.v2rayLoggingLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.v2rayLoggingLevelComboBox.FormattingEnabled = true;
-            this.v2rayLoggingLevelComboBox.Items.AddRange(new object[] {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvancedForm));
+			this.V2RayLoggingLevelGroupBox = new System.Windows.Forms.GroupBox();
+			this.V2RayLoggingLevelComboBox = new System.Windows.Forms.ComboBox();
+			this.ControlButton = new System.Windows.Forms.Button();
+			this.TUNTAPGroupBox = new System.Windows.Forms.GroupBox();
+			this.TUNTAPAddressLabel = new System.Windows.Forms.Label();
+			this.TUNTAPAddressTextBox = new System.Windows.Forms.TextBox();
+			this.TUNTAPNetmaskLabel = new System.Windows.Forms.Label();
+			this.TUNTAPNetmaskTextBox = new System.Windows.Forms.TextBox();
+			this.TUNTAPGatewayTextBox = new System.Windows.Forms.TextBox();
+			this.TUNTAPGatewayLabel = new System.Windows.Forms.Label();
+			this.TUNTAPDNSTextBox = new System.Windows.Forms.TextBox();
+			this.TUNTAPDNSLabel = new System.Windows.Forms.Label();
+			this.TUNTAPUseCustomDNSCheckBox = new System.Windows.Forms.CheckBox();
+			this.V2RayLoggingLevelGroupBox.SuspendLayout();
+			this.TUNTAPGroupBox.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// V2RayLoggingLevelGroupBox
+			// 
+			this.V2RayLoggingLevelGroupBox.Controls.Add(this.V2RayLoggingLevelComboBox);
+			this.V2RayLoggingLevelGroupBox.Location = new System.Drawing.Point(12, 12);
+			this.V2RayLoggingLevelGroupBox.Name = "V2RayLoggingLevelGroupBox";
+			this.V2RayLoggingLevelGroupBox.Size = new System.Drawing.Size(363, 56);
+			this.V2RayLoggingLevelGroupBox.TabIndex = 0;
+			this.V2RayLoggingLevelGroupBox.TabStop = false;
+			this.V2RayLoggingLevelGroupBox.Text = "V2Ray 日志等级";
+			// 
+			// V2RayLoggingLevelComboBox
+			// 
+			this.V2RayLoggingLevelComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.V2RayLoggingLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.V2RayLoggingLevelComboBox.FormattingEnabled = true;
+			this.V2RayLoggingLevelComboBox.Items.AddRange(new object[] {
             "调试",
             "信息",
             "警告",
             "错误",
             "无"});
-            this.v2rayLoggingLevelComboBox.Location = new System.Drawing.Point(6, 22);
-            this.v2rayLoggingLevelComboBox.Name = "v2rayLoggingLevelComboBox";
-            this.v2rayLoggingLevelComboBox.Size = new System.Drawing.Size(351, 24);
-            this.v2rayLoggingLevelComboBox.TabIndex = 0;
-            this.v2rayLoggingLevelComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboBox_DrawItem);
-            // 
-            // ControlButton
-            // 
-            this.ControlButton.Location = new System.Drawing.Point(300, 74);
-            this.ControlButton.Name = "ControlButton";
-            this.ControlButton.Size = new System.Drawing.Size(75, 23);
-            this.ControlButton.TabIndex = 1;
-            this.ControlButton.Text = "保存";
-            this.ControlButton.UseVisualStyleBackColor = true;
-            this.ControlButton.Click += new System.EventHandler(this.ControlButton_Click);
-            // 
-            // AdvancedForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(387, 108);
-            this.Controls.Add(this.ControlButton);
-            this.Controls.Add(this.v2rayLoggingLevelGroupBox);
-            this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MaximizeBox = false;
-            this.Name = "AdvancedForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "高级设置";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdvancedForm_FormClosing);
-            this.Load += new System.EventHandler(this.AdvancedForm_Load);
-            this.v2rayLoggingLevelGroupBox.ResumeLayout(false);
-            this.ResumeLayout(false);
+			this.V2RayLoggingLevelComboBox.Location = new System.Drawing.Point(6, 22);
+			this.V2RayLoggingLevelComboBox.Name = "V2RayLoggingLevelComboBox";
+			this.V2RayLoggingLevelComboBox.Size = new System.Drawing.Size(351, 24);
+			this.V2RayLoggingLevelComboBox.TabIndex = 0;
+			this.V2RayLoggingLevelComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboBox_DrawItem);
+			// 
+			// ControlButton
+			// 
+			this.ControlButton.Location = new System.Drawing.Point(300, 240);
+			this.ControlButton.Name = "ControlButton";
+			this.ControlButton.Size = new System.Drawing.Size(75, 23);
+			this.ControlButton.TabIndex = 1;
+			this.ControlButton.Text = "保存";
+			this.ControlButton.UseVisualStyleBackColor = true;
+			this.ControlButton.Click += new System.EventHandler(this.ControlButton_Click);
+			// 
+			// TUNTAPGroupBox
+			// 
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSTextBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPGatewayTextBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNetmaskTextBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNetmaskLabel);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPAddressTextBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPAddressLabel);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPUseCustomDNSCheckBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPGatewayLabel);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSLabel);
+			this.TUNTAPGroupBox.Location = new System.Drawing.Point(12, 74);
+			this.TUNTAPGroupBox.Name = "TUNTAPGroupBox";
+			this.TUNTAPGroupBox.Size = new System.Drawing.Size(363, 160);
+			this.TUNTAPGroupBox.TabIndex = 2;
+			this.TUNTAPGroupBox.TabStop = false;
+			this.TUNTAPGroupBox.Text = "虚拟网卡";
+			// 
+			// TUNTAPAddressLabel
+			// 
+			this.TUNTAPAddressLabel.AutoSize = true;
+			this.TUNTAPAddressLabel.Location = new System.Drawing.Point(6, 22);
+			this.TUNTAPAddressLabel.Name = "TUNTAPAddressLabel";
+			this.TUNTAPAddressLabel.Size = new System.Drawing.Size(44, 17);
+			this.TUNTAPAddressLabel.TabIndex = 0;
+			this.TUNTAPAddressLabel.Text = "地址：";
+			// 
+			// TUNTAPAddressTextBox
+			// 
+			this.TUNTAPAddressTextBox.Location = new System.Drawing.Point(48, 19);
+			this.TUNTAPAddressTextBox.Name = "TUNTAPAddressTextBox";
+			this.TUNTAPAddressTextBox.Size = new System.Drawing.Size(309, 23);
+			this.TUNTAPAddressTextBox.TabIndex = 1;
+			this.TUNTAPAddressTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// TUNTAPNetmaskLabel
+			// 
+			this.TUNTAPNetmaskLabel.AutoSize = true;
+			this.TUNTAPNetmaskLabel.Location = new System.Drawing.Point(6, 51);
+			this.TUNTAPNetmaskLabel.Name = "TUNTAPNetmaskLabel";
+			this.TUNTAPNetmaskLabel.Size = new System.Drawing.Size(44, 17);
+			this.TUNTAPNetmaskLabel.TabIndex = 2;
+			this.TUNTAPNetmaskLabel.Text = "掩码：";
+			// 
+			// TUNTAPNetmaskTextBox
+			// 
+			this.TUNTAPNetmaskTextBox.Location = new System.Drawing.Point(48, 48);
+			this.TUNTAPNetmaskTextBox.Name = "TUNTAPNetmaskTextBox";
+			this.TUNTAPNetmaskTextBox.Size = new System.Drawing.Size(309, 23);
+			this.TUNTAPNetmaskTextBox.TabIndex = 3;
+			this.TUNTAPNetmaskTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// TUNTAPGatewayTextBox
+			// 
+			this.TUNTAPGatewayTextBox.Location = new System.Drawing.Point(48, 77);
+			this.TUNTAPGatewayTextBox.Name = "TUNTAPGatewayTextBox";
+			this.TUNTAPGatewayTextBox.Size = new System.Drawing.Size(309, 23);
+			this.TUNTAPGatewayTextBox.TabIndex = 4;
+			this.TUNTAPGatewayTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// TUNTAPGatewayLabel
+			// 
+			this.TUNTAPGatewayLabel.AutoSize = true;
+			this.TUNTAPGatewayLabel.Location = new System.Drawing.Point(6, 80);
+			this.TUNTAPGatewayLabel.Name = "TUNTAPGatewayLabel";
+			this.TUNTAPGatewayLabel.Size = new System.Drawing.Size(44, 17);
+			this.TUNTAPGatewayLabel.TabIndex = 5;
+			this.TUNTAPGatewayLabel.Text = "网关：";
+			// 
+			// TUNTAPDNSTextBox
+			// 
+			this.TUNTAPDNSTextBox.Location = new System.Drawing.Point(48, 106);
+			this.TUNTAPDNSTextBox.Name = "TUNTAPDNSTextBox";
+			this.TUNTAPDNSTextBox.Size = new System.Drawing.Size(309, 23);
+			this.TUNTAPDNSTextBox.TabIndex = 6;
+			this.TUNTAPDNSTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// TUNTAPDNSLabel
+			// 
+			this.TUNTAPDNSLabel.AutoSize = true;
+			this.TUNTAPDNSLabel.Location = new System.Drawing.Point(6, 109);
+			this.TUNTAPDNSLabel.Name = "TUNTAPDNSLabel";
+			this.TUNTAPDNSLabel.Size = new System.Drawing.Size(46, 17);
+			this.TUNTAPDNSLabel.TabIndex = 7;
+			this.TUNTAPDNSLabel.Text = "DNS：";
+			// 
+			// TUNTAPUseCustomDNSCheckBox
+			// 
+			this.TUNTAPUseCustomDNSCheckBox.AutoSize = true;
+			this.TUNTAPUseCustomDNSCheckBox.Location = new System.Drawing.Point(200, 135);
+			this.TUNTAPUseCustomDNSCheckBox.Name = "TUNTAPUseCustomDNSCheckBox";
+			this.TUNTAPUseCustomDNSCheckBox.Size = new System.Drawing.Size(157, 21);
+			this.TUNTAPUseCustomDNSCheckBox.TabIndex = 8;
+			this.TUNTAPUseCustomDNSCheckBox.Text = "使用自定义的 DNS 设置";
+			this.TUNTAPUseCustomDNSCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// AdvancedForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(387, 274);
+			this.Controls.Add(this.TUNTAPGroupBox);
+			this.Controls.Add(this.ControlButton);
+			this.Controls.Add(this.V2RayLoggingLevelGroupBox);
+			this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+			this.MaximizeBox = false;
+			this.Name = "AdvancedForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "高级设置";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdvancedForm_FormClosing);
+			this.Load += new System.EventHandler(this.AdvancedForm_Load);
+			this.V2RayLoggingLevelGroupBox.ResumeLayout(false);
+			this.TUNTAPGroupBox.ResumeLayout(false);
+			this.TUNTAPGroupBox.PerformLayout();
+			this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox v2rayLoggingLevelGroupBox;
-        private System.Windows.Forms.ComboBox v2rayLoggingLevelComboBox;
+        private System.Windows.Forms.GroupBox V2RayLoggingLevelGroupBox;
+        private System.Windows.Forms.ComboBox V2RayLoggingLevelComboBox;
         private System.Windows.Forms.Button ControlButton;
-    }
+		private System.Windows.Forms.GroupBox TUNTAPGroupBox;
+		private System.Windows.Forms.Label TUNTAPAddressLabel;
+		private System.Windows.Forms.TextBox TUNTAPGatewayTextBox;
+		private System.Windows.Forms.TextBox TUNTAPNetmaskTextBox;
+		private System.Windows.Forms.Label TUNTAPNetmaskLabel;
+		private System.Windows.Forms.TextBox TUNTAPAddressTextBox;
+		private System.Windows.Forms.Label TUNTAPGatewayLabel;
+		private System.Windows.Forms.Label TUNTAPDNSLabel;
+		private System.Windows.Forms.TextBox TUNTAPDNSTextBox;
+		private System.Windows.Forms.CheckBox TUNTAPUseCustomDNSCheckBox;
+	}
 }

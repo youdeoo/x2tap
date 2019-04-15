@@ -29,6 +29,8 @@ namespace x2tap
 				Global.Config.TUNTAP.Address = data["TUNTAP"]["Address"];
 				Global.Config.TUNTAP.Netmask = data["TUNTAP"]["Netmask"];
 				Global.Config.TUNTAP.Gateway = data["TUNTAP"]["Gateway"];
+				Global.Config.TUNTAP.DNS = data["TUNTAP"]["DNS"];
+				Global.Config.TUNTAP.UseCustomDNS = Boolean.Parse(data["TUNTAP"]["UseCustomDNS"]);
 
 				if (File.Exists("SubscriptionLinks.json"))
 				{
@@ -112,6 +114,8 @@ namespace x2tap
 				data["TUNTAP"]["Address"] = Global.Config.TUNTAP.Address;
 				data["TUNTAP"]["Netmask"] = Global.Config.TUNTAP.Netmask;
 				data["TUNTAP"]["Gateway"] = Global.Config.TUNTAP.Gateway;
+				data["TUNTAP"]["DNS"] = Global.Config.TUNTAP.DNS;
+				data["TUNTAP"]["UseCustomDNS"] = Global.Config.TUNTAP.UseCustomDNS.ToString();
 				parser.WriteFile("x2tap.ini", data);
 
 				File.WriteAllText("SubscriptionLinks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.SubscriptionLinks));

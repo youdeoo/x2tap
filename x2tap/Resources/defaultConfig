@@ -5,3 +5,5 @@ v2rayLoggingLevel=2
 Address=10.153.1.10
 Netmask=255.255.255.0
 Gateway=10.153.1.1
+DNS=127.0.0.1
+UseCustomDNS=False

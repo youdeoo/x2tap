@@ -13,8 +13,13 @@ namespace x2tap.View
 
         private void AdvancedForm_Load(object sender, EventArgs e)
         {
-            v2rayLoggingLevelComboBox.SelectedIndex = Global.Config.v2rayLoggingLevel;
-        }
+            V2RayLoggingLevelComboBox.SelectedIndex = Global.Config.v2rayLoggingLevel;
+			TUNTAPAddressTextBox.Text = Global.Config.TUNTAP.Address;
+			TUNTAPNetmaskTextBox.Text = Global.Config.TUNTAP.Netmask;
+			TUNTAPGatewayTextBox.Text = Global.Config.TUNTAP.Gateway;
+			TUNTAPDNSTextBox.Text = Global.Config.TUNTAP.DNS;
+			TUNTAPUseCustomDNSCheckBox.Checked = Global.Config.TUNTAP.UseCustomDNS;
+		}
 
         private void AdvancedForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -48,11 +53,11 @@ namespace x2tap.View
 
         private void ControlButton_Click(object sender, EventArgs e)
         {
-            Global.Config.v2rayLoggingLevel = v2rayLoggingLevelComboBox.SelectedIndex;
+            Global.Config.v2rayLoggingLevel = V2RayLoggingLevelComboBox.SelectedIndex;
 
             MessageBox.Show("保存成功", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Global.Views.MainForm.Show();
             Close();
         }
-    }
+	}
 }

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace x2tap.View.Server
 {
-    public partial class v2ray : Form
+    public partial class V2Ray : Form
     {
         /// <summary>
         ///     服务器配置信息索引
@@ -21,7 +21,7 @@ namespace x2tap.View.Server
         /// </summary>
         /// <param name="mode">是否为编辑模式</param>
         /// <param name="index">服务器配置信息索引</param>
-        public v2ray(bool mode = false, int index = 0)
+        public V2Ray(bool mode = false, int index = 0)
         {
             InitializeComponent();
 

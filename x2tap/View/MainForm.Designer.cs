@@ -30,8 +30,6 @@
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.v2rayConfigurationGroupBox = new System.Windows.Forms.GroupBox();
-			this.Addv2rayServerButton = new System.Windows.Forms.Button();
-			this.AddShadowsocksServerButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.EditButton = new System.Windows.Forms.Button();
 			this.SubscribeButton = new System.Windows.Forms.Button();
@@ -46,17 +44,23 @@
 			this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.AdvancedButton = new System.Windows.Forms.Button();
 			this.ControlButton = new System.Windows.Forms.Button();
-			this.ProjectLabel = new System.Windows.Forms.LinkLabel();
-			this.AddShadowsocksRServerButton = new System.Windows.Forms.Button();
+			this.MenuStrip = new System.Windows.Forms.MenuStrip();
+			this.ServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.AddV2RayServerButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.AddShadowsocksServerButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.AddShadowsocksRServerButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.AddSocks5ServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.TelegramGroupButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.TelegramChannelButton = new System.Windows.Forms.ToolStripMenuItem();
+			this.GithubButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.v2rayConfigurationGroupBox.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
+			this.MenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// v2rayConfigurationGroupBox
 			// 
-			this.v2rayConfigurationGroupBox.Controls.Add(this.AddShadowsocksRServerButton);
-			this.v2rayConfigurationGroupBox.Controls.Add(this.Addv2rayServerButton);
-			this.v2rayConfigurationGroupBox.Controls.Add(this.AddShadowsocksServerButton);
 			this.v2rayConfigurationGroupBox.Controls.Add(this.DeleteButton);
 			this.v2rayConfigurationGroupBox.Controls.Add(this.EditButton);
 			this.v2rayConfigurationGroupBox.Controls.Add(this.SubscribeButton);
@@ -64,32 +68,12 @@
 			this.v2rayConfigurationGroupBox.Controls.Add(this.ModeLabel);
 			this.v2rayConfigurationGroupBox.Controls.Add(this.ProxyComboBox);
 			this.v2rayConfigurationGroupBox.Controls.Add(this.ProxyLabel);
-			this.v2rayConfigurationGroupBox.Location = new System.Drawing.Point(12, 12);
+			this.v2rayConfigurationGroupBox.Location = new System.Drawing.Point(12, 28);
 			this.v2rayConfigurationGroupBox.Name = "v2rayConfigurationGroupBox";
 			this.v2rayConfigurationGroupBox.Size = new System.Drawing.Size(687, 108);
 			this.v2rayConfigurationGroupBox.TabIndex = 0;
 			this.v2rayConfigurationGroupBox.TabStop = false;
 			this.v2rayConfigurationGroupBox.Text = "配置信息";
-			// 
-			// Addv2rayServerButton
-			// 
-			this.Addv2rayServerButton.Location = new System.Drawing.Point(75, 78);
-			this.Addv2rayServerButton.Name = "Addv2rayServerButton";
-			this.Addv2rayServerButton.Size = new System.Drawing.Size(128, 23);
-			this.Addv2rayServerButton.TabIndex = 8;
-			this.Addv2rayServerButton.Text = "添加 [v2ray] 服务器";
-			this.Addv2rayServerButton.UseVisualStyleBackColor = true;
-			this.Addv2rayServerButton.Click += new System.EventHandler(this.Addv2rayServerButton_Click);
-			// 
-			// AddShadowsocksServerButton
-			// 
-			this.AddShadowsocksServerButton.Location = new System.Drawing.Point(209, 78);
-			this.AddShadowsocksServerButton.Name = "AddShadowsocksServerButton";
-			this.AddShadowsocksServerButton.Size = new System.Drawing.Size(107, 23);
-			this.AddShadowsocksServerButton.TabIndex = 7;
-			this.AddShadowsocksServerButton.Text = "添加 [SS] 服务器";
-			this.AddShadowsocksServerButton.UseVisualStyleBackColor = true;
-			this.AddShadowsocksServerButton.Click += new System.EventHandler(this.AddShadowsocksServerButton_Click);
 			// 
 			// DeleteButton
 			// 
@@ -171,7 +155,7 @@
             this.DownlinkSpeedLabel,
             this.UsedBandwidthLabel,
             this.StatusLabel});
-			this.StatusStrip.Location = new System.Drawing.Point(0, 159);
+			this.StatusStrip.Location = new System.Drawing.Point(0, 174);
 			this.StatusStrip.Name = "StatusStrip";
 			this.StatusStrip.Size = new System.Drawing.Size(711, 22);
 			this.StatusStrip.SizingGrip = false;
@@ -203,7 +187,7 @@
 			// 
 			// AdvancedButton
 			// 
-			this.AdvancedButton.Location = new System.Drawing.Point(12, 126);
+			this.AdvancedButton.Location = new System.Drawing.Point(12, 142);
 			this.AdvancedButton.Name = "AdvancedButton";
 			this.AdvancedButton.Size = new System.Drawing.Size(75, 23);
 			this.AdvancedButton.TabIndex = 2;
@@ -213,7 +197,7 @@
 			// 
 			// ControlButton
 			// 
-			this.ControlButton.Location = new System.Drawing.Point(624, 126);
+			this.ControlButton.Location = new System.Drawing.Point(624, 142);
 			this.ControlButton.Name = "ControlButton";
 			this.ControlButton.Size = new System.Drawing.Size(75, 23);
 			this.ControlButton.TabIndex = 3;
@@ -221,41 +205,101 @@
 			this.ControlButton.UseVisualStyleBackColor = true;
 			this.ControlButton.Click += new System.EventHandler(this.ControlButton_Click);
 			// 
-			// ProjectLabel
+			// MenuStrip
 			// 
-			this.ProjectLabel.AutoSize = true;
-			this.ProjectLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-			this.ProjectLabel.Location = new System.Drawing.Point(93, 129);
-			this.ProjectLabel.Name = "ProjectLabel";
-			this.ProjectLabel.Size = new System.Drawing.Size(56, 17);
-			this.ProjectLabel.TabIndex = 4;
-			this.ProjectLabel.TabStop = true;
-			this.ProjectLabel.Text = "项目主页";
-			this.ProjectLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectLabel_LinkClicked);
+			this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ServerToolStripMenuItem,
+            this.AboutToolStripMenuItem});
+			this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+			this.MenuStrip.Name = "MenuStrip";
+			this.MenuStrip.Size = new System.Drawing.Size(711, 25);
+			this.MenuStrip.TabIndex = 5;
+			this.MenuStrip.Text = "menuStrip1";
+			// 
+			// ServerToolStripMenuItem
+			// 
+			this.ServerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddV2RayServerButton,
+            this.AddShadowsocksServerButton,
+            this.AddShadowsocksRServerButton,
+            this.AddSocks5ServerToolStripMenuItem});
+			this.ServerToolStripMenuItem.Name = "ServerToolStripMenuItem";
+			this.ServerToolStripMenuItem.Size = new System.Drawing.Size(56, 21);
+			this.ServerToolStripMenuItem.Text = "服务器";
+			// 
+			// AddV2RayServerButton
+			// 
+			this.AddV2RayServerButton.Name = "AddV2RayServerButton";
+			this.AddV2RayServerButton.Size = new System.Drawing.Size(193, 22);
+			this.AddV2RayServerButton.Text = "添加 [V2Ray] 服务器";
+			this.AddV2RayServerButton.Click += new System.EventHandler(this.AddV2RayServerButton_Click);
+			// 
+			// AddShadowsocksServerButton
+			// 
+			this.AddShadowsocksServerButton.Name = "AddShadowsocksServerButton";
+			this.AddShadowsocksServerButton.Size = new System.Drawing.Size(193, 22);
+			this.AddShadowsocksServerButton.Text = "添加 [SS] 服务器";
+			this.AddShadowsocksServerButton.Click += new System.EventHandler(this.AddShadowsocksServerButton_Click);
 			// 
 			// AddShadowsocksRServerButton
 			// 
-			this.AddShadowsocksRServerButton.Location = new System.Drawing.Point(322, 78);
 			this.AddShadowsocksRServerButton.Name = "AddShadowsocksRServerButton";
-			this.AddShadowsocksRServerButton.Size = new System.Drawing.Size(116, 23);
-			this.AddShadowsocksRServerButton.TabIndex = 9;
+			this.AddShadowsocksRServerButton.Size = new System.Drawing.Size(193, 22);
 			this.AddShadowsocksRServerButton.Text = "添加 [SSR] 服务器";
-			this.AddShadowsocksRServerButton.UseVisualStyleBackColor = true;
 			this.AddShadowsocksRServerButton.Click += new System.EventHandler(this.AddShadowsocksRServerButton_Click);
+			// 
+			// AddSocks5ServerToolStripMenuItem
+			// 
+			this.AddSocks5ServerToolStripMenuItem.Name = "AddSocks5ServerToolStripMenuItem";
+			this.AddSocks5ServerToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+			this.AddSocks5ServerToolStripMenuItem.Text = "添加 [Socks5] 服务器";
+			this.AddSocks5ServerToolStripMenuItem.Click += new System.EventHandler(this.AddSocks5ServerToolStripMenuItem_Click);
+			// 
+			// AboutToolStripMenuItem
+			// 
+			this.AboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TelegramGroupButton,
+            this.TelegramChannelButton,
+            this.GithubButton});
+			this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
+			this.AboutToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+			this.AboutToolStripMenuItem.Text = "关于";
+			// 
+			// TelegramGroupButton
+			// 
+			this.TelegramGroupButton.Name = "TelegramGroupButton";
+			this.TelegramGroupButton.Size = new System.Drawing.Size(180, 22);
+			this.TelegramGroupButton.Text = "Telegram 群组";
+			this.TelegramGroupButton.Click += new System.EventHandler(this.TelegramGroupButton_Click);
+			// 
+			// TelegramChannelButton
+			// 
+			this.TelegramChannelButton.Name = "TelegramChannelButton";
+			this.TelegramChannelButton.Size = new System.Drawing.Size(180, 22);
+			this.TelegramChannelButton.Text = "Telegram 频道";
+			this.TelegramChannelButton.Click += new System.EventHandler(this.TelegramChannelButton_Click);
+			// 
+			// GithubButton
+			// 
+			this.GithubButton.Name = "GithubButton";
+			this.GithubButton.Size = new System.Drawing.Size(180, 22);
+			this.GithubButton.Text = "Github";
+			this.GithubButton.Click += new System.EventHandler(this.GithubButton_Click);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(711, 181);
-			this.Controls.Add(this.ProjectLabel);
+			this.ClientSize = new System.Drawing.Size(711, 196);
 			this.Controls.Add(this.ControlButton);
 			this.Controls.Add(this.AdvancedButton);
 			this.Controls.Add(this.StatusStrip);
+			this.Controls.Add(this.MenuStrip);
 			this.Controls.Add(this.v2rayConfigurationGroupBox);
 			this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MainMenuStrip = this.MenuStrip;
 			this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
@@ -267,6 +311,8 @@
 			this.v2rayConfigurationGroupBox.PerformLayout();
 			this.StatusStrip.ResumeLayout(false);
 			this.StatusStrip.PerformLayout();
+			this.MenuStrip.ResumeLayout(false);
+			this.MenuStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -279,8 +325,6 @@
         private System.Windows.Forms.Label ProxyLabel;
         private System.Windows.Forms.ComboBox ModeComboBox;
         private System.Windows.Forms.Label ModeLabel;
-        private System.Windows.Forms.Button Addv2rayServerButton;
-        private System.Windows.Forms.Button AddShadowsocksServerButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button EditButton;
         private System.Windows.Forms.Button SubscribeButton;
@@ -291,7 +335,15 @@
         private System.Windows.Forms.ToolStripStatusLabel DownlinkSpeedLabel;
         private System.Windows.Forms.ToolStripStatusLabel UsedBandwidthLabel;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
-        private System.Windows.Forms.LinkLabel ProjectLabel;
-		private System.Windows.Forms.Button AddShadowsocksRServerButton;
+		private System.Windows.Forms.MenuStrip MenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem ServerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem AddV2RayServerButton;
+		private System.Windows.Forms.ToolStripMenuItem AddShadowsocksServerButton;
+		private System.Windows.Forms.ToolStripMenuItem AddShadowsocksRServerButton;
+		private System.Windows.Forms.ToolStripMenuItem AddSocks5ServerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem TelegramGroupButton;
+		private System.Windows.Forms.ToolStripMenuItem TelegramChannelButton;
+		private System.Windows.Forms.ToolStripMenuItem GithubButton;
 	}
 }
