@@ -72,7 +72,7 @@ namespace x2tap
 								if (i == 0)
 								{
 									var splited = text.Substring(2).Split(',');
-									if (splited.Length == 2)
+									if (splited.Length == 3)
 									{
 										mode.Name = splited[0].Trim();
 										mode.Type = int.Parse(splited[1].Trim());
