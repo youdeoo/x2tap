@@ -28,13 +28,7 @@
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 
 # 截图
-![](screenshots/1.png)
-
-![](screenshots/2.png)
-
-![](screenshots/3.png)
-
-![](screenshots/4.png)
+![](screenshots/main.png)
 
 # 编译指南
 参见 [BUILD.md](BUILD.md)

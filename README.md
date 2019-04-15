@@ -30,13 +30,7 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 
 # Screenshots
-![](screenshots/1.png)
-
-![](screenshots/2.png)
-
-![](screenshots/3.png)
-
-![](screenshots/4.png)
+![](screenshots/main.png)
 
 # Compilation Guide
 See [BUILD.md](BUILD.md)
