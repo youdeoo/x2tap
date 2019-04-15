@@ -25,7 +25,7 @@ namespace x2tap
 
 				var parser = new IniParser.FileIniDataParser();
 				var data = parser.ReadFile("x2tap.ini");
-				Global.Config.v2rayLoggingLevel = int.Parse(data["x2tap"]["v2rayLoggingLevel"]);
+				Global.Config.V2RayLoggingLevel = int.Parse(data["x2tap"]["v2rayLoggingLevel"]);
 				Global.Config.TUNTAP.Address = data["TUNTAP"]["Address"];
 				Global.Config.TUNTAP.Netmask = data["TUNTAP"]["Netmask"];
 				Global.Config.TUNTAP.Gateway = data["TUNTAP"]["Gateway"];
@@ -110,7 +110,7 @@ namespace x2tap
 			{
 				var parser = new IniParser.FileIniDataParser();
 				var data = parser.ReadFile("x2tap.ini");
-				data["x2tap"]["v2rayLoggingLevel"] = Global.Config.v2rayLoggingLevel.ToString();
+				data["x2tap"]["v2rayLoggingLevel"] = Global.Config.V2RayLoggingLevel.ToString();
 				data["TUNTAP"]["Address"] = Global.Config.TUNTAP.Address;
 				data["TUNTAP"]["Netmask"] = Global.Config.TUNTAP.Netmask;
 				data["TUNTAP"]["Gateway"] = Global.Config.TUNTAP.Gateway;
@@ -133,7 +133,7 @@ namespace x2tap
 			{
 				var data = new Objects.v2rayConfig.v2rayConfig();
 
-				switch (Global.Config.v2rayLoggingLevel)
+				switch (Global.Config.V2RayLoggingLevel)
 				{
 					case 0:
 						data.log.loglevel = "debug";

@@ -79,7 +79,7 @@ namespace x2tap
             /// <summary>
             ///     v2ray 日志等级
             /// </summary>
-            public static int v2rayLoggingLevel = 0;
+            public static int V2RayLoggingLevel = 0;
 
             /// <summary>
             ///     适配器地址
