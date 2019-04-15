@@ -51,7 +51,12 @@ namespace x2tap.View
             }
         }
 
-        private void ControlButton_Click(object sender, EventArgs e)
+		private void GlobalExceptionIPButton_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void ControlButton_Click(object sender, EventArgs e)
         {
             Global.Config.V2RayLoggingLevel = V2RayLoggingLevelComboBox.SelectedIndex;
 			Global.Config.TUNTAP.Address = TUNTAPAddressTextBox.Text;
