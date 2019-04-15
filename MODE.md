@@ -1,6 +1,6 @@
 # Mode
 ```
-# Telegram, 0
+# Telegram, 1, 0
 31.13.86.0/22
 74.86.235.0/24
 91.108.56.0/23
@@ -13,15 +13,16 @@
 149.154.172.0/22
 ```
 - Where `Telegram` represents the name of the rule
-- `0` means to use the proxy
-- `1` means not to use the proxy
+- first `1` means to use the proxy
+- second `0` means not bypass China
 
 The above rules, then, are expressed as：
 - Mode name: `Telegram`
 - The following IP CIDR all use proxies, and mismatched requests bypass the proxies
+- Not will bypass China
 
 ```
-# Telegram, 1
+# Telegram, 0, 1
 31.13.86.0/22
 74.86.235.0/24
 91.108.56.0/23
@@ -36,3 +37,4 @@ The above rules, then, are expressed as：
 The above rules, then, are expressed as：
 - Mode name：`Telegram`
 - The following IP CIDR all bypass the agent, and mismatched requests all use proxies
+- Bypass China

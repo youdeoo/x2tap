@@ -13,14 +13,13 @@ VPN tools based on TUN/TAP, tun2socks and v2ray implementations
 Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 # TODO
 - [x] Import subscriptions (Shadowsocks, VMess)
-- [x] Traffic information display (obtained through the v2ray gRPC API)
+- [x] traffic information acquisition method to take the network card traffic information directly with the Windows API 
 - [x] List of external rules (See [MODE.md](MODE.md))
 - [x] Local DNS Agent
-- [ ] Add ShadowsocksR support
+- [x] Add ShadowsocksR support
+- [x] Custom DNS settings
 - [ ] Add Socks5 support
-- [ ] Custom DNS settings
 - [ ] Add Shadowsocks obfs plugin support
-- [ ] Change the traffic information acquisition method to take the network card traffic information directly with the Windows API 
 - [ ] Global exception IP address
 - [ ] Add `SSD://` uri support
 - [ ] IPv6 forward support
