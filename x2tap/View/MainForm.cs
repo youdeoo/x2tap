@@ -330,14 +330,14 @@ namespace x2tap.View
                 {
                     (Global.Views.Server.V2Ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
                 }
-                else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
+                else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
                 {
                     (Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count)).Show();
                 }
-				else
-				{
-					(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
-				}
+                else
+                {
+                    (Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
+                }
 
                 Hide();
             }
