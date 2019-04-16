@@ -70,7 +70,7 @@ namespace x2tap.View
 
 		private void SubscribeLinksButton_Click(object sender, EventArgs e)
         {
-			var count = 0;
+			var number = new int[] { 0, 0, 0 };
 			var v2rayProxies = new List<Objects.Server.v2ray>();
 			var ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
 			var ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
@@ -99,7 +99,7 @@ namespace x2tap.View
 
 								while ((text = sr.ReadLine()) != null)
 								{
-									count++;
+									number[0]++;
 
 									if (text.StartsWith("vmess://"))
 									{
@@ -113,13 +113,19 @@ namespace x2tap.View
 									{
 										ShadowsocksRProxies.Add(Utils.Parse.ShadowsocksR(text));
 									}
+									else
+									{
+										number[2]++;
+									}
 								}
 							}
 						}
 					}
 					catch (Exception ex)
 					{
-						if (MessageBox.Show(string.Format("在处理订阅链接：\"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex.Message), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+						number[1]++;
+
+						if (MessageBox.Show(string.Format("在处理订阅链接：\"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
 						{
 							continue;
 						}
@@ -131,42 +137,54 @@ namespace x2tap.View
 			Global.ShadowsocksProxies = ShadowsocksProxies;
 			Global.ShadowsocksRProxies = ShadowsocksRProxies;
 			Global.Views.MainForm.InitProxies();
-			MessageBox.Show(string.Format("成功导入 {0} 条代理", count), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", number[0], number[0] - number[1] - number[2], number[1], number[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
         private void SubscribeTextButton_Click(object sender, EventArgs e)
         {
             if (SubscribeTextTextBox.Text != "")
             {
-                Global.V2RayProxies.Clear();
-                Global.ShadowsocksProxies.Clear();
-
                 using (var sr = new StringReader(SubscribeTextTextBox.Text))
                 {
-                    var i = 0;
+					var number = new int[] { 0, 0, 0 };
                     string text;
 
                     while ((text = sr.ReadLine()) != null)
                     {
-                        i++;
+						number[0]++;
 
-                        if (text.StartsWith("vmess://"))
-                        {
-                            Global.V2RayProxies.Add(Utils.Parse.v2ray(text));
-                        }
-                        else if (text.StartsWith("ss://"))
-                        {
-                            Global.ShadowsocksProxies.Add(Utils.Parse.Shadowsocks(text));
-                        }
-						else if (text.StartsWith("ssr://"))
+						try
 						{
-							Global.ShadowsocksRProxies.Add(Utils.Parse.ShadowsocksR(text));
+							if (text.StartsWith("vmess://"))
+							{
+								Global.V2RayProxies.Add(Utils.Parse.v2ray(text));
+							}
+							else if (text.StartsWith("ss://"))
+							{
+								Global.ShadowsocksProxies.Add(Utils.Parse.Shadowsocks(text));
+							}
+							else if (text.StartsWith("ssr://"))
+							{
+								Global.ShadowsocksRProxies.Add(Utils.Parse.ShadowsocksR(text));
+							}
+							else
+							{
+								number[2]++;
+							}
+						}
+                        catch (NotSupportedException ex)
+						{
+							MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						}
+						catch (Exception)
+						{
+							number[1]++;
 						}
 					}
 
 					Global.Views.MainForm.InitProxies();
-                    MessageBox.Show(string.Format("成功导入 {0} 条代理", i), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+					MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", number[0], number[0] - number[1] - number[2], number[1], number[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
             }
             else
             {

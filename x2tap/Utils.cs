@@ -609,18 +609,14 @@ namespace x2tap
             public static Objects.Server.Shadowsocks Shadowsocks(string text)
             {
                 var shadowsocks = new Objects.Server.Shadowsocks();
-                Regex UrlFinder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?", RegexOptions.IgnoreCase),
-                    DetailsParser = new Regex("^((?<method>.+):(?<password>.*)@(?<hostname>.+?):(?<port>\\d+?))$", RegexOptions.IgnoreCase);
-                try
+				try
                 {
-
-                    var match = UrlFinder.Match(text);
+					Regex finder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?", RegexOptions.IgnoreCase), parser = new Regex("^((?<method>.+):(?<password>.*)@(?<hostname>.+?):(?<port>\\d+?))$", RegexOptions.IgnoreCase);
+					var match = finder.Match(text);
                     if (!match.Success)
                         throw new FormatException();
 
-                    var base64 = match.Groups[1].Value;
-                    match = DetailsParser.Match(Encoding.UTF8.GetString(Convert.FromBase64String(
-                        base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
+                    match = parser.Match(UrlSafeBase64Decode(match.Groups[1].Value));
 
                     shadowsocks.Password = match.Groups["password"].Value;
                     shadowsocks.Address = match.Groups["hostname"].Value;
@@ -632,7 +628,7 @@ namespace x2tap
                     }
                     else
                     {
-                        shadowsocks.Remark = shadowsocks.Address;
+						shadowsocks.Remark = String.Format("{0}:{1}", shadowsocks.Address, shadowsocks.Port);
                     }
 
                     switch (match.Groups["method"].Value)
@@ -659,35 +655,23 @@ namespace x2tap
                             shadowsocks.EncryptMethod = 6;
                             break;
                         default:
-                            throw new Exception(String.Format("不支持的加密方式：{0}", match.Groups["method"].Value));
+                            throw new NotSupportedException(String.Format("不支持的加密方式：{0}", match.Groups["method"].Value));
                     }
-
                 }
+				catch (NotSupportedException)
+				{
+					throw;
+				}
                 catch (Exception)
                 {
+                    var data = new Uri(text);
+					var userinfo = UrlSafeBase64Decode(UrlSafeBase64Decode(data.UserInfo)).Split(':');
 
-                    Uri parsedUrl = new Uri(text);
+					shadowsocks.Remark = data.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+                    shadowsocks.Address = data.IdnHost;
+                    shadowsocks.Port = data.Port;
 
-
-
-                    shadowsocks.Remark = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-                    shadowsocks.Address = parsedUrl.IdnHost;
-                    shadowsocks.Port = parsedUrl.Port;
-
-                    // parse base64 UserInfo
-                    string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
-                    string base64 = rawUserInfo.Replace('-', '+').Replace('_', '/');    // Web-safe base64 to normal base64
-                    string userInfo = "";
-
-                    userInfo = Encoding.UTF8.GetString(Convert.FromBase64String(
-                    base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')));
-
-
-                    string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
-
-                    shadowsocks.Password = userInfoParts[1];
-
-                    switch (userInfoParts[0])
+                    switch (userinfo[0])
                     {
                         case "aes-256-cfb":
                             shadowsocks.EncryptMethod = 0;
@@ -711,16 +695,18 @@ namespace x2tap
                             shadowsocks.EncryptMethod = 6;
                             break;
                         default:
-                            throw new Exception(String.Format("不支持的加密方式：{0}", userInfoParts[0]));
+                            throw new Exception(String.Format("不支持的加密方式：{0}", userinfo[0]));
                     }
-                }
+
+					shadowsocks.Password = userinfo[1];
+				}
+
                 return shadowsocks;
             }
 
-
             public static Objects.Server.ShadowsocksR ShadowsocksR(string text)
 			{
-				var data = Utils.UrlSafeBase64Decode(text.Remove(0, 6)).Split(':');
+				var data = UrlSafeBase64Decode(text.Remove(0, 6)).Split(':');
 				var shadowsocksr = new Objects.Server.ShadowsocksR();
 
 				shadowsocksr.Address = data[0];
