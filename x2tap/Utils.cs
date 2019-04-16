@@ -1,13 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using x2tap.Objects.Server;
 
 namespace x2tap
 {
@@ -608,9 +606,9 @@ namespace x2tap
 				return v2ray;
 			}
 
-            public static Shadowsocks Shadowsocks(string text)
+            public static Objects.Server.Shadowsocks Shadowsocks(string text)
             {
-                var shadowsocks = new Shadowsocks();
+                var shadowsocks = new Objects.Server.Shadowsocks();
                 Regex UrlFinder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?", RegexOptions.IgnoreCase),
                     DetailsParser = new Regex("^((?<method>.+):(?<password>.*)@(?<hostname>.+?):(?<port>\\d+?))$", RegexOptions.IgnoreCase);
                 try
