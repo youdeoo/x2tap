@@ -13,12 +13,6 @@ namespace x2tap.View
 {
     public partial class MainForm : Form
     {
-
-        /// <summary>
-        /// 主窗体的静态实例
-        /// </summary>
-        public static MainForm _MainWindow = null;
-
         /// <summary>
         ///		上行流量
         /// </summary>
@@ -45,7 +39,6 @@ namespace x2tap.View
 
 			CheckForIllegalCrossThreadCalls = false;
 
-            _MainWindow = this;
         }
 
         /// <summary>

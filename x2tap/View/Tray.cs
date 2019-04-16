@@ -35,7 +35,7 @@ namespace x2tap.View
             MenuItem Item_Exit = new MenuItem("退出");
             Item_Exit.Click += (object sender, EventArgs e) =>
             {
-                if (MainForm._MainWindow.Started)
+                if (Global.Views.MainForm.Started)
                 {
                     MessageBox.Show("请先点击关闭按钮", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
