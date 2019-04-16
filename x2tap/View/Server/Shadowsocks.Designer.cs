@@ -92,7 +92,7 @@
             "CHACHA20-IETF",
             "AES-256-GCM",
             "AES-128-GCM",
-            "CHACHA20-POLY1305"});
+            "CHACHA20-IETF-POLY1305"});
             this.EncryptMethodComboBox.Location = new System.Drawing.Point(69, 76);
             this.EncryptMethodComboBox.Name = "EncryptMethodComboBox";
             this.EncryptMethodComboBox.Size = new System.Drawing.Size(344, 24);

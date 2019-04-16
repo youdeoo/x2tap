@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace x2tap
 {
@@ -606,17 +607,25 @@ namespace x2tap
 			}
 
 			public static Objects.Server.Shadowsocks Shadowsocks(string text)
-			{
-				var data = new Uri(Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 5))));
-				var shadowsocks = new Objects.Server.Shadowsocks();
+            {
+                var shadowsocks = new Objects.Server.Shadowsocks();
+                Regex UrlFinder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?", RegexOptions.IgnoreCase),
+                    DetailsParser = new Regex("^((?<method>.+):(?<password>.*)@(?<hostname>.+?):(?<port>\\d+?))$", RegexOptions.IgnoreCase);
 
-				shadowsocks.Remark = Uri.UnescapeDataString(data.Fragment.Remove(0, 1));
-				shadowsocks.Address = data.Host;
-				shadowsocks.Port = data.Port;
+                var match = UrlFinder.Match(text);
+                if (!match.Success)
+                    throw new FormatException();
 
-				var info = Encoding.UTF8.GetString(Convert.FromBase64String(data.UserInfo)).Split(':');
+                var base64 = match.Groups[1].Value;
+                match = DetailsParser.Match(Encoding.UTF8.GetString(Convert.FromBase64String(
+                    base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
 
-				switch (info[0])
+                shadowsocks.Password = match.Groups["password"].Value;
+                shadowsocks.Address = match.Groups["hostname"].Value;
+                shadowsocks.Port = int.Parse(match.Groups["port"].Value);
+				shadowsocks.Remark = Uri.UnescapeDataString(Regex.Split(text, "#", RegexOptions.IgnoreCase)[1]);
+
+                switch (match.Groups["method"].Value)
 				{
 					case "aes-256-cfb":
 						shadowsocks.EncryptMethod = 0;
@@ -636,14 +645,12 @@ namespace x2tap
 					case "aes-128-gcm":
 						shadowsocks.EncryptMethod = 5;
 						break;
-					case "chacha20-poly1305":
+					case "chacha20-ietf-poly1305":
 						shadowsocks.EncryptMethod = 6;
 						break;
 					default:
-						throw new Exception(String.Format("不支持的加密方式：{0}", info[0]));
+						throw new Exception(String.Format("不支持的加密方式：{0}", match.Groups["method"].Value));
 				}
-
-				shadowsocks.Password = info[1];
 
 				return shadowsocks;
 			}
