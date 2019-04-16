@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace x2tap
@@ -12,6 +13,8 @@ namespace x2tap
         [STAThread]
         public static void Main()
         {
+			Directory.SetCurrentDirectory(Application.StartupPath);
+
 #if !DEBUG
 			var filenames = new string[]
 			{
@@ -60,9 +63,19 @@ namespace x2tap
             }
 #endif
 
-			Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(Global.Views.MainForm = new View.MainForm());
+			using (var mutex = new Mutex(false, "Global\\x2tap"))
+			{
+				if (mutex.WaitOne(0, false))
+				{
+					Application.EnableVisualStyles();
+					Application.SetCompatibleTextRenderingDefault(false);
+					Application.Run(Global.Views.MainForm = new View.MainForm());
+				}
+				else
+				{
+					MessageBox.Show("只允许同时运行一个", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+			}
         }
     }
 }
