@@ -57,6 +57,14 @@ namespace x2tap.View
                 ContextMenu = new ContextMenu(parent),
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
             };
+			Icon.DoubleClick += (object sender, EventArgs e) =>
+			{
+				if (Global.Views.MainForm.WindowState == FormWindowState.Minimized)
+				{
+					Global.Views.MainForm.Show();
+					Global.Views.MainForm.WindowState = FormWindowState.Normal;
+				}
+			};
         }
     }
 }

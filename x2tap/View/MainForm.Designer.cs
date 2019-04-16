@@ -46,10 +46,10 @@
 			this.ControlButton = new System.Windows.Forms.Button();
 			this.MenuStrip = new System.Windows.Forms.MenuStrip();
 			this.ServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.AddSocks5ServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.AddV2RayServerButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.AddShadowsocksServerButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.AddShadowsocksRServerButton = new System.Windows.Forms.ToolStripMenuItem();
-			this.AddSocks5ServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TelegramGroupButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.TelegramChannelButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -227,6 +227,13 @@
 			this.ServerToolStripMenuItem.Size = new System.Drawing.Size(56, 21);
 			this.ServerToolStripMenuItem.Text = "服务器";
 			// 
+			// AddSocks5ServerToolStripMenuItem
+			// 
+			this.AddSocks5ServerToolStripMenuItem.Name = "AddSocks5ServerToolStripMenuItem";
+			this.AddSocks5ServerToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+			this.AddSocks5ServerToolStripMenuItem.Text = "添加 [Socks5] 服务器";
+			this.AddSocks5ServerToolStripMenuItem.Click += new System.EventHandler(this.AddSocks5ServerToolStripMenuItem_Click);
+			// 
 			// AddV2RayServerButton
 			// 
 			this.AddV2RayServerButton.Name = "AddV2RayServerButton";
@@ -247,13 +254,6 @@
 			this.AddShadowsocksRServerButton.Size = new System.Drawing.Size(239, 22);
 			this.AddShadowsocksRServerButton.Text = "添加 [ShadowsocksR] 服务器";
 			this.AddShadowsocksRServerButton.Click += new System.EventHandler(this.AddShadowsocksRServerButton_Click);
-			// 
-			// AddSocks5ServerToolStripMenuItem
-			// 
-			this.AddSocks5ServerToolStripMenuItem.Name = "AddSocks5ServerToolStripMenuItem";
-			this.AddSocks5ServerToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
-			this.AddSocks5ServerToolStripMenuItem.Text = "添加 [Socks5] 服务器";
-			this.AddSocks5ServerToolStripMenuItem.Click += new System.EventHandler(this.AddSocks5ServerToolStripMenuItem_Click);
 			// 
 			// AboutToolStripMenuItem
 			// 
@@ -307,6 +307,7 @@
 			this.Text = "x2tap";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
 			this.v2rayConfigurationGroupBox.ResumeLayout(false);
 			this.v2rayConfigurationGroupBox.PerformLayout();
 			this.StatusStrip.ResumeLayout(false);
