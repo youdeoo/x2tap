@@ -11,54 +11,54 @@ using System.Windows.Forms;
 
 namespace x2tap.View
 {
-    public partial class MainForm : Form
-    {
-        /// <summary>
-        ///		上行流量
-        /// </summary>
-        public long UplinkBandwidth = 0;
+	public partial class MainForm : Form
+	{
+		/// <summary>
+		///		上行流量
+		/// </summary>
+		public long UplinkBandwidth = 0;
 
 		/// <summary>
 		///		下行流量
 		/// </summary>
 		public long DownlinkBandwidth = 0;
 
-        /// <summary>
-        ///     启动状态
-        /// </summary>
-        public bool Started;
+		/// <summary>
+		///     启动状态
+		/// </summary>
+		public bool Started;
 
-        /// <summary>
-        ///     状态信息
-        /// </summary>
-        public string Status = "请下达命令！";
+		/// <summary>
+		///     状态信息
+		/// </summary>
+		public string Status = "请下达命令！";
 
-        public MainForm()
-        {
-            InitializeComponent();
+		public MainForm()
+		{
+			InitializeComponent();
 
 			CheckForIllegalCrossThreadCalls = false;
-        }
+		}
 
-        /// <summary>
-        ///     初始化代理
-        /// </summary>
-        public void InitProxies()
-        {
-            // 先清空掉内容
-            ProxyComboBox.Items.Clear();
+		/// <summary>
+		///     初始化代理
+		/// </summary>
+		public void InitProxies()
+		{
+			// 先清空掉内容
+			ProxyComboBox.Items.Clear();
 
-            // 添加 v2ray 代理
-            foreach (var v2ray in Global.V2RayProxies)
-            {
-                ProxyComboBox.Items.Add(string.Format("[v2ray] {0}", v2ray.Remark));
-            }
+			// 添加 v2ray 代理
+			foreach (var v2ray in Global.V2RayProxies)
+			{
+				ProxyComboBox.Items.Add(string.Format("[v2ray] {0}", v2ray.Remark));
+			}
 
-            // 添加 Shadowsocks 代理
-            foreach (var shadowsocks in Global.ShadowsocksProxies)
-            {
-                ProxyComboBox.Items.Add(string.Format("[SS] {0}", shadowsocks.Remark));
-            }
+			// 添加 Shadowsocks 代理
+			foreach (var shadowsocks in Global.ShadowsocksProxies)
+			{
+				ProxyComboBox.Items.Add(string.Format("[SS] {0}", shadowsocks.Remark));
+			}
 
 			// 添加 ShadowsocksR 代理
 			foreach (var shadowsocksr in Global.ShadowsocksRProxies)
@@ -66,95 +66,95 @@ namespace x2tap.View
 				ProxyComboBox.Items.Add(string.Format("[SSR] {0}", shadowsocksr.Remark));
 			}
 
-            if (ProxyComboBox.Items.Count > 0)
-            {
-                ProxyComboBox.SelectedIndex = 0;
-            }
-        }
+			if (ProxyComboBox.Items.Count > 0)
+			{
+				ProxyComboBox.SelectedIndex = 0;
+			}
+		}
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // 初始化日志目录
-            if (!Directory.Exists("logging"))
-            {
-                Directory.CreateDirectory("logging");
-            }
+		private void MainForm_Load(object sender, EventArgs e)
+		{
+			// 初始化日志目录
+			if (!Directory.Exists("logging"))
+			{
+				Directory.CreateDirectory("logging");
+			}
 
 			// 初始化配置
 			Utils.Config.InitFromFile();
 
-            // 初始化代理
-            InitProxies();
-            if (ProxyComboBox.Items.Count > 0)
-            {
-                ProxyComboBox.SelectedIndex = 0;
-            }
+			// 初始化代理
+			InitProxies();
+			if (ProxyComboBox.Items.Count > 0)
+			{
+				ProxyComboBox.SelectedIndex = 0;
+			}
 
-            // 初始化模式
-            ModeComboBox.SelectedIndex = 0;
+			// 初始化模式
+			ModeComboBox.SelectedIndex = 0;
 			foreach (var mode in Global.Modes)
 			{
 				ModeComboBox.Items.Add(string.Format("[外置规则] {0}", mode.Name));
 			}
 
-            // 初始化适配器
-            Task.Run(() =>
-            {
-                using (var client = new UdpClient("114.114.114.114", 53))
-                {
-                    var address = ((IPEndPoint) client.Client.LocalEndPoint).Address;
-                    Global.Config.AdapterAddress = address.ToString();
+			// 初始化适配器
+			Task.Run(() =>
+			{
+				using (var client = new UdpClient("114.114.114.114", 53))
+				{
+					var address = ((IPEndPoint)client.Client.LocalEndPoint).Address;
+					Global.Config.AdapterAddress = address.ToString();
 
-                    var addressGeted = false;
+					var addressGeted = false;
 
-                    var adapters = NetworkInterface.GetAllNetworkInterfaces();
-                    foreach (var adapter in adapters)
-                    {
-                        var properties = adapter.GetIPProperties();
+					var adapters = NetworkInterface.GetAllNetworkInterfaces();
+					foreach (var adapter in adapters)
+					{
+						var properties = adapter.GetIPProperties();
 
-                        foreach (var information in properties.UnicastAddresses)
-                        {
-                            if (information.Address.AddressFamily == AddressFamily.InterNetwork && Equals(information.Address, address))
-                            {
-                                addressGeted = true;
-                            }
-                        }
+						foreach (var information in properties.UnicastAddresses)
+						{
+							if (information.Address.AddressFamily == AddressFamily.InterNetwork && Equals(information.Address, address))
+							{
+								addressGeted = true;
+							}
+						}
 
-                        foreach (var information in properties.GatewayAddresses)
-                        {
-                            if (addressGeted)
-                            {
-                                Global.Config.AdapterGateway = information.Address.ToString();
-                                break;
-                            }
-                        }
+						foreach (var information in properties.GatewayAddresses)
+						{
+							if (addressGeted)
+							{
+								Global.Config.AdapterGateway = information.Address.ToString();
+								break;
+							}
+						}
 
-                        if (addressGeted)
-                        {
-                            break;
-                        }
-                    }
-                }
-            });
+						if (addressGeted)
+						{
+							break;
+						}
+					}
+				}
+			});
 
-            // 后台工作
-            Task.Run(() =>
-            {
+			// 后台工作
+			Task.Run(() =>
+			{
 				var count = 0;
 
 				while (true)
-                {
-                    try
-                    {
+				{
+					try
+					{
 						// 更新标题栏时间
 						Text = string.Format("x2tap - {0}", DateTime.Now.ToString());
 
 						// 更新状态信息
 						StatusLabel.Text = string.Format("状态：{0}", Status);
-						
+
 						// 更新流量信息
 						if (Started)
-                        {
+						{
 							if (count % 10 == 0)
 							{
 								Task.Run(() =>
@@ -176,15 +176,15 @@ namespace x2tap.View
 									}
 								});
 							}
-                        }
-                        else
-                        {
+						}
+						else
+						{
 							UplinkBandwidth = 0;
 							DownlinkBandwidth = 0;
 							UsedBandwidthLabel.Text = "已使用：0 KB";
-                            UplinkSpeedLabel.Text = "↑：0 KB/s";
-                            DownlinkSpeedLabel.Text = "↓：0 KB/s";
-                        }
+							UplinkSpeedLabel.Text = "↑：0 KB/s";
+							DownlinkSpeedLabel.Text = "↓：0 KB/s";
+						}
 
 						if (count > 100000)
 						{
@@ -195,15 +195,15 @@ namespace x2tap.View
 							count++;
 						}
 
-                        // 休眠 100 毫秒
-                        Thread.Sleep(100);
-                    }
-                    catch (Exception)
-                    {
-                        // 跳过
-                    }
-                }
-            });
+						// 休眠 100 毫秒
+						Thread.Sleep(100);
+					}
+					catch (Exception)
+					{
+						// 跳过
+					}
+				}
+			});
 
 			(Global.Views.Tray = new Tray()).Init();
 		}
@@ -217,45 +217,45 @@ namespace x2tap.View
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (Started)
-            {
-                e.Cancel = true;
+		{
+			if (Started)
+			{
+				e.Cancel = true;
 
-                MessageBox.Show("请先点击关闭按钮", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
+				MessageBox.Show("请先点击关闭按钮", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+			else
+			{
 				Utils.Config.SaveToFile();
 				Global.Views.Tray.Icon.Dispose();
 				Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "x2tap.exe");
-            }
-        }
+			}
+		}
 
-        private void ComboBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            var cbx = sender as ComboBox;
-            if (cbx != null)
-            {
-                e.DrawBackground();
+		private void ComboBox_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			var cbx = sender as ComboBox;
+			if (cbx != null)
+			{
+				e.DrawBackground();
 
-                if (e.Index >= 0)
-                {
-                    var sf = new StringFormat();
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Center;
+				if (e.Index >= 0)
+				{
+					var sf = new StringFormat();
+					sf.LineAlignment = StringAlignment.Center;
+					sf.Alignment = StringAlignment.Center;
 
-                    var brush = new SolidBrush(cbx.ForeColor);
+					var brush = new SolidBrush(cbx.ForeColor);
 
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-                    {
-                        brush = SystemBrushes.HighlightText as SolidBrush;
-                    }
+					if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+					{
+						brush = SystemBrushes.HighlightText as SolidBrush;
+					}
 
-                    e.Graphics.DrawString(cbx.Items[e.Index].ToString(), cbx.Font, brush, e.Bounds, sf);
-                }
-            }
-        }
+					e.Graphics.DrawString(cbx.Items[e.Index].ToString(), cbx.Font, brush, e.Bounds, sf);
+				}
+			}
+		}
 
 		private void AddSocks5ServerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -263,16 +263,16 @@ namespace x2tap.View
 		}
 
 		private void AddV2RayServerButton_Click(object sender, EventArgs e)
-        {
+		{
 			(Global.Views.Server.V2Ray = new Server.V2Ray()).Show();
 			Hide();
 		}
 
 		private void AddShadowsocksServerButton_Click(object sender, EventArgs e)
-        {
-            (Global.Views.Server.Shadowsocks = new Server.Shadowsocks()).Show();
-            Hide();
-        }
+		{
+			(Global.Views.Server.Shadowsocks = new Server.Shadowsocks()).Show();
+			Hide();
+		}
 
 		private void AddShadowsocksRServerButton_Click(object sender, EventArgs e)
 		{
@@ -296,92 +296,92 @@ namespace x2tap.View
 		}
 
 		private void DeleteButton_Click(object sender, EventArgs e)
-        {
-            var index = ProxyComboBox.SelectedIndex;
-            if (index != -1)
-            {
-                ProxyComboBox.Items.RemoveAt(index);
+		{
+			var index = ProxyComboBox.SelectedIndex;
+			if (index != -1)
+			{
+				ProxyComboBox.Items.RemoveAt(index);
 
-                if (index < Global.V2RayProxies.Count)
-                {
-                    Global.V2RayProxies.RemoveAt(index);
-                }
-                else if (index < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
-                {
-                    Global.ShadowsocksProxies.RemoveAt(index - Global.V2RayProxies.Count);
-                }
+				if (index < Global.V2RayProxies.Count)
+				{
+					Global.V2RayProxies.RemoveAt(index);
+				}
+				else if (index < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
+				{
+					Global.ShadowsocksProxies.RemoveAt(index - Global.V2RayProxies.Count);
+				}
 				else
 				{
 					Global.ShadowsocksRProxies.RemoveAt(index - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count);
 				}
 
-                if (ProxyComboBox.Items.Count < index)
-                {
-                    ProxyComboBox.SelectedIndex = index;
-                }
-                else if (ProxyComboBox.Items.Count == 1)
-                {
-                    ProxyComboBox.SelectedIndex = 0;
-                }
-                else
-                {
-                    ProxyComboBox.SelectedIndex = index - 1;
-                }
-            }
-            else
-            {
-                MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+				if (ProxyComboBox.Items.Count < index)
+				{
+					ProxyComboBox.SelectedIndex = index;
+				}
+				else if (ProxyComboBox.Items.Count == 1)
+				{
+					ProxyComboBox.SelectedIndex = 0;
+				}
+				else
+				{
+					ProxyComboBox.SelectedIndex = index - 1;
+				}
+			}
+			else
+			{
+				MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
 
-        private void EditButton_Click(object sender, EventArgs e)
-        {
-            if (ProxyComboBox.SelectedIndex != -1)
-            {
-                if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
-                {
-                    (Global.Views.Server.V2Ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
-                }
-                else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
-                {
-                    (Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count)).Show();
-                }
-                else
-                {
-                    (Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
-                }
+		private void EditButton_Click(object sender, EventArgs e)
+		{
+			if (ProxyComboBox.SelectedIndex != -1)
+			{
+				if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
+				{
+					(Global.Views.Server.V2Ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
+				}
+				else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count + Global.ShadowsocksProxies.Count)
+				{
+					(Global.Views.Server.Shadowsocks = new Server.Shadowsocks(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count)).Show();
+				}
+				else
+				{
+					(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR(true, ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count)).Show();
+				}
 
-                Hide();
-            }
-            else
-            {
-                MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+				Hide();
+			}
+			else
+			{
+				MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
 
-        private void SubscribeButton_Click(object sender, EventArgs e)
-        {
-            (Global.Views.SubscribeForm = new SubscribeForm()).Show();
-            Hide();
-        }
+		private void SubscribeButton_Click(object sender, EventArgs e)
+		{
+			(Global.Views.SubscribeForm = new SubscribeForm()).Show();
+			Hide();
+		}
 
-        private void AdvancedButton_Click(object sender, EventArgs e)
-        {
-            (Global.Views.AdvancedForm = new AdvancedForm()).Show();
-            Hide();
-        }
+		private void AdvancedButton_Click(object sender, EventArgs e)
+		{
+			(Global.Views.AdvancedForm = new AdvancedForm()).Show();
+			Hide();
+		}
 
-        private void ControlButton_Click(object sender, EventArgs e)
-        {
-            if (!Started)
-            {
-                if (ProxyComboBox.SelectedIndex != -1)
-                {
-                    if (Utils.TUNTAP.GetComponentID() != "")
-                    {
-                        Status = "执行中";
+		private void ControlButton_Click(object sender, EventArgs e)
+		{
+			if (!Started)
+			{
+				if (ProxyComboBox.SelectedIndex != -1)
+				{
+					if (Utils.TUNTAP.GetComponentID() != "")
+					{
+						Status = "执行中";
 						Reset(false);
-                        ControlButton.Text = "执行中";
+						ControlButton.Text = "执行中";
 
 						Task.Run(() =>
 						{
@@ -655,21 +655,21 @@ namespace x2tap.View
 								ControlButton.Text = "启动";
 							}
 						});
-                    }
-                    else
-                    {
-                        MessageBox.Show("未检测到 TUN/TAP 适配器，请检查 TAP-Windows 驱动是否正确安装！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else
-            {
-                ControlButton.Text = "执行中";
-                ControlButton.Enabled = false;
+					}
+					else
+					{
+						MessageBox.Show("未检测到 TUN/TAP 适配器，请检查 TAP-Windows 驱动是否正确安装！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+				}
+				else
+				{
+					MessageBox.Show("请选择一个代理", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+			}
+			else
+			{
+				ControlButton.Text = "执行中";
+				ControlButton.Enabled = false;
 
 				Task.Run(() =>
 				{
@@ -731,8 +731,8 @@ namespace x2tap.View
 					Started = false;
 					Reset();
 				});
-            }
-        }
+			}
+		}
 
 		private void Reset(bool type = true)
 		{
