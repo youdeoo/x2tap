@@ -1,39 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace x2tap.View
 {
-    class Tray
+    public class Tray
     {
-
-        private NotifyIcon notifyIcon = null;
+        public NotifyIcon Icon;
 
         /// <summary>
-        /// 初始化托盘
+        ///		初始化托盘
         /// </summary>
-        public void InitTray()
+        public void Init()
         {
-            MenuItem Item_About = new MenuItem("Telegram群组");
-            Item_About.Click += (object sender, EventArgs e) =>
+            var openTelegramGroup = new MenuItem("Telegram 群组");
+			openTelegramGroup.Click += (object sender, EventArgs e) =>
             {
                 Utils.Shell.ExecuteCommandNoWait("START", "https://t.me/x2tapChat");
             };
-            MenuItem Item_GitHub = new MenuItem("GitHub");
-            Item_GitHub.Click += (object sender, EventArgs e) =>
+
+			var openTelegramChannel = new MenuItem("Telegram 频道");
+			openTelegramChannel.Click += (object sender, EventArgs e) =>
+			{
+				Utils.Shell.ExecuteCommandNoWait("START", "https://t.me/x2tap");
+			};
+
+            var openGithub = new MenuItem("Github");
+			openGithub.Click += (object sender, EventArgs e) =>
             {
                 Utils.Shell.ExecuteCommandNoWait("START", "https://github.com/hacking001/x2tap");
             };
-            MenuItem Item_Help = new MenuItem("帮助", new MenuItem[] { Item_About, Item_GitHub });
 
+            MenuItem help = new MenuItem("帮助", new MenuItem[] { openTelegramGroup, openTelegramChannel, openGithub });
 
-
-            MenuItem Item_Exit = new MenuItem("退出");
-            Item_Exit.Click += (object sender, EventArgs e) =>
+            MenuItem exit = new MenuItem("退出");
+			exit.Click += (object sender, EventArgs e) =>
             {
                 if (Global.Views.MainForm.Started)
                 {
@@ -42,25 +43,19 @@ namespace x2tap.View
                 else
                 {
                     Utils.Config.SaveToFile();
-                    Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
-                    //Environment.Exit(0);
+					Icon.Dispose();
+                    Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "x2tap.exe");
                 }
             };
 
+            MenuItem[] parent = new MenuItem[] { help, new MenuItem("-"), exit };
 
-            MenuItem[] parentMenuitem = new MenuItem[] { Item_Help, new MenuItem("-"), Item_Exit };
-
-            notifyIcon = new NotifyIcon()
+            Icon = new NotifyIcon()
             {
-                BalloonTipText = "X2Tap已启动！",
                 Text = Assembly.GetExecutingAssembly().GetName().Name,
                 Visible = true,
-                ContextMenu = new ContextMenu(parentMenuitem),
+                ContextMenu = new ContextMenu(parent),
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
-            };
-            notifyIcon.ShowBalloonTip(1000);
-            notifyIcon.DoubleClick += (object sender, EventArgs e) =>
-            {
             };
         }
     }

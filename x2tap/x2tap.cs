@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using x2tap.View;
 
 namespace x2tap
 {
@@ -71,7 +70,6 @@ namespace x2tap
 					Application.EnableVisualStyles();
 					Application.SetCompatibleTextRenderingDefault(false);
 					Application.Run(Global.Views.MainForm = new View.MainForm());
-
                 }
 				else
 				{

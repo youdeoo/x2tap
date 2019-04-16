@@ -34,6 +34,11 @@ namespace x2tap
         /// </summary>
         public static class Views
         {
+			/// <summary>
+			///		托盘
+			/// </summary>
+			public static View.Tray Tray;
+
             /// <summary>
             ///     主窗体
             /// </summary>

@@ -38,7 +38,6 @@ namespace x2tap.View
             InitializeComponent();
 
 			CheckForIllegalCrossThreadCalls = false;
-
         }
 
         /// <summary>
@@ -48,6 +47,7 @@ namespace x2tap.View
         {
             // 先清空掉内容
             ProxyComboBox.Items.Clear();
+
             // 添加 v2ray 代理
             foreach (var v2ray in Global.V2RayProxies)
             {
@@ -205,8 +205,8 @@ namespace x2tap.View
                 }
             });
 
-            new Tray().InitTray();
-        }
+			(Global.Views.Tray = new Tray()).Init();
+		}
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -219,8 +219,8 @@ namespace x2tap.View
             else
             {
 				Utils.Config.SaveToFile();
-				Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
-                //Environment.Exit(0);
+				Global.Views.Tray.Icon.Dispose();
+				Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "x2tap.exe");
             }
         }
 
