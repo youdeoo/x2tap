@@ -245,9 +245,14 @@ namespace x2tap.View
             }
         }
 
-        private void AddV2RayServerButton_Click(object sender, EventArgs e)
+		private void AddSocks5ServerToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void AddV2RayServerButton_Click(object sender, EventArgs e)
         {
-			(Global.Views.Server.v2ray = new Server.V2Ray()).Show();
+			(Global.Views.Server.V2Ray = new Server.V2Ray()).Show();
 			Hide();
 		}
 
@@ -261,11 +266,6 @@ namespace x2tap.View
 		{
 			(Global.Views.Server.ShadowsocksR = new Server.ShadowsocksR()).Show();
 			Hide();
-		}
-
-		private void AddSocks5ServerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-
 		}
 
 		private void TelegramGroupButton_Click(object sender, EventArgs e)
@@ -328,7 +328,7 @@ namespace x2tap.View
             {
                 if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {
-                    (Global.Views.Server.v2ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
+                    (Global.Views.Server.V2Ray = new Server.V2Ray(true, ProxyComboBox.SelectedIndex)).Show();
                 }
                 else if (ProxyComboBox.SelectedIndex < Global.V2RayProxies.Count)
                 {

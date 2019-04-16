@@ -55,9 +55,9 @@ namespace x2tap
             public static class Server
             {
                 /// <summary>
-                ///     v2ray
+                ///     V2Ray
                 /// </summary>
-                public static View.Server.V2Ray v2ray;
+                public static View.Server.V2Ray V2Ray;
 
                 /// <summary>
                 ///     Shadowsocks

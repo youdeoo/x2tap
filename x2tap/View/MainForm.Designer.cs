@@ -219,10 +219,10 @@
 			// ServerToolStripMenuItem
 			// 
 			this.ServerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddSocks5ServerToolStripMenuItem,
             this.AddV2RayServerButton,
             this.AddShadowsocksServerButton,
-            this.AddShadowsocksRServerButton,
-            this.AddSocks5ServerToolStripMenuItem});
+            this.AddShadowsocksRServerButton});
 			this.ServerToolStripMenuItem.Name = "ServerToolStripMenuItem";
 			this.ServerToolStripMenuItem.Size = new System.Drawing.Size(56, 21);
 			this.ServerToolStripMenuItem.Text = "服务器";
@@ -230,28 +230,28 @@
 			// AddV2RayServerButton
 			// 
 			this.AddV2RayServerButton.Name = "AddV2RayServerButton";
-			this.AddV2RayServerButton.Size = new System.Drawing.Size(193, 22);
+			this.AddV2RayServerButton.Size = new System.Drawing.Size(239, 22);
 			this.AddV2RayServerButton.Text = "添加 [V2Ray] 服务器";
 			this.AddV2RayServerButton.Click += new System.EventHandler(this.AddV2RayServerButton_Click);
 			// 
 			// AddShadowsocksServerButton
 			// 
 			this.AddShadowsocksServerButton.Name = "AddShadowsocksServerButton";
-			this.AddShadowsocksServerButton.Size = new System.Drawing.Size(193, 22);
-			this.AddShadowsocksServerButton.Text = "添加 [SS] 服务器";
+			this.AddShadowsocksServerButton.Size = new System.Drawing.Size(239, 22);
+			this.AddShadowsocksServerButton.Text = "添加 [Shadowsocks] 服务器";
 			this.AddShadowsocksServerButton.Click += new System.EventHandler(this.AddShadowsocksServerButton_Click);
 			// 
 			// AddShadowsocksRServerButton
 			// 
 			this.AddShadowsocksRServerButton.Name = "AddShadowsocksRServerButton";
-			this.AddShadowsocksRServerButton.Size = new System.Drawing.Size(193, 22);
-			this.AddShadowsocksRServerButton.Text = "添加 [SSR] 服务器";
+			this.AddShadowsocksRServerButton.Size = new System.Drawing.Size(239, 22);
+			this.AddShadowsocksRServerButton.Text = "添加 [ShadowsocksR] 服务器";
 			this.AddShadowsocksRServerButton.Click += new System.EventHandler(this.AddShadowsocksRServerButton_Click);
 			// 
 			// AddSocks5ServerToolStripMenuItem
 			// 
 			this.AddSocks5ServerToolStripMenuItem.Name = "AddSocks5ServerToolStripMenuItem";
-			this.AddSocks5ServerToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+			this.AddSocks5ServerToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
 			this.AddSocks5ServerToolStripMenuItem.Text = "添加 [Socks5] 服务器";
 			this.AddSocks5ServerToolStripMenuItem.Click += new System.EventHandler(this.AddSocks5ServerToolStripMenuItem_Click);
 			// 
@@ -268,21 +268,21 @@
 			// TelegramGroupButton
 			// 
 			this.TelegramGroupButton.Name = "TelegramGroupButton";
-			this.TelegramGroupButton.Size = new System.Drawing.Size(180, 22);
+			this.TelegramGroupButton.Size = new System.Drawing.Size(159, 22);
 			this.TelegramGroupButton.Text = "Telegram 群组";
 			this.TelegramGroupButton.Click += new System.EventHandler(this.TelegramGroupButton_Click);
 			// 
 			// TelegramChannelButton
 			// 
 			this.TelegramChannelButton.Name = "TelegramChannelButton";
-			this.TelegramChannelButton.Size = new System.Drawing.Size(180, 22);
+			this.TelegramChannelButton.Size = new System.Drawing.Size(159, 22);
 			this.TelegramChannelButton.Text = "Telegram 频道";
 			this.TelegramChannelButton.Click += new System.EventHandler(this.TelegramChannelButton_Click);
 			// 
 			// GithubButton
 			// 
 			this.GithubButton.Name = "GithubButton";
-			this.GithubButton.Size = new System.Drawing.Size(180, 22);
+			this.GithubButton.Size = new System.Drawing.Size(159, 22);
 			this.GithubButton.Text = "Github";
 			this.GithubButton.Click += new System.EventHandler(this.GithubButton_Click);
 			// 
