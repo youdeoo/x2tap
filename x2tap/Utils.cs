@@ -614,7 +614,9 @@ namespace x2tap
 					Regex finder = new Regex("^(?i)ss://([A-Za-z0-9+-/=_]+)(#(.+))?", RegexOptions.IgnoreCase), parser = new Regex("^((?<method>.+):(?<password>.*)@(?<hostname>.+?):(?<port>\\d+?))$", RegexOptions.IgnoreCase);
 					var match = finder.Match(text);
                     if (!match.Success)
-                        throw new FormatException();
+					{
+						throw new FormatException();
+					}
 
                     match = parser.Match(UrlSafeBase64Decode(match.Groups[1].Value));
 
@@ -665,7 +667,7 @@ namespace x2tap
                 catch (Exception)
                 {
                     var data = new Uri(text);
-					var userinfo = UrlSafeBase64Decode(UrlSafeBase64Decode(data.UserInfo)).Split(':');
+					var userinfo = UrlSafeBase64Decode(data.UserInfo).Split(':');
 
 					shadowsocks.Remark = data.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
                     shadowsocks.Address = data.IdnHost;
