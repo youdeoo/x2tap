@@ -156,6 +156,7 @@
     <Compile Include="View\SubscribeForm.Designer.cs">
       <DependentUpon>SubscribeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Tray.cs" />
     <Compile Include="x2tap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\MainForm.cs">
