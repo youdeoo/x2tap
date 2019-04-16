@@ -29,6 +29,11 @@ namespace x2tap
 		/// </summary>
 		public static List<Objects.Mode> Modes = new List<Objects.Mode>();
 
+		/// <summary>
+		///		全局例外 IP
+		/// </summary>
+		public static List<string> ExceptionIPs = new List<string>();
+
         /// <summary>
         ///     视图
         /// </summary>
@@ -44,15 +49,20 @@ namespace x2tap
             /// </summary>
             public static View.MainForm MainForm;
 
-            /// <summary>
-            ///     高级设置
-            /// </summary>
-            public static View.AdvancedForm AdvancedForm;
+			/// <summary>
+			///     高级设置窗体
+			/// </summary>
+			public static View.AdvancedForm AdvancedForm;
 
             /// <summary>
             ///     订阅窗体
             /// </summary>
             public static View.SubscribeForm SubscribeForm;
+
+			/// <summary>
+			///		全局例外 IP 窗体
+			/// </summary>
+			public static View.ExceptionIPForm ExceptionIPForm;
 
             /// <summary>
             ///     服务器配置窗体

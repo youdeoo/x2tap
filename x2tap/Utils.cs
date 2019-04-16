@@ -102,6 +102,11 @@ namespace x2tap
 						Global.Modes.Add(mode);
 					}
 				}
+
+				if (File.Exists("ExceptionIPs.json"))
+				{
+					Global.ExceptionIPs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("ExceptionIPs.json"));
+				}
 			}
 
 			/// <summary>
@@ -123,6 +128,7 @@ namespace x2tap
 				File.WriteAllText("v2ray.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.V2RayProxies));
 				File.WriteAllText("Shadowsocks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksProxies));
 				File.WriteAllText("ShadowsocksR.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
+				File.WriteAllText("ExceptionIPs.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ExceptionIPs));
 			}
 
 			/// <summary>

@@ -53,7 +53,8 @@ namespace x2tap.View
 
 		private void GlobalExceptionIPButton_Click(object sender, EventArgs e)
 		{
-
+			(Global.Views.ExceptionIPForm = new ExceptionIPForm()).Show();
+			Hide();
 		}
 
 		private void ControlButton_Click(object sender, EventArgs e)

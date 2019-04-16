@@ -624,6 +624,16 @@ namespace x2tap.View
 								}
 
 								//////////////////////////////////////////////////
+								// 配置路由表 - 处理全局例外 IP
+								//////////////////////////////////////////////////
+								foreach (var rule in Global.ExceptionIPs)
+								{
+									var splited = rule.Split('/');
+
+									Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.AdapterGateway);
+								}
+
+								//////////////////////////////////////////////////
 								// 清理 DNS 缓存
 								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
@@ -698,6 +708,16 @@ namespace x2tap.View
 					if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 1)
 					{
 
+					}
+
+					//////////////////////////////////////////////////
+					// 配置路由表 - 全局例外 IP
+					//////////////////////////////////////////////////
+					foreach (var rule in Global.ExceptionIPs)
+					{
+						var splited = rule.Split('/');
+
+						Utils.Route.Delete(splited[0]);
 					}
 
 					//////////////////////////////////////////////////
