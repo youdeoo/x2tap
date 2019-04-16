@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using x2tap.View;
 
 namespace x2tap
 {
@@ -70,7 +71,8 @@ namespace x2tap
 					Application.EnableVisualStyles();
 					Application.SetCompatibleTextRenderingDefault(false);
 					Application.Run(Global.Views.MainForm = new View.MainForm());
-				}
+
+                }
 				else
 				{
 					MessageBox.Show("只允许同时运行一个", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);

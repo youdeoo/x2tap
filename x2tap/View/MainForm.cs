@@ -13,10 +13,10 @@ namespace x2tap.View
 {
     public partial class MainForm : Form
     {
-		/// <summary>
-		///		上行流量
-		/// </summary>
-		public long UplinkBandwidth = 0;
+        /// <summary>
+        ///		上行流量
+        /// </summary>
+        public long UplinkBandwidth = 0;
 
 		/// <summary>
 		///		下行流量
@@ -38,6 +38,7 @@ namespace x2tap.View
             InitializeComponent();
 
 			CheckForIllegalCrossThreadCalls = false;
+
         }
 
         /// <summary>
@@ -203,6 +204,8 @@ namespace x2tap.View
                     }
                 }
             });
+
+            new Tray().InitTray();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -217,6 +220,7 @@ namespace x2tap.View
             {
 				Utils.Config.SaveToFile();
 				Utils.Shell.ExecuteCommandNoWait("taskkill", "/f", "/t", "/im", "x2tap.exe");
+                //Environment.Exit(0);
             }
         }
 
