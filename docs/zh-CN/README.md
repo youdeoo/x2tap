@@ -24,7 +24,9 @@
 
 # 依赖
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
+- [shadowsocksr-native](https://github.com/ShadowsocksR-Live/shadowsocksr-native)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
+- [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 
 # 截图
@@ -37,5 +39,5 @@
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
-# 使用协议
+# 用户协议
 - 请在遵循当地法律的情况下使用，不得用于违法用途

@@ -24,9 +24,11 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 - [ ] Add `SSD://` uri support
 - [ ] IPv6 forward support
 
-# Depend on
+# Dependences
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
+- [shadowsocksr-native](https://github.com/ShadowsocksR-Live/shadowsocksr-native)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
+- [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 
 # Screenshots
@@ -39,5 +41,5 @@ See [BUILD.md](BUILD.md)
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
-# Usage Agreement
+# User Agreement
 - Please use it in accordance with local laws and may not be used for illegal purposes
