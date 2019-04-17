@@ -620,6 +620,11 @@ namespace x2tap
 				v2ray.UserID = data["id"].Value;
 				v2ray.AlterID = data["aid"].AsInt;
 
+				if (String.IsNullOrEmpty(v2ray.Remark))
+				{
+					v2ray.Remark = String.Format("{0}:{1}", v2ray.Address, v2ray.Port);
+				}
+
 				switch (data["net"].Value)
 				{
 					case "tcp":
@@ -742,7 +747,12 @@ namespace x2tap
                     shadowsocks.Address = data.IdnHost;
                     shadowsocks.Port = data.Port;
 
-                    switch (userinfo[0])
+					if (String.IsNullOrEmpty(shadowsocks.Remark))
+					{
+						shadowsocks.Remark = String.Format("{0}:{1}", shadowsocks.Address, shadowsocks.Port);
+					}
+
+					switch (userinfo[0])
                     {
                         case "aes-256-cfb":
                             shadowsocks.EncryptMethod = 0;
@@ -917,6 +927,10 @@ namespace x2tap
 				if (dict.ContainsKey("remarks"))
 				{
 					shadowsocksr.Remark = Utils.UrlSafeBase64Decode(dict["remarks"]);
+				}
+				else
+				{
+					shadowsocksr.Remark = String.Format("{0}:{1}", shadowsocksr.Address, shadowsocksr.Port);
 				}
 
 				if (dict.ContainsKey("protoparam"))
