@@ -4,7 +4,7 @@
 [![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
 
 # x2tap
-X2tap can intercept all connections at the network layer and transfer them to Socks5, Shadowsocks, ShadowsocksR, V2Ray proxy
+Can intercept all connections at the network layer and transfer them to Socks5, Shadowsocks, ShadowsocksR, V2Ray proxy
 
 **The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
 
