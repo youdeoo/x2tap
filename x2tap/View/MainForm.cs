@@ -434,7 +434,7 @@ namespace x2tap.View
 									//////////////////////////////////////////////////
 									Thread.Sleep(1000);
 									Status = "正在启动 SSR 中";
-									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "ssr-local.exe", "-c", "x2tap.txt");
+									Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "ssr-local.exe", "-c", "x2tap.txt", "-u");
 
 									//////////////////////////////////////////////////
 									// 检查 SSR 状态
