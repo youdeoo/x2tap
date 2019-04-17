@@ -38,7 +38,7 @@ namespace x2tap.View
             {
                 if (Global.Views.MainForm.Started)
                 {
-                    MessageBox.Show("请先点击关闭按钮", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("请先停止再退出程序", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
