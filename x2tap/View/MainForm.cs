@@ -110,7 +110,7 @@ namespace x2tap.View
 					try
 					{
 						// 更新标题栏时间
-						Text = string.Format("x2tap - {0}", DateTime.Now.ToString());
+						Text = String.Format("x2tap - 0.1.9-TESTING - {0}", DateTime.Now.ToString());
 
 						// 更新状态信息
 						StatusLabel.Text = string.Format("状态：{0}", Status);
