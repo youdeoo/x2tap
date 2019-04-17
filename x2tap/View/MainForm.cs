@@ -577,6 +577,21 @@ namespace x2tap.View
 								//////////////////////////////////////////////////
 								if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 								{
+									if (ProxyComboBox.Text.StartsWith("[SSR]") && Global.Modes[ModeComboBox.SelectedIndex - 2].BypassChina)
+									{
+										using (var sr = new StringReader(Encoding.UTF8.GetString(Properties.Resources.CNIP)))
+										{
+											string text;
+
+											while ((text = sr.ReadLine()) != null)
+											{
+												var splited = text.Split('/');
+
+												Utils.Route.Create(splited[0], int.Parse(splited[1]), Global.Config.AdapterGateway, Global.Config.AdapterIndex);
+											}
+										}
+									}
+
 									var mode = Global.Modes[ModeComboBox.SelectedIndex - 2];
 									foreach (var rule in mode.Rule)
 									{
