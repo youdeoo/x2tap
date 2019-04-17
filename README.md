@@ -4,25 +4,13 @@
 [![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
 
 # x2tap
-VPN tools based on TUN/TAP, tun2socks and v2ray implementations
+X2tap can intercept all connections at the network layer and transfer them to Socks5, Shadowsocks, ShadowsocksR, V2Ray proxy
 
 **The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
 
 [简体中文](docs/zh-CN/README.md)
-
-Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
-# TODO
-- [x] Import subscriptions (Shadowsocks, VMess)
-- [x] Get traffic information directly using the Windows API
-- [x] List of external rules (See [MODE.md](MODE.md))
-- [x] Local DNS Agent
-- [x] Add ShadowsocksR support
-- [x] Custom DNS settings
-- [ ] Add Socks5 support
-- [ ] Add Shadowsocks obfs plugin support
-- [ ] Global exception IP address
-- [ ] Add `SSD://` uri support
-- [ ] IPv6 forward support
+# Screenshots
+![](screenshots/main.png)
 
 # Dependences
 - [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
@@ -30,9 +18,6 @@ Proxies that support Shadowsocks and VMess protocols (implemented through v2ray)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
-
-# Screenshots
-![](screenshots/main.png)
 
 # Compilation Guide
 See [BUILD.md](BUILD.md)
