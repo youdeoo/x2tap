@@ -48,7 +48,7 @@ namespace x2tap
 				{
 					MessageBox.Show(string.Format("缺失重要文件：{0}", filename), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-					Application.Exit();
+					Environment.Exit(1);
 					return;
 				}
 			}
@@ -56,9 +56,9 @@ namespace x2tap
 			// 检查 TUN/TAP 适配器
 			if (Utils.TUNTAP.GetComponentID() == "" && !Utils.TUNTAP.Create())
             {
-                MessageBox.Show("尝试安装 TUN/TAP 适配器时失败！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("尝试安装 TUN/TAP 适配器时失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                Application.Exit();
+				Environment.Exit(1);
                 return;
             }
 #endif

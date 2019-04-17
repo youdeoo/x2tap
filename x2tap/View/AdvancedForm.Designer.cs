@@ -43,6 +43,9 @@
 			this.TUNTAPGatewayLabel = new System.Windows.Forms.Label();
 			this.TUNTAPDNSLabel = new System.Windows.Forms.Label();
 			this.GlobalExceptionIPButton = new System.Windows.Forms.Button();
+			this.TUNTAPNameLabel = new System.Windows.Forms.Label();
+			this.TUNTAPNameTextBox = new System.Windows.Forms.TextBox();
+			this.TUNTAPIndexLabel = new System.Windows.Forms.Label();
 			this.V2RayLoggingLevelGroupBox.SuspendLayout();
 			this.TUNTAPGroupBox.SuspendLayout();
 			this.SuspendLayout();
@@ -76,7 +79,7 @@
 			// 
 			// ControlButton
 			// 
-			this.ControlButton.Location = new System.Drawing.Point(300, 240);
+			this.ControlButton.Location = new System.Drawing.Point(300, 272);
 			this.ControlButton.Name = "ControlButton";
 			this.ControlButton.Size = new System.Drawing.Size(75, 23);
 			this.ControlButton.TabIndex = 1;
@@ -86,6 +89,9 @@
 			// 
 			// TUNTAPGroupBox
 			// 
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPIndexLabel);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNameTextBox);
+			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNameLabel);
 			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSTextBox);
 			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPGatewayTextBox);
 			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNetmaskTextBox);
@@ -97,14 +103,14 @@
 			this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSLabel);
 			this.TUNTAPGroupBox.Location = new System.Drawing.Point(12, 74);
 			this.TUNTAPGroupBox.Name = "TUNTAPGroupBox";
-			this.TUNTAPGroupBox.Size = new System.Drawing.Size(363, 160);
+			this.TUNTAPGroupBox.Size = new System.Drawing.Size(363, 192);
 			this.TUNTAPGroupBox.TabIndex = 2;
 			this.TUNTAPGroupBox.TabStop = false;
 			this.TUNTAPGroupBox.Text = "虚拟网卡";
 			// 
 			// TUNTAPDNSTextBox
 			// 
-			this.TUNTAPDNSTextBox.Location = new System.Drawing.Point(48, 106);
+			this.TUNTAPDNSTextBox.Location = new System.Drawing.Point(48, 135);
 			this.TUNTAPDNSTextBox.Name = "TUNTAPDNSTextBox";
 			this.TUNTAPDNSTextBox.Size = new System.Drawing.Size(309, 23);
 			this.TUNTAPDNSTextBox.TabIndex = 6;
@@ -112,7 +118,7 @@
 			// 
 			// TUNTAPGatewayTextBox
 			// 
-			this.TUNTAPGatewayTextBox.Location = new System.Drawing.Point(48, 77);
+			this.TUNTAPGatewayTextBox.Location = new System.Drawing.Point(48, 106);
 			this.TUNTAPGatewayTextBox.Name = "TUNTAPGatewayTextBox";
 			this.TUNTAPGatewayTextBox.Size = new System.Drawing.Size(309, 23);
 			this.TUNTAPGatewayTextBox.TabIndex = 4;
@@ -120,7 +126,7 @@
 			// 
 			// TUNTAPNetmaskTextBox
 			// 
-			this.TUNTAPNetmaskTextBox.Location = new System.Drawing.Point(48, 48);
+			this.TUNTAPNetmaskTextBox.Location = new System.Drawing.Point(48, 77);
 			this.TUNTAPNetmaskTextBox.Name = "TUNTAPNetmaskTextBox";
 			this.TUNTAPNetmaskTextBox.Size = new System.Drawing.Size(309, 23);
 			this.TUNTAPNetmaskTextBox.TabIndex = 3;
@@ -129,7 +135,7 @@
 			// TUNTAPNetmaskLabel
 			// 
 			this.TUNTAPNetmaskLabel.AutoSize = true;
-			this.TUNTAPNetmaskLabel.Location = new System.Drawing.Point(6, 51);
+			this.TUNTAPNetmaskLabel.Location = new System.Drawing.Point(6, 80);
 			this.TUNTAPNetmaskLabel.Name = "TUNTAPNetmaskLabel";
 			this.TUNTAPNetmaskLabel.Size = new System.Drawing.Size(44, 17);
 			this.TUNTAPNetmaskLabel.TabIndex = 2;
@@ -137,7 +143,7 @@
 			// 
 			// TUNTAPAddressTextBox
 			// 
-			this.TUNTAPAddressTextBox.Location = new System.Drawing.Point(48, 19);
+			this.TUNTAPAddressTextBox.Location = new System.Drawing.Point(48, 48);
 			this.TUNTAPAddressTextBox.Name = "TUNTAPAddressTextBox";
 			this.TUNTAPAddressTextBox.Size = new System.Drawing.Size(309, 23);
 			this.TUNTAPAddressTextBox.TabIndex = 1;
@@ -146,7 +152,7 @@
 			// TUNTAPAddressLabel
 			// 
 			this.TUNTAPAddressLabel.AutoSize = true;
-			this.TUNTAPAddressLabel.Location = new System.Drawing.Point(6, 22);
+			this.TUNTAPAddressLabel.Location = new System.Drawing.Point(6, 51);
 			this.TUNTAPAddressLabel.Name = "TUNTAPAddressLabel";
 			this.TUNTAPAddressLabel.Size = new System.Drawing.Size(44, 17);
 			this.TUNTAPAddressLabel.TabIndex = 0;
@@ -155,7 +161,7 @@
 			// TUNTAPUseCustomDNSCheckBox
 			// 
 			this.TUNTAPUseCustomDNSCheckBox.AutoSize = true;
-			this.TUNTAPUseCustomDNSCheckBox.Location = new System.Drawing.Point(200, 135);
+			this.TUNTAPUseCustomDNSCheckBox.Location = new System.Drawing.Point(200, 164);
 			this.TUNTAPUseCustomDNSCheckBox.Name = "TUNTAPUseCustomDNSCheckBox";
 			this.TUNTAPUseCustomDNSCheckBox.Size = new System.Drawing.Size(157, 21);
 			this.TUNTAPUseCustomDNSCheckBox.TabIndex = 8;
@@ -165,7 +171,7 @@
 			// TUNTAPGatewayLabel
 			// 
 			this.TUNTAPGatewayLabel.AutoSize = true;
-			this.TUNTAPGatewayLabel.Location = new System.Drawing.Point(6, 80);
+			this.TUNTAPGatewayLabel.Location = new System.Drawing.Point(6, 109);
 			this.TUNTAPGatewayLabel.Name = "TUNTAPGatewayLabel";
 			this.TUNTAPGatewayLabel.Size = new System.Drawing.Size(44, 17);
 			this.TUNTAPGatewayLabel.TabIndex = 5;
@@ -174,7 +180,7 @@
 			// TUNTAPDNSLabel
 			// 
 			this.TUNTAPDNSLabel.AutoSize = true;
-			this.TUNTAPDNSLabel.Location = new System.Drawing.Point(6, 109);
+			this.TUNTAPDNSLabel.Location = new System.Drawing.Point(6, 138);
 			this.TUNTAPDNSLabel.Name = "TUNTAPDNSLabel";
 			this.TUNTAPDNSLabel.Size = new System.Drawing.Size(46, 17);
 			this.TUNTAPDNSLabel.TabIndex = 7;
@@ -182,7 +188,7 @@
 			// 
 			// GlobalExceptionIPButton
 			// 
-			this.GlobalExceptionIPButton.Location = new System.Drawing.Point(12, 240);
+			this.GlobalExceptionIPButton.Location = new System.Drawing.Point(12, 272);
 			this.GlobalExceptionIPButton.Name = "GlobalExceptionIPButton";
 			this.GlobalExceptionIPButton.Size = new System.Drawing.Size(80, 23);
 			this.GlobalExceptionIPButton.TabIndex = 3;
@@ -190,11 +196,38 @@
 			this.GlobalExceptionIPButton.UseVisualStyleBackColor = true;
 			this.GlobalExceptionIPButton.Click += new System.EventHandler(this.GlobalExceptionIPButton_Click);
 			// 
+			// TUNTAPNameLabel
+			// 
+			this.TUNTAPNameLabel.AutoSize = true;
+			this.TUNTAPNameLabel.Location = new System.Drawing.Point(6, 22);
+			this.TUNTAPNameLabel.Name = "TUNTAPNameLabel";
+			this.TUNTAPNameLabel.Size = new System.Drawing.Size(44, 17);
+			this.TUNTAPNameLabel.TabIndex = 9;
+			this.TUNTAPNameLabel.Text = "名称：";
+			// 
+			// TUNTAPNameTextBox
+			// 
+			this.TUNTAPNameTextBox.Location = new System.Drawing.Point(48, 19);
+			this.TUNTAPNameTextBox.Name = "TUNTAPNameTextBox";
+			this.TUNTAPNameTextBox.ReadOnly = true;
+			this.TUNTAPNameTextBox.Size = new System.Drawing.Size(309, 23);
+			this.TUNTAPNameTextBox.TabIndex = 10;
+			this.TUNTAPNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// TUNTAPIndexLabel
+			// 
+			this.TUNTAPIndexLabel.AutoSize = true;
+			this.TUNTAPIndexLabel.Location = new System.Drawing.Point(6, 165);
+			this.TUNTAPIndexLabel.Name = "TUNTAPIndexLabel";
+			this.TUNTAPIndexLabel.Size = new System.Drawing.Size(51, 17);
+			this.TUNTAPIndexLabel.TabIndex = 11;
+			this.TUNTAPIndexLabel.Text = "索引：0";
+			// 
 			// AdvancedForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(387, 274);
+			this.ClientSize = new System.Drawing.Size(387, 306);
 			this.Controls.Add(this.GlobalExceptionIPButton);
 			this.Controls.Add(this.TUNTAPGroupBox);
 			this.Controls.Add(this.ControlButton);
@@ -231,5 +264,8 @@
 		private System.Windows.Forms.TextBox TUNTAPDNSTextBox;
 		private System.Windows.Forms.CheckBox TUNTAPUseCustomDNSCheckBox;
 		private System.Windows.Forms.Button GlobalExceptionIPButton;
+		private System.Windows.Forms.Label TUNTAPNameLabel;
+		private System.Windows.Forms.TextBox TUNTAPNameTextBox;
+		private System.Windows.Forms.Label TUNTAPIndexLabel;
 	}
 }

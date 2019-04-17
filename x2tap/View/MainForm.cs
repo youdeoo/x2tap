@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -98,44 +98,7 @@ namespace x2tap.View
 			}
 
 			// 初始化适配器
-			Task.Run(() =>
-			{
-				using (var client = new UdpClient("114.114.114.114", 53))
-				{
-					var address = ((IPEndPoint)client.Client.LocalEndPoint).Address;
-					Global.Config.AdapterAddress = address.ToString();
-
-					var addressGeted = false;
-
-					var adapters = NetworkInterface.GetAllNetworkInterfaces();
-					foreach (var adapter in adapters)
-					{
-						var properties = adapter.GetIPProperties();
-
-						foreach (var information in properties.UnicastAddresses)
-						{
-							if (information.Address.AddressFamily == AddressFamily.InterNetwork && Equals(information.Address, address))
-							{
-								addressGeted = true;
-							}
-						}
-
-						foreach (var information in properties.GatewayAddresses)
-						{
-							if (addressGeted)
-							{
-								Global.Config.AdapterGateway = information.Address.ToString();
-								break;
-							}
-						}
-
-						if (addressGeted)
-						{
-							break;
-						}
-					}
-				}
-			});
+			Utils.Config.InitAadapter();
 
 			// 后台工作
 			Task.Run(() =>
@@ -162,13 +125,13 @@ namespace x2tap.View
 									var adapters = NetworkInterface.GetAllNetworkInterfaces();
 									foreach (var adapter in adapters)
 									{
-										if (adapter.Name == Utils.TUNTAP.GetName(Utils.TUNTAP.GetComponentID()))
+										if (adapter.Name == Global.Config.TUNTAP.Name)
 										{
 											var stats = adapter.GetIPv4Statistics();
 
 											UsedBandwidthLabel.Text = $"已使用：{Utils.ComputeBandwidth(stats.BytesReceived + stats.BytesSent)}";
 											UplinkSpeedLabel.Text = $"↑：{Utils.ComputeBandwidth(stats.BytesSent - UplinkBandwidth)}/s";
-											DownlinkSpeedLabel.Text = $"↑：{Utils.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}/s";
+											DownlinkSpeedLabel.Text = $"↓：{Utils.ComputeBandwidth(stats.BytesReceived - DownlinkBandwidth)}/s";
 
 											UplinkBandwidth = stats.BytesSent;
 											DownlinkBandwidth = stats.BytesReceived;
@@ -501,16 +464,15 @@ namespace x2tap.View
 										{
 											foreach (var address in Dns.GetHostAddresses("ea-dns.rubyfish.cn"))
 											{
-												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+												Utils.Route.Create(address.ToString(), 32, Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 											}
 
 											foreach (var address in Dns.GetHostAddresses("uw-dns.rubyfish.cn"))
 											{
-												Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+												Utils.Route.Create(address.ToString(), 32, Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 											}
 
-											Utils.Route.Add("1.2.4.8", "255.255.255.255", Global.Config.AdapterGateway);
-											Utils.Route.Add("8.8.8.8", "255.255.255.255", Global.Config.TUNTAP.Gateway);
+											Utils.Route.Create("1.2.4.8", 32, Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 										}
 										else
 										{
@@ -523,7 +485,7 @@ namespace x2tap.View
 									{
 										foreach (var address in Global.Config.TUNTAP.DNS.Split(','))
 										{
-											Utils.Route.Add(address, "255.255.255.255", Global.Config.AdapterGateway);
+											Utils.Route.Create(address, 32, Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 										}
 									}
 								}
@@ -560,15 +522,15 @@ namespace x2tap.View
 								{
 									foreach (var address in Dns.GetHostAddresses(Global.ShadowsocksRProxies[ProxyComboBox.SelectedIndex - Global.V2RayProxies.Count - Global.ShadowsocksProxies.Count].Address))
 									{
-										Utils.Route.Add(address.ToString(), "255.255.255.255", Global.Config.AdapterGateway);
+										Utils.Route.Create(address.ToString(), 32, Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 									}
 								}
 
 								if (ModeComboBox.SelectedIndex == 0 || ModeComboBox.SelectedIndex == 1 || Global.Modes[ModeComboBox.SelectedIndex - 2].Type == 0)
 								{
-									if (!Utils.Route.Add("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway))
+									if (!Utils.Route.Create("0.0.0.0", 0, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index))
 									{
-										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
+										Utils.Route.Delete("0.0.0.0", 0, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
@@ -578,10 +540,10 @@ namespace x2tap.View
 										throw new InvalidOperationException();
 									}
 
-									if (!Utils.Route.Add("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway))
+									if (!Utils.Route.Create("0.0.0.0", 1, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index))
 									{
-										Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
-										Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
+										Utils.Route.Delete("0.0.0.0", 0, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
+										Utils.Route.Delete("0.0.0.0", 1, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "tun2socks.exe");
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "dnscrypt-proxy.exe");
 										Utils.Shell.ExecuteCommandNoWait("TASKKILL", "/F", "/T", "/IM", "ssr-local.exe");
@@ -595,9 +557,19 @@ namespace x2tap.View
 								//////////////////////////////////////////////////
 								// 配置路由表 - 处理 SSR 的绕过中国
 								//////////////////////////////////////////////////
-								if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 1)
+								if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 0)
 								{
+									using (var sr = new StringReader(Encoding.UTF8.GetString(Properties.Resources.CNIP)))
+									{
+										string text;
 
+										while ((text = sr.ReadLine()) != null)
+										{
+											var splited = text.Split('/');
+
+											Utils.Route.Create(splited[0], int.Parse(splited[1]), Global.Config.AdapterGateway, Global.Config.AdapterIndex);
+										}
+									}
 								}
 
 								//////////////////////////////////////////////////
@@ -613,11 +585,11 @@ namespace x2tap.View
 										{
 											if (mode.Type == 1)
 											{
-												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.TUNTAP.Gateway);
+												Utils.Route.Create(splited[0], int.Parse(splited[1]), Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 											}
 											else
 											{
-												Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.AdapterGateway);
+												Utils.Route.Create(splited[0], int.Parse(splited[1]), Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 											}
 										}
 									}
@@ -630,7 +602,7 @@ namespace x2tap.View
 								{
 									var splited = rule.Split('/');
 
-									Utils.Route.Add(splited[0], Utils.Route.TranslateCIDR(splited[1]), Global.Config.AdapterGateway);
+									Utils.Route.Create(splited[0], int.Parse(splited[1]), Global.Config.AdapterGateway, Global.Config.AdapterIndex);
 								}
 
 								//////////////////////////////////////////////////
@@ -688,8 +660,8 @@ namespace x2tap.View
 					//////////////////////////////////////////////////
 					Thread.Sleep(1000);
 					Status = "正在重置 路由表 中";
-					Utils.Route.Delete("0.0.0.0", "0.0.0.0", Global.Config.TUNTAP.Gateway);
-					Utils.Route.Delete("0.0.0.0", "128.0.0.0", Global.Config.TUNTAP.Gateway);
+					Utils.Route.Delete("0.0.0.0", 0, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
+					Utils.Route.Delete("0.0.0.0", 1, Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 					if (ModeComboBox.SelectedIndex != 0 && ModeComboBox.SelectedIndex != 1)
 					{
 						foreach (var rule in Global.Modes[ModeComboBox.SelectedIndex - 2].Rule)
@@ -697,7 +669,7 @@ namespace x2tap.View
 							var splited = rule.Split('/');
 							if (splited.Length == 2)
 							{
-								Utils.Route.Delete(splited[0]);
+								Utils.Route.Delete(splited[0], int.Parse(splited[1]), Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 							}
 						}
 					}
@@ -705,9 +677,19 @@ namespace x2tap.View
 					//////////////////////////////////////////////////
 					// 配置路由表 - 处理 SSR 的绕过中国
 					//////////////////////////////////////////////////
-					if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 1)
+					if (ProxyComboBox.Text.StartsWith("[SSR]") && ModeComboBox.SelectedIndex == 0)
 					{
+						using (var sr = new StringReader(Encoding.UTF8.GetString(Properties.Resources.CNIP)))
+						{
+							string text;
 
+							while ((text = sr.ReadLine()) != null)
+							{
+								var splited = text.Split('/');
+
+								Utils.Route.Delete(splited[0], int.Parse(splited[1]), Global.Config.AdapterGateway, Global.Config.AdapterIndex);
+							}
+						}
 					}
 
 					//////////////////////////////////////////////////
@@ -717,7 +699,7 @@ namespace x2tap.View
 					{
 						var splited = rule.Split('/');
 
-						Utils.Route.Delete(splited[0]);
+						Utils.Route.Delete(splited[0], int.Parse(splited[1]), Global.Config.TUNTAP.Gateway, Global.Config.TUNTAP.Index);
 					}
 
 					//////////////////////////////////////////////////

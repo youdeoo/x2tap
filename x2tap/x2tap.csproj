@@ -212,6 +212,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\CNIP" />
     <None Include="Resources\defaultConfig" />
     <None Include="x2tap.manifest" />
   </ItemGroup>

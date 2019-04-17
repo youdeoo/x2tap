@@ -3,7 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -129,6 +132,63 @@ namespace x2tap
 				File.WriteAllText("Shadowsocks.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksProxies));
 				File.WriteAllText("ShadowsocksR.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ShadowsocksRProxies));
 				File.WriteAllText("ExceptionIPs.json", Newtonsoft.Json.JsonConvert.SerializeObject(Global.ExceptionIPs));
+			}
+
+			/// <summary>
+			///		初始化适配器
+			/// </summary>
+			public static void InitAadapter()
+			{
+				// 初始化适配器
+				using (var client = new UdpClient("114.114.114.114", 53))
+				{
+					var address = ((IPEndPoint)client.Client.LocalEndPoint).Address;
+					Global.Config.AdapterAddress = address.ToString();
+
+					var addressGeted = false;
+
+					var adapters = NetworkInterface.GetAllNetworkInterfaces();
+					foreach (var adapter in adapters)
+					{
+						var properties = adapter.GetIPProperties();
+
+						foreach (var information in properties.UnicastAddresses)
+						{
+							if (information.Address.AddressFamily == AddressFamily.InterNetwork && Equals(information.Address, address))
+							{
+								addressGeted = true;
+							}
+						}
+
+						foreach (var information in properties.GatewayAddresses)
+						{
+							if (addressGeted)
+							{
+								Global.Config.AdapterIndex = properties.GetIPv4Properties().Index;
+								Global.Config.AdapterGateway = information.Address.ToString();
+								break;
+							}
+						}
+
+						if (addressGeted)
+						{
+							break;
+						}
+					}
+				}
+
+				// 搜索 TUN/TAP 适配器的索引
+				Global.Config.TUNTAP.ComponentID = Utils.TUNTAP.GetComponentID();
+				Global.Config.TUNTAP.Name = Utils.TUNTAP.GetName(Global.Config.TUNTAP.ComponentID);
+				foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
+				{
+					if (adapter.Name == Global.Config.TUNTAP.Name)
+					{
+						Global.Config.TUNTAP.Index = adapter.GetIPProperties().GetIPv4Properties().Index;
+
+						break;
+					}
+				}
 			}
 
 			/// <summary>
@@ -450,24 +510,27 @@ namespace x2tap
 						data.method = "aes-192-ctr";
 						break;
 					case 10:
-						data.method = "bf-cfb";
+						data.method = "aes-256-ctr";
 						break;
 					case 11:
-						data.method = "camellia-128-cfb";
+						data.method = "bf-cfb";
 						break;
 					case 12:
-						data.method = "camellia-192-cfb";
+						data.method = "camellia-128-cfb";
 						break;
 					case 13:
-						data.method = "camellia-256-cfb";
+						data.method = "camellia-192-cfb";
 						break;
 					case 14:
-						data.method = "salsa20";
+						data.method = "camellia-256-cfb";
 						break;
 					case 15:
-						data.method = "chacha20";
+						data.method = "salsa20";
 						break;
 					case 16:
+						data.method = "chacha20";
+						break;
+					case 17:
 						data.method = "chacha20-ietf";
 						break;
 					default:
@@ -788,26 +851,29 @@ namespace x2tap
 					case "aes-192-ctr":
 						shadowsocksr.EncryptMethod = 9;
 						break;
-					case "bf-cfb":
+					case "aes-256-ctr":
 						shadowsocksr.EncryptMethod = 10;
 						break;
-					case "camellia-128-cfb":
+					case "bf-cfb":
 						shadowsocksr.EncryptMethod = 11;
 						break;
-					case "camellia-192-cfb":
+					case "camellia-128-cfb":
 						shadowsocksr.EncryptMethod = 12;
 						break;
-					case "camellia-256-cfb":
+					case "camellia-192-cfb":
 						shadowsocksr.EncryptMethod = 13;
 						break;
-					case "salsa20":
+					case "camellia-256-cfb":
 						shadowsocksr.EncryptMethod = 14;
 						break;
-					case "chacha20":
+					case "salsa20":
 						shadowsocksr.EncryptMethod = 15;
 						break;
-					case "chacha20-ietf":
+					case "chacha20":
 						shadowsocksr.EncryptMethod = 16;
+						break;
+					case "chacha20-ietf":
+						shadowsocksr.EncryptMethod = 17;
 						break;
 					default:
 						throw new NotSupportedException(String.Format("不支持的加密方式：{0}", data[3]));
@@ -965,112 +1031,28 @@ namespace x2tap
 		public static class Route
 		{
 			/// <summary>
-			///     路由工具位置
-			/// </summary>
-			public static string Location = "C:\\Windows\\System32\\route.exe";
-
-			/// <summary>
-			///		将 CIDR 翻译成掩码
-			/// </summary>
-			/// <param name="cidr">CIDR</param>
-			/// <returns>掩码</returns>
-			public static string TranslateCIDR(string cidr)
-			{
-				cidr = "/" + cidr;
-
-				return cidr
-					.Replace("/32", "255.255.255.255")
-					.Replace("/31", "255.255.255.254")
-					.Replace("/30", "255.255.255.252")
-					.Replace("/29", "255.255.255.248")
-					.Replace("/28", "255.255.255.240")
-					.Replace("/27", "255.255.255.224")
-					.Replace("/26", "255.255.255.192")
-					.Replace("/25", "255.255.255.128")
-					.Replace("/24", "255.255.255.0")
-					.Replace("/23", "255.255.254.0")
-					.Replace("/22", "255.255.252.0")
-					.Replace("/21", "255.255.248.0")
-					.Replace("/20", "255.255.240.0")
-					.Replace("/19", "255.255.224.0")
-					.Replace("/18", "255.255.192.0")
-					.Replace("/17", "255.255.128.0")
-					.Replace("/16", "255.255.0.0")
-					.Replace("/15", "255.254.0.0")
-					.Replace("/14", "255.252.0.0")
-					.Replace("/13", "255.248.0.0")
-					.Replace("/12", "255.240.0.0")
-					.Replace("/11", "255.224.0.0")
-					.Replace("/10", "255.192.0.0")
-					.Replace("/9", "255.128.0.0")
-					.Replace("/8", "255.0.0.0")
-					.Replace("/7", "254.0.0.0")
-					.Replace("/6", "252.0.0.0")
-					.Replace("/5", "248.0.0.0")
-					.Replace("/4", "240.0.0.0")
-					.Replace("/3", "224.0.0.0")
-					.Replace("/2", "192.0.0.0")
-					.Replace("/1", "128.0.0.0")
-					.Replace("/0", "0.0.0.0");
-			}
-
-			/// <summary>
-			///     增加路由规则
+			///		创建路由规则
 			/// </summary>
 			/// <param name="address">地址</param>
-			/// <param name="netmask">掩码</param>
+			/// <param name="netmask">掩码 CIDR</param>
 			/// <param name="gateway">网关</param>
-			/// <returns></returns>
-			public static bool Add(string address, string netmask, string gateway)
-			{
-				return Shell.Execute(Location, "add", address, "mask", netmask, gateway).Ok;
-			}
-
-			/// <summary>
-			///     增加路由规则
-			/// </summary>
-			/// <param name="address">地址</param>
-			/// <param name="netmask">掩码</param>
-			/// <param name="gateway">网关</param>
+			/// <param name="index">适配器索引</param>
 			/// <param name="metric">跃点数</param>
 			/// <returns></returns>
-			public static bool Add(string address, string netmask, string gateway, int metric)
-			{
-				return Shell.Execute(Location, "add", address, "mask", netmask, gateway, "metric", metric.ToString()).Ok;
-			}
+			[DllImport("x2tapCore.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateRoute")]
+			public static extern bool Create(string address, int netmask, string gateway, int index, int metric = 100);
 
 			/// <summary>
-			///     删除路由规则
+			///		删除路由规则
 			/// </summary>
 			/// <param name="address">地址</param>
-			/// <returns></returns>
-			public static bool Delete(string address)
-			{
-				return Shell.Execute(Location, "delete", address).Ok;
-			}
-
-			/// <summary>
-			///     删除路由规则
-			/// </summary>
-			/// <param name="address">地址</param>
-			/// <param name="netmask">掩码</param>
+			/// <param name="netmask">掩码 CIDR</param>
 			/// <param name="gateway">网关</param>
-			/// <returns></returns>
-			public static bool Delete(string address, string netmask, string gateway)
-			{
-				return Shell.Execute(Location, "delete", address, "mask", netmask, gateway).Ok;
-			}
-
-			/// <summary>
-			///     修改路由规则
-			/// </summary>
-			/// <param name="address">地址</param>
+			/// <param name="index">适配器索引</param>
 			/// <param name="metric">跃点数</param>
 			/// <returns></returns>
-			public static bool Change(string address, string netmask, string gateway, int metric)
-			{
-				return Shell.Execute(Location, "change", address, "mask", netmask, gateway, "metric", metric.ToString()).Ok;
-			}
+			[DllImport("x2tapCore.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "DeleteRoute")]
+			public static extern bool Delete(string address, int netmask, string gateway, int index, int metric = 100);
 		}
 
 		public static class TUNTAP

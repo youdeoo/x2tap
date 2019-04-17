@@ -14,10 +14,12 @@ namespace x2tap.View
         private void AdvancedForm_Load(object sender, EventArgs e)
         {
             V2RayLoggingLevelComboBox.SelectedIndex = Global.Config.V2RayLoggingLevel;
+			TUNTAPNameTextBox.Text = Global.Config.TUNTAP.Name;
 			TUNTAPAddressTextBox.Text = Global.Config.TUNTAP.Address;
 			TUNTAPNetmaskTextBox.Text = Global.Config.TUNTAP.Netmask;
 			TUNTAPGatewayTextBox.Text = Global.Config.TUNTAP.Gateway;
 			TUNTAPDNSTextBox.Text = Global.Config.TUNTAP.DNS;
+			TUNTAPIndexLabel.Text = String.Format("索引：{0}", Global.Config.TUNTAP.Index);
 			TUNTAPUseCustomDNSCheckBox.Checked = Global.Config.TUNTAP.UseCustomDNS;
 		}
 

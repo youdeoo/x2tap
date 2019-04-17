@@ -186,6 +186,7 @@
             "aes-256-cfb",
             "aes-128-ctr",
             "aes-192-ctr",
+			"aes-256-ctr",
             "bf-cfb",
             "camellia-128-cfb",
             "camellia-192-cfb",

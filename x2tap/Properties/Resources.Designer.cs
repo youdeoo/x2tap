@@ -63,6 +63,16 @@ namespace x2tap.Properties {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] CNIP {
+            get {
+                object obj = ResourceManager.GetObject("CNIP", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] defaultConfig {
             get {
                 object obj = ResourceManager.GetObject("defaultConfig", resourceCulture);

@@ -96,6 +96,11 @@ namespace x2tap
             /// </summary>
             public static int V2RayLoggingLevel = 0;
 
+			/// <summary>
+			///		适配器索引
+			/// </summary>
+			public static int AdapterIndex = 0;
+
             /// <summary>
             ///     适配器地址
             /// </summary>
@@ -111,6 +116,21 @@ namespace x2tap
             /// </summary>
             public static class TUNTAP
             {
+				/// <summary>
+				///		索引
+				/// </summary>
+				public static int Index = 0;
+
+				/// <summary>
+				///		组件 ID
+				/// </summary>
+				public static string ComponentID = "";
+
+				/// <summary>
+				///		名称
+				/// </summary>
+				public static string Name = "";
+
                 /// <summary>
                 ///     地址
                 /// </summary>
