@@ -17,6 +17,7 @@
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
+- [x2tapCore](https://github.com/hacking001/x2tapCore)
 
 # 编译指南
 参见 [BUILD.md](BUILD.md)
