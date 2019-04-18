@@ -70,7 +70,7 @@ namespace x2tap.View
 
 		private void SubscribeLinksButton_Click(object sender, EventArgs e)
         {
-			var number = new int[] { 0, 0, 0 };
+			var count = new int[] { 0, 0, 0 };
 			var v2rayProxies = new List<Objects.Server.v2ray>();
 			var ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
 			var ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
@@ -91,15 +91,14 @@ namespace x2tap.View
 								}
 							}
 
-							response = Encoding.UTF8.GetString(Convert.FromBase64String(response));
-
+							response = Utils.UrlSafeBase64Decode(response);
 							using (var sr = new StringReader(response))
 							{
 								string text;
 
 								while ((text = sr.ReadLine()) != null)
 								{
-									number[0]++;
+									count[0]++;
 
 									if (text.StartsWith("vmess://"))
 									{
@@ -115,7 +114,7 @@ namespace x2tap.View
 									}
 									else
 									{
-										number[2]++;
+										count[2]++;
 									}
 								}
 							}
@@ -123,7 +122,7 @@ namespace x2tap.View
 					}
 					catch (Exception ex)
 					{
-						number[1]++;
+						count[1]++;
 
 						if (MessageBox.Show(string.Format("在处理订阅链接：\"{0}\" 时发生错误：{1}\n\n是否终止导入？", link, ex), "错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
 						{
@@ -137,7 +136,7 @@ namespace x2tap.View
 			Global.ShadowsocksProxies = ShadowsocksProxies;
 			Global.ShadowsocksRProxies = ShadowsocksRProxies;
 			Global.Views.MainForm.InitProxies();
-			MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", number[0], number[0] - number[1] - number[2], number[1], number[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", count[0], count[0] - count[1] - count[2], count[1], count[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
         private void SubscribeTextButton_Click(object sender, EventArgs e)
@@ -146,12 +145,12 @@ namespace x2tap.View
             {
                 using (var sr = new StringReader(SubscribeTextTextBox.Text))
                 {
-					var number = new int[] { 0, 0, 0 };
+					var count = new int[] { 0, 0, 0 };
                     string text;
 
                     while ((text = sr.ReadLine()) != null)
                     {
-						number[0]++;
+						count[0]++;
 
 						try
 						{
@@ -169,7 +168,7 @@ namespace x2tap.View
 							}
 							else
 							{
-								number[2]++;
+								count[2]++;
 							}
 						}
                         catch (NotSupportedException ex)
@@ -178,12 +177,12 @@ namespace x2tap.View
 						}
 						catch (Exception)
 						{
-							number[1]++;
+							count[1]++;
 						}
 					}
 
 					Global.Views.MainForm.InitProxies();
-					MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", number[0], number[0] - number[1] - number[2], number[1], number[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show(String.Format("总共 {0} 条\n成功导入 {1} 条\n导入失败 {2} 条\n无法处理 {3} 条", count[0], count[0] - count[1] - count[2], count[1], count[2]), "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
             }
             else
