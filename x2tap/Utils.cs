@@ -897,7 +897,7 @@ namespace x2tap
 					case "http_simple":
 						shadowsocksr.OBFS = 1;
 						break;
-					case "http_port":
+					case "http_post":
 						shadowsocksr.OBFS = 2;
 						break;
 					case "http_mix":
