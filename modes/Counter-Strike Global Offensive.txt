@@ -1,4 +1,4 @@
-# CS:GO, 1, 0
+# Counter-Strike: Global Offensive, 1, 0
 1.165.84.0/23
 1.165.90.0/24
 5.8.200.0/24
