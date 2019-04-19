@@ -19,6 +19,9 @@
 - [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
+# 技术核心
+[CORE.md](CORE.md)
+
 # 编译指南
 参见 [BUILD.md](BUILD.md)
 
