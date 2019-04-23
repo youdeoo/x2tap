@@ -71,7 +71,7 @@ namespace x2tap.View
 		private void SubscribeLinksButton_Click(object sender, EventArgs e)
         {
 			var count = new int[] { 0, 0, 0 };
-			var v2rayProxies = new List<Objects.Server.v2ray>();
+			var v2rayProxies = new List<Objects.Server.V2Ray>();
 			var ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
 			var ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
 			foreach (string link in Global.SubscriptionLinks)

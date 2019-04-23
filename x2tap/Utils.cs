@@ -43,7 +43,7 @@ namespace x2tap
 
 				if (File.Exists("v2ray.json"))
 				{
-					Global.V2RayProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.v2ray>>(File.ReadAllText("v2ray.json"));
+					Global.V2RayProxies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Objects.Server.V2Ray>>(File.ReadAllText("v2ray.json"));
 				}
 
 				if (File.Exists("Shadowsocks.json"))
@@ -283,7 +283,7 @@ namespace x2tap
 				}
 			}
 
-			public static string GetV2Ray(Objects.Server.v2ray v2ray, bool bypassChina = true)
+			public static string GetV2Ray(Objects.Server.V2Ray v2ray, bool bypassChina = true)
 			{
 				var data = GetGeneric(bypassChina);
 
@@ -609,10 +609,10 @@ namespace x2tap
 
 		public static class Parse
 		{
-			public static Objects.Server.v2ray v2ray(string text)
+			public static Objects.Server.V2Ray v2ray(string text)
 			{
 				var data = SimpleJSON.JSON.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 8))));
-				var v2ray = new Objects.Server.v2ray();
+				var v2ray = new Objects.Server.V2Ray();
 
 				v2ray.Remark = data["ps"].Value;
 				v2ray.Address = data["add"].Value;

@@ -90,7 +90,7 @@ namespace x2tap.View.Server
         {
             if (Mode)
             {
-                Global.V2RayProxies[Index] = new Objects.Server.v2ray
+                Global.V2RayProxies[Index] = new Objects.Server.V2Ray
                 {
                     Remark = RemarkTextBox.Text,
                     Address = AddressTextBox.Text,
@@ -109,7 +109,7 @@ namespace x2tap.View.Server
             }
             else
             {
-                Global.V2RayProxies.Add(new Objects.Server.v2ray
+                Global.V2RayProxies.Add(new Objects.Server.V2Ray
                 {
                     Remark = RemarkTextBox.Text,
                     Address = AddressTextBox.Text,

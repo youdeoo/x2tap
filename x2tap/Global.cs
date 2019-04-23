@@ -12,7 +12,7 @@ namespace x2tap
         /// <summary>
         ///     v2ray 代理
         /// </summary>
-        public static List<Objects.Server.v2ray> V2RayProxies = new List<Objects.Server.v2ray>();
+        public static List<Objects.Server.V2Ray> V2RayProxies = new List<Objects.Server.V2Ray>();
 
         /// <summary>
         ///     Shadowsocks 代理

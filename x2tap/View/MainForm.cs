@@ -142,8 +142,6 @@ namespace x2tap.View
 						}
 						else
 						{
-							UplinkBandwidth = 0;
-							DownlinkBandwidth = 0;
 							UsedBandwidthLabel.Text = "已使用：0 KB";
 							UplinkSpeedLabel.Text = "↑：0 KB/s";
 							DownlinkSpeedLabel.Text = "↓：0 KB/s";

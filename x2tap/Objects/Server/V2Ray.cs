@@ -5,7 +5,7 @@ namespace x2tap.Objects.Server
     /// <summary>
     ///     v2ray
     /// </summary>
-    public class v2ray
+    public class V2Ray
     {
         /// <summary>
         ///     地址
