@@ -4,6 +4,8 @@
 [![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
 
 # x2tap
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap?ref=badge_shield)
+
 Can intercept all connections at the network layer and transfer them to Socks5, Shadowsocks, ShadowsocksR, V2Ray proxy
 
 **The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
@@ -29,3 +31,6 @@ See [BUILD.md](BUILD.md)
 
 # User Agreement
 - Please use it in accordance with local laws and may not be used for illegal purposes
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap?ref=badge_large)
