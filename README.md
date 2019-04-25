@@ -17,7 +17,7 @@ Can intercept all connections at the network layer and transfer them to Socks5, 
 - [shadowsocksr-native](https://github.com/ShadowsocksR-Live/shadowsocksr-native)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
-- [tun2socks](https://github.com/hacking001/x2tap/tree/master/binaries/)
+- [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
 # Compilation Guide
