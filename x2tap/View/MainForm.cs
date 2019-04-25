@@ -166,6 +166,81 @@ namespace x2tap.View
 				}
 			});
 
+			// 延迟检测
+			Task.Run(() =>
+			{
+				while (true)
+				{
+					if (!Started && Visible)
+					{
+						var num = 0;
+						foreach (var v2ray in Global.V2RayProxies)
+						{
+							var address = Dns.GetHostEntry(v2ray.Address);
+							if (address.AddressList.Length != 0)
+							{
+								if (v2ray.TransferProtocol == 0 || v2ray.TransferProtocol == 2 || v2ray.TransferProtocol == 3)
+								{
+									ProxyComboBox.Items[num] = String.Format("[v2ray][{0} ms] {1}", Utils.GetTCPing(new IPEndPoint(address.AddressList[0], v2ray.Port)), v2ray.Remark);
+								}
+								else
+								{
+									ProxyComboBox.Items[num] = String.Format("[v2ray][{0} ms] {1}", Utils.GetPing(address.AddressList[0]), v2ray.Remark);
+								}
+							}
+							num++;
+
+							if (!Visible || Started)
+							{
+								break;
+							}
+						}
+
+						if (!Visible || Started)
+						{
+							break;
+						}
+
+						foreach (var shadowsocks in Global.ShadowsocksProxies)
+						{
+							var address = Dns.GetHostEntry(shadowsocks.Address);
+							if (address.AddressList.Length != 0)
+							{
+								ProxyComboBox.Items[num] = String.Format("[SS][{0} ms] {1}", Utils.GetTCPing(new IPEndPoint(address.AddressList[0], shadowsocks.Port)), shadowsocks.Remark);
+							}
+							num++;
+
+							if (!Visible || Started)
+							{
+								break;
+							}
+						}
+
+						if (!Visible || Started)
+						{
+							break;
+						}
+
+						foreach (var shadowsocksr in Global.ShadowsocksRProxies)
+						{
+							var address = Dns.GetHostEntry(shadowsocksr.Address);
+							if (address.AddressList.Length != 0)
+							{
+								ProxyComboBox.Items[num] = String.Format("[SSR][{0} ms] {1}", Utils.GetTCPing(new IPEndPoint(address.AddressList[0], shadowsocksr.Port)), shadowsocksr.Remark);
+							}
+							num++;
+
+							if (!Visible || Started)
+							{
+								break;
+							}
+						}
+
+						Thread.Sleep(10000);
+					}
+				}
+			});
+
 			(Global.Views.Tray = new Tray()).Init();
 		}
 

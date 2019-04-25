@@ -1184,5 +1184,65 @@ namespace x2tap
 				return false;
 			}
 		}
+
+		public static double GetTCPing(IPEndPoint destination)
+		{
+			var times = new List<double>();
+			for (int i = 0; i < 8; i++)
+			{
+				try
+				{
+					using (var client = new Socket(SocketType.Stream, ProtocolType.Tcp))
+					{
+						var watch = new Stopwatch();
+						var task = client.BeginConnect(destination, (result) =>
+						{
+							watch.Stop();
+
+							times.Add(watch.Elapsed.TotalMilliseconds);
+						}, 0);
+						task.AsyncWaitHandle.WaitOne(500);
+						if (!task.IsCompleted)
+						{
+							watch.Stop();
+							client.EndConnect(task);
+
+							times.Add(0);
+						}
+					}
+				}
+				catch (Exception)
+				{
+					times.Add(0);
+				}
+			}
+			times.Sort();
+			return times[3];
+		}
+
+		public static double GetPing(IPAddress destination)
+		{
+			var times = new List<double>();
+			for (int i = 0; i < 8; i++)
+			{
+				try
+				{
+					using (var sender = new Ping())
+					{
+						var options = new PingOptions();
+						options.DontFragment = true;
+
+						var result = sender.Send(destination, 500);
+						times.Add(result.RoundtripTime);
+					}
+				}
+				catch (Exception)
+				{
+					times.Add(0);
+				}
+			}
+			times.Sort();
+			return times[3];
+		}
 	}
 }
