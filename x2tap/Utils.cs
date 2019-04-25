@@ -1195,6 +1195,7 @@ namespace x2tap
 					using (var client = new Socket(SocketType.Stream, ProtocolType.Tcp))
 					{
 						var watch = new Stopwatch();
+						watch.Start();
 						var task = client.BeginConnect(destination, (result) =>
 						{
 							watch.Stop();
