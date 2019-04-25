@@ -497,7 +497,7 @@ namespace x2tap.View
 								//////////////////////////////////////////////////
 								Thread.Sleep(1000);
 								Status = "正在启动 tun2socks 中";
-								Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "tun2socks.exe", "-enable-dns-cache", "-local-socks-addr", "127.0.0.1:2810", "-tun-address", Global.Config.TUNTAP.Address, "-tun-mask", Global.Config.TUNTAP.Netmask, "-tun-gw", Global.Config.TUNTAP.Gateway, "-tun-dns", Global.Config.TUNTAP.DNS);
+								Utils.Shell.ExecuteCommandNoWait("START", "RunHiddenConsole.exe", "tun2socks.exe", "-proxyServer", "127.0.0.1:2810", "-tunAddr", Global.Config.TUNTAP.Address, "-tunMask", Global.Config.TUNTAP.Netmask, "-tunGw", Global.Config.TUNTAP.Gateway, "-tunDns", Global.Config.TUNTAP.DNS);
 
 								//////////////////////////////////////////////////
 								// 检查 tun2socks 状态
