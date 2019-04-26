@@ -70,6 +70,14 @@ namespace x2tap.Objects.v2rayConfig
 	}
 
 	/// <summary>
+	///		TCP 流
+	/// </summary>
+	public class TCP
+	{
+		public object header = new TCPNoneHeader();
+	}
+
+	/// <summary>
 	///		不进行伪装
 	/// </summary>
 	public class TCPNoneHeader

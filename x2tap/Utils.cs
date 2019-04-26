@@ -319,15 +319,18 @@ namespace x2tap
 						streamSettings.network = "tcp";
 						if (GetFakeType(v2ray.FakeType) == "http")
 						{
-							var tcpSettings = new Objects.v2rayConfig.TCPHTTPHeader()
+							var tcpSettings =  new Objects.v2rayConfig.TCP()
 							{
-								request = new Objects.v2rayConfig.TCPHTTPRequestHeader()
+								header = new Objects.v2rayConfig.TCPHTTPHeader()
 								{
-									headers = new Dictionary<string, List<string>>()
-								{
-									{ "Host", new List<string>() { v2ray.FakeDomain } }
-								},
-									path = new List<string>() { v2ray.Path == "/" ? "/" : v2ray.Path }
+									request = new Objects.v2rayConfig.TCPHTTPRequestHeader()
+									{
+										headers = new Dictionary<string, List<string>>()
+										{
+											{ "Host", new List<string>() { v2ray.FakeDomain } }
+										},
+										path = new List<string>() { v2ray.Path == "/" ? "/" : v2ray.Path }
+									}
 								}
 							};
 							streamSettings.tcpSettings = tcpSettings;
