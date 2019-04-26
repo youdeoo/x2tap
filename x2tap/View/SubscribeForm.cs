@@ -102,7 +102,7 @@ namespace x2tap.View
 
 									if (text.StartsWith("vmess://"))
 									{
-										v2rayProxies.Add(Utils.Parse.v2ray(text));
+										v2rayProxies.Add(Utils.Parse.V2Ray(text));
 									}
 									else if (text.StartsWith("ss://"))
 									{
@@ -156,7 +156,7 @@ namespace x2tap.View
 						{
 							if (text.StartsWith("vmess://"))
 							{
-								Global.V2RayProxies.Add(Utils.Parse.v2ray(text));
+								Global.V2RayProxies.Add(Utils.Parse.V2Ray(text));
 							}
 							else if (text.StartsWith("ss://"))
 							{

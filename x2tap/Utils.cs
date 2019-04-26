@@ -609,9 +609,9 @@ namespace x2tap
 
 		public static class Parse
 		{
-			public static Objects.Server.V2Ray v2ray(string text)
+			public static Objects.Server.V2Ray V2Ray(string text)
 			{
-				var data = SimpleJSON.JSON.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(text.Remove(0, 8))));
+				var data = SimpleJSON.JSON.Parse(UrlSafeBase64Decode(text.Remove(0, 8)));
 				var v2ray = new Objects.Server.V2Ray();
 
 				v2ray.Remark = data["ps"].Value;
@@ -1188,7 +1188,7 @@ namespace x2tap
 		public static double GetTCPing(IPEndPoint destination)
 		{
 			var times = new List<double>();
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				try
 				{
@@ -1224,7 +1224,7 @@ namespace x2tap
 		public static double GetPing(IPAddress destination)
 		{
 			var times = new List<double>();
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				try
 				{
