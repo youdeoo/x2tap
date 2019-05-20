@@ -7,10 +7,10 @@
 
 **最新测试版发布于 [releases](https://github.com/hacking001/x2tap/releases) 中**
 
-# 截图
+## 截图
 ![](screenshots/main.png)
 
-# 依赖
+## 依赖
 - [shadowsocksr-libev](https://github.com/shadowsocksrr/shadowsocksr-libev/tree/Akkariiin/develop)
 - [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
@@ -19,9 +19,9 @@
 - [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
-# 仓库镜像
+## 镜像
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
-# 用户协议
+## 用户协议
 - 请在遵循当地法律的情况下使用，不得用于违法用途

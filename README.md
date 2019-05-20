@@ -8,10 +8,10 @@ Can intercept all connections at the network layer and transfer them to Socks5, 
 **The latest beta version was released in [releases](https://github.com/hacking001/x2tap/releases)**
 
 [简体中文](docs/zh-CN/README.md)
-# Screenshots
+## Screenshots
 ![](docs/en-US/screenshots/main.png)
 
-# Dependences
+## Dependences
 - [shadowsocksr-libev](https://github.com/shadowsocksrr/shadowsocksr-libev/tree/Akkariiin/develop)
 - [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
@@ -20,9 +20,9 @@ Can intercept all connections at the network layer and transfer them to Socks5, 
 - [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
-# Repository Mirroring
+## Mirrors
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
-# User Agreement
+## User Agreement
 - Please use it in accordance with local laws and may not be used for illegal purposes
