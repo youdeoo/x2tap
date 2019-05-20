@@ -11,10 +11,10 @@
 ![](screenshots/main.png)
 
 # 依赖
-- [tap-windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
 - [shadowsocksr-libev](https://github.com/shadowsocksrr/shadowsocksr-libev/tree/Akkariiin/develop)
 - [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
+- [tap-windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
 - [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
