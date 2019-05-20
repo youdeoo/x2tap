@@ -22,6 +22,3 @@
 ## 镜像
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
-
-## 用户协议
-- 请在遵循当地法律的情况下使用，不得用于违法用途

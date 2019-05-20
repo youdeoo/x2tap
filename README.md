@@ -23,6 +23,3 @@ Can intercept all connections at the network layer and transfer them to Socks5, 
 ## Mirrors
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
-
-## User Agreement
-- Please use it in accordance with local laws and may not be used for illegal purposes
