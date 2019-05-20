@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F5A0FDC3-FCA9-405B-8775-21561A6C1701}</ProjectGuid>
+    <ProjectGuid>{65CDE3D3-D115-4CF9-8862-1A886E313E6D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>x2tap</RootNamespace>
     <AssemblyName>x2tap</AssemblyName>
@@ -12,11 +12,6 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>x2tap.x2tap</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -62,15 +57,15 @@
     <ApplicationManifest>x2tap.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>v2ray.ico</ApplicationIcon>
+    <StartupObject>x2tap.x2tap</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,95 +77,95 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="3rd\IniParser\Exceptions\ParsingException.cs" />
-    <Compile Include="3rd\IniParser\FileIniParser.cs" />
-    <Compile Include="3rd\IniParser\Helpers\Assert.cs" />
-    <Compile Include="3rd\IniParser\Model\Configuration\ConcatenateDuplicatedKeysIniParserConfiguration.cs" />
-    <Compile Include="3rd\IniParser\Model\Configuration\IniParserConfiguration.cs" />
-    <Compile Include="3rd\IniParser\Model\Formatting\DefaultIniDataFormatter.cs" />
-    <Compile Include="3rd\IniParser\Model\Formatting\IIniDataFormatter.cs" />
-    <Compile Include="3rd\IniParser\Model\IniData.cs" />
-    <Compile Include="3rd\IniParser\Model\IniDataCaseInsensitive.cs" />
-    <Compile Include="3rd\IniParser\Model\KeyData.cs" />
-    <Compile Include="3rd\IniParser\Model\KeyDataCollection.cs" />
-    <Compile Include="3rd\IniParser\Model\SectionData.cs" />
-    <Compile Include="3rd\IniParser\Model\SectionDataCollection.cs" />
-    <Compile Include="3rd\IniParser\Parser\ConcatenateDuplicatedKeysIniDataParser.cs" />
-    <Compile Include="3rd\IniParser\Parser\IniDataParser.cs" />
-    <Compile Include="3rd\IniParser\StreamIniDataParser.cs" />
-    <Compile Include="3rd\IniParser\StringIniParser.cs" />
+    <Compile Include="3rd\MaxMind\Db\ArrayBuffer.cs" />
+    <Compile Include="3rd\MaxMind\Db\Buffer.cs" />
+    <Compile Include="3rd\MaxMind\Db\ByteArrayEqualityComparer.cs" />
+    <Compile Include="3rd\MaxMind\Db\CachedDictionary.cs" />
+    <Compile Include="3rd\MaxMind\Db\ConstructorAttribute.cs" />
+    <Compile Include="3rd\MaxMind\Db\Decoder.cs" />
+    <Compile Include="3rd\MaxMind\Db\DeserializationException.cs" />
+    <Compile Include="3rd\MaxMind\Db\DictionaryActivatorCreator.cs" />
+    <Compile Include="3rd\MaxMind\Db\GlobalSuppressions.cs" />
+    <Compile Include="3rd\MaxMind\Db\InjectableValues.cs" />
+    <Compile Include="3rd\MaxMind\Db\InjectAttribute.cs" />
+    <Compile Include="3rd\MaxMind\Db\InvalidDatabaseException.cs" />
+    <Compile Include="3rd\MaxMind\Db\ListActivatorCreator.cs" />
+    <Compile Include="3rd\MaxMind\Db\MemoryMapBuffer.cs" />
+    <Compile Include="3rd\MaxMind\Db\Metadata.cs" />
+    <Compile Include="3rd\MaxMind\Db\ParameterAttribute.cs" />
+    <Compile Include="3rd\MaxMind\Db\Reader.cs" />
+    <Compile Include="3rd\MaxMind\Db\ReflectionUtil.cs" />
+    <Compile Include="3rd\MaxMind\Db\TypeAcivatorCreator.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\DatabaseReader.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\AddressNotFoundException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\AuthenticationException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\GeoIP2Exception.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\HttpException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\InvalidRequestException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\OutOfQueriesException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Exceptions\PermissionRequiredException.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\GlobalSuppressions.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Http\AsyncClient.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Http\ISyncClient.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Http\Response.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Http\SyncClient.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\IGeoIP2DatabaseReader.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\IGeoIP2Provider.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\IGeoIP2WebServicesClient.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\City.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Continent.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Country.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Location.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\MaxMind.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\NamedEntity.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Postal.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\RepresentedCountry.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Subdivision.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\Traits.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Model\WebServiceError.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\AbstractCityResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\AbstractCountryResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\AbstractResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\AnonymousIPResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\AsnResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\CityResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\ConnectionTypeResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\CountryResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\DomainResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\EnterpriseResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\InsightsResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\Responses\IspResponse.cs" />
+    <Compile Include="3rd\MaxMind\GeoIP2\WebServiceClient.cs" />
     <Compile Include="3rd\SimpleJSON\SimpleJSON.cs" />
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="Objects\Information\DNS.cs" />
+    <Compile Include="Objects\Information\Inbound.cs" />
+    <Compile Include="Objects\Information\Main.cs" />
+    <Compile Include="Objects\Information\Outbound.cs" />
+    <Compile Include="Objects\Information\Protocol\Outbound\VMess.cs" />
+    <Compile Include="Objects\Information\Routing.cs" />
     <Compile Include="Objects\Mode.cs" />
-    <Compile Include="Objects\Server\ShadowsocksR.cs" />
-    <Compile Include="Objects\Server\Shadowsocks.cs" />
-    <Compile Include="Objects\Server\V2Ray.cs" />
-    <Compile Include="Objects\ShadowsocksRConfig.cs" />
-    <Compile Include="Objects\ShellExitCode.cs" />
-    <Compile Include="Objects\v2rayConfig\Dns.cs" />
-    <Compile Include="Objects\v2rayConfig\Inbound.cs" />
-    <Compile Include="Objects\v2rayConfig\Log.cs" />
-    <Compile Include="Objects\v2rayConfig\Mux.cs" />
-    <Compile Include="Objects\v2rayConfig\Outbound.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Dokodomo.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Inbound\Socks.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Dns.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Shadowsocks.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\Socks.cs" />
-    <Compile Include="Objects\v2rayConfig\Protocol\Outbound\VMess.cs" />
-    <Compile Include="Objects\v2rayConfig\Routing.cs" />
-    <Compile Include="Objects\v2rayConfig\Stats.cs" />
-    <Compile Include="Objects\v2rayConfig\StreamSettings.cs" />
-    <Compile Include="Objects\v2rayConfig\v2rayConfig.cs" />
+    <Compile Include="Objects\Server.cs" />
+    <Compile Include="Objects\State.cs" />
+    <Compile Include="Objects\Subscribe.cs" />
     <Compile Include="Override\WebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utils.cs" />
-    <Compile Include="View\AdvancedForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\AdvancedForm.Designer.cs">
-      <DependentUpon>AdvancedForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\ExceptionIPForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\ExceptionIPForm.Designer.cs">
-      <DependentUpon>ExceptionIPForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Server\ShadowsocksR.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Server\ShadowsocksR.Designer.cs">
-      <DependentUpon>ShadowsocksR.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Server\Shadowsocks.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Server\Shadowsocks.Designer.cs">
-      <DependentUpon>Shadowsocks.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Server\V2Ray.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Server\V2Ray.Designer.cs">
-      <DependentUpon>V2Ray.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\SubscribeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\SubscribeForm.Designer.cs">
-      <DependentUpon>SubscribeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Tray.cs" />
+    <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\i18N.cs" />
+    <Compile Include="Utils\GeoIP.cs" />
+    <Compile Include="Utils\Log.cs" />
     <Compile Include="x2tap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\MainForm.Designer.cs">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -181,28 +176,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="View\AdvancedForm.resx">
-      <DependentUpon>AdvancedForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\ExceptionIPForm.resx">
-      <DependentUpon>ExceptionIPForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Server\ShadowsocksR.resx">
-      <DependentUpon>ShadowsocksR.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Server\Shadowsocks.resx">
-      <DependentUpon>Shadowsocks.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Server\V2Ray.resx">
-      <DependentUpon>V2Ray.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\SubscribeForm.resx">
-      <DependentUpon>SubscribeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -213,19 +186,615 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\CNIP" />
-    <None Include="Resources\defaultConfig" />
+    <None Include="Resources\MaxMind-GeoLite2.mmdb" />
+    <None Include="Resources\zh-CN" />
     <None Include="x2tap.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="v2ray.ico" />
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagAZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBJ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagBZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCV.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagCZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDJ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagDZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagEC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagEE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagEG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagEH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagER.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagES.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagET.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagFI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagFJ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagFM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagFR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGQ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagGY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagHN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagHR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagHT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagHU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagID.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIQ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagIT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagJM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagJO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagJP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagKZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLV.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagLY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagME.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagML.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMV.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMX.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagMZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagNZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagOM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagPY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagQA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagQC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagRO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagRS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagRU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagRW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagST.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSV.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagSZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTJ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTV.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagTZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagUZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagVA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagVC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagVE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagVN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagVU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagWS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagYE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagZA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagZM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagZW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flagHK.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

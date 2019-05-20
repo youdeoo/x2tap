@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace x2tap.Objects
 {
-	/// <summary>
-	///		模式
-	/// </summary>
 	public class Mode
 	{
 		/// <summary>
@@ -13,18 +11,32 @@ namespace x2tap.Objects
 		public string Name;
 
 		/// <summary>
-		///		类型（0. 规则内走直连 1. 规则内走代理）
+		///		是否为内置规则
 		/// </summary>
-		public int Type = 0;
+		public bool IsInternal = false;
 
 		/// <summary>
-		///		绕过中国（0. 无需额外绕过 1. 额外添加中国直连规则）
+		///		类型（0. 仅规则内走直连 1. 仅规则内走代理）
 		/// </summary>
-		public bool BypassChina = false;
+		public int Type;
+
+		/// <summary>
+		///		绕过中国（0. 无需额外绕过 1. 额外添加中国直连路由）
+		/// </summary>
+		public bool BypassChina;
 
 		/// <summary>
 		///		规则
 		/// </summary>
 		public List<string> Rule = new List<string>();
+
+		/// <summary>
+		///		获取备注
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return String.Format("[{0}] {1}", IsInternal ? Utils.i18N.Translate("Internal") : Utils.i18N.Translate("External"), Name);
+		}
 	}
 }

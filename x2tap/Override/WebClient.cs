@@ -3,25 +3,15 @@ using System.Net;
 
 namespace x2tap.Override
 {
-    public class WebClient : System.Net.WebClient
-    {
-        /// <summary>
-        ///     超时
-        /// </summary>
-        public int Timeout = 4000;
+	public class WebClient : System.Net.WebClient
+	{
+		protected override WebRequest GetWebRequest(Uri address)
+		{
+			var request = base.GetWebRequest(address);
+			request.Timeout = 4000;
+			((HttpWebRequest)request).ReadWriteTimeout = 4000;
 
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            var request = base.GetWebRequest(address);
-            request.Timeout = Timeout;
-            ((HttpWebRequest) request).ReadWriteTimeout = Timeout;
-
-            return request;
-        }
-
-        public static WebClient GetClient()
-        {
-            return new WebClient();
-        }
-    }
+			return request;
+		}
+	}
 }

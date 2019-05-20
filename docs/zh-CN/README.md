@@ -2,8 +2,6 @@
 [![](https://img.shields.io/badge/telegram-channel-blue.svg)](https://t.me/x2tap)
 [![](https://img.shields.io/badge/telegram-chat-blue.svg)](https://t.me/x2tapChat)
 [![](https://img.shields.io/badge/status-testing-red.svg)](https://github.com/hacking001/x2tap/releases)
-[![](https://travis-ci.org/hacking001/x2tap.svg?branch=master)](https://travis-ci.org/hacking001/x2tap)
-[![](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap?ref=badge_shield)
 
 能在网络层拦截所有连接并转发给 Socks5、Shadowsocks、ShadowsocksR、V2Ray 代理
 
@@ -20,18 +18,9 @@
 - [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
-# 技术核心
-[CORE.md](CORE.md)
-
-# 编译指南
-参见 [BUILD.md](BUILD.md)
-
 # 仓库镜像
 - [Github](https://github.com/hacking001/x2tap)
 - [GitLab](https://gitlab.com/hacking001/x2tap)
 
 # 用户协议
 - 请在遵循当地法律的情况下使用，不得用于违法用途
-
-# 许可证
-[![](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhacking001%2Fx2tap?ref=badge_large)

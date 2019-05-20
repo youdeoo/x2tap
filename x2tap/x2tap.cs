@@ -1,81 +1,70 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Threading;
+using System.Text;
 using System.Windows.Forms;
 
 namespace x2tap
 {
 	public static class x2tap
 	{
-        /// <summary>
-        ///     应用程序的主入口点
-        /// </summary>
-        [STAThread]
-        public static void Main()
-        {
-			Directory.SetCurrentDirectory(Application.StartupPath);
-
-#if !DEBUG
-			var filenames = new string[]
+		/// <summary>
+		///		应用程序的主入口点
+		/// </summary>
+		[STAThread]
+		public static void Main()
+		{
+			// 预先创建文件夹：日志
+			if (!File.Exists("Logging"))
 			{
-				"driver\\OemVista.inf",
-				"driver\\tap0901.cat",
-				"driver\\tap0901.sys",
-				"dnscrypt-forwarding-rules.txt",
-				"dnscrypt-proxy.exe",
-				"dnscrypt-proxy.toml",
-				"geoip.dat",
-				"geosite.dat",
-				"libsodium.dll",
-				"libsodium.lib",
-				"libssp-0.dll",
-				"libwinpthread-1.dll",
-				"Newtonsoft.Json.dll",
-				"pcre3.dll",
-				"RunHiddenConsole.exe",
-				"ssr-local.exe",
-				"tapinstall.exe",
-				"tun2socks.exe",
-				"v2ctl.exe",
-				"v2ray.exe",
-				"wv2ray.exe"
-			};
-
-			// 依赖文件检查
-			foreach (var filename in filenames)
-			{
-				if (!File.Exists(filename))
-				{
-					MessageBox.Show(string.Format("缺失重要文件：{0}", filename), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-					Environment.Exit(1);
-					return;
-				}
+				Directory.CreateDirectory("Logging");
 			}
 
-			// 检查 TUN/TAP 适配器
-			if (Utils.TUNTAP.GetComponentID() == "" && !Utils.TUNTAP.Create())
-            {
-                MessageBox.Show("尝试安装 TUN/TAP 适配器时失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			// 程序正在启动中
+			Utils.Log.Info("程序正在启动中");
 
-				Environment.Exit(1);
-                return;
-            }
-#endif
-
-			using (var mutex = new Mutex(false, "Global\\x2tap"))
+			// 预先创建文件夹：语言
+			if (!Directory.Exists("Language"))
 			{
-				if (mutex.WaitOne(0, false))
-				{
-					Application.EnableVisualStyles();
-					Application.SetCompatibleTextRenderingDefault(false);
-					Application.Run(Global.Views.MainForm = new View.MainForm());
-                }
-				else
-				{
-					MessageBox.Show("只允许同时运行一个", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
+				Utils.Log.Info("检测到 语言 目录不存在，正在创建中");
+				Directory.CreateDirectory("Language");
 			}
-        }
-    }
+
+			// 预先创建文件夹：数据
+			if (!Directory.Exists("Data"))
+			{
+				Utils.Log.Info("检测到 数据 目录不存在，正在创建中");
+				Directory.CreateDirectory("Data");
+			}
+
+			// 如果当前系统语言为中文，先从程序自带的资源中加载中文翻译
+			if (CultureInfo.InstalledUICulture.Name == "zh-CN")
+			{
+				Global.i18N = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(Encoding.UTF8.GetString(Properties.Resources.zh_CN));
+			}
+
+			// 如果存在对应的语言文件，就使用语言的文件的翻译
+			Utils.Log.Info(String.Format("检测到当前语言为 {0}", CultureInfo.InstalledUICulture.Name));
+			if (File.Exists(String.Format("Language\\" + CultureInfo.InstalledUICulture.Name)))
+			{
+				Utils.Log.Info(String.Format("检测到存在语言 {0} 的翻译文件，正在加载中", CultureInfo.InstalledUICulture.Name));
+				Global.i18N = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("Language\\" + CultureInfo.InstalledUICulture.Name));
+			}
+
+			// 加载 IP 数据库
+			if (!File.Exists("Data\\MaxMind-GeoLite2.mmdb"))
+			{
+				Utils.Log.Info("检测到 IP 数据库不存在，正在从资源读取并写入到磁盘中");
+				File.WriteAllBytes("Data\\MaxMind-GeoLite2.mmdb", Properties.Resources.MaxMind_GeoLite2);
+			}
+
+			Utils.Log.Info("正在加载 IP 数据库中");
+			Utils.GeoIP.Database = new MaxMind.GeoIP2.DatabaseReader("Data\\MaxMind-GeoLite2.mmdb");
+
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(Global.MainForm = new Forms.MainForm());
+		}
+	}
 }

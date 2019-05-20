@@ -1,161 +1,188 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace x2tap
 {
-    public static class Global
-    {
+	public static class Global
+	{
 		/// <summary>
-		///		订阅链接
+		///		主窗体
 		/// </summary>
-		public static List<string> SubscriptionLinks = new List<string>();
-
-        /// <summary>
-        ///     v2ray 代理
-        /// </summary>
-        public static List<Objects.Server.V2Ray> V2RayProxies = new List<Objects.Server.V2Ray>();
-
-        /// <summary>
-        ///     Shadowsocks 代理
-        /// </summary>
-        public static List<Objects.Server.Shadowsocks> ShadowsocksProxies = new List<Objects.Server.Shadowsocks>();
+		public static Forms.MainForm MainForm;
 
 		/// <summary>
-		///		ShadowsocksR 代理
+		///		代理列表
 		/// </summary>
-		public static List<Objects.Server.ShadowsocksR> ShadowsocksRProxies = new List<Objects.Server.ShadowsocksR>();
+		public static List<Objects.Server> Servers = new List<Objects.Server>();
 
 		/// <summary>
-		///		模式
+		///		模式列表
 		/// </summary>
 		public static List<Objects.Mode> Modes = new List<Objects.Mode>();
 
 		/// <summary>
-		///		全局例外 IP
+		///		订阅列表
 		/// </summary>
-		public static List<string> ExceptionIPs = new List<string>();
+		public static List<Objects.Subscribe> Subscribes = new List<Objects.Subscribe>();
 
-        /// <summary>
-        ///     视图
-        /// </summary>
-        public static class Views
-        {
+		/// <summary>
+		///		全局绕过 IP 列表
+		/// </summary>
+		public static List<string> BypassIPs = new List<string>();
+
+		/// <summary>
+		///		i18N 多语言
+		/// </summary>
+		public static Dictionary<string, string> i18N = new Dictionary<string, string>();
+
+		/// <summary>
+		///		SS/SSR 加密方式
+		/// </summary>
+		public static class EncryptMethods
+		{
 			/// <summary>
-			///		托盘
+			///		SS 加密列表
 			/// </summary>
-			public static View.Tray Tray;
-
-            /// <summary>
-            ///     主窗体
-            /// </summary>
-            public static View.MainForm MainForm;
-
-			/// <summary>
-			///     高级设置窗体
-			/// </summary>
-			public static View.AdvancedForm AdvancedForm;
-
-            /// <summary>
-            ///     订阅窗体
-            /// </summary>
-            public static View.SubscribeForm SubscribeForm;
-
-			/// <summary>
-			///		全局例外 IP 窗体
-			/// </summary>
-			public static View.ExceptionIPForm ExceptionIPForm;
-
-            /// <summary>
-            ///     服务器配置窗体
-            /// </summary>
-            public static class Server
-            {
-                /// <summary>
-                ///     V2Ray
-                /// </summary>
-                public static View.Server.V2Ray V2Ray;
-
-                /// <summary>
-                ///     Shadowsocks
-                /// </summary>
-                public static View.Server.Shadowsocks Shadowsocks;
-
-				/// <summary>
-				///		ShadowsocksR
-				/// </summary>
-				public static View.Server.ShadowsocksR ShadowsocksR;
-            }
-        }
-
-        /// <summary>
-        ///     配置
-        /// </summary>
-        public static class Config
-        {
-            /// <summary>
-            ///     v2ray 日志等级
-            /// </summary>
-            public static int V2RayLoggingLevel = 0;
+			public static List<string> SS = new List<string>()
+			{
+				"rc4-md5",
+				"aes-128-gcm",
+				"aes-192-gcm",
+				"aes-256-gcm",
+				"aes-128-cfb",
+				"aes-192-cfb",
+				"aes-256-cfb",
+				"aes-128-ctr",
+				"aes-192-ctr",
+				"aes-256-ctr",
+				"camellia-128-cfb",
+				"camellia-192-cfb",
+				"camellia-256-cfb",
+				"bf-cfb",
+				"chacha20-ietf-poly1305",
+				"xchacha20-ietf-poly1305",
+				"salsa20",
+				"chacha20",
+				"chacha20-ietf"
+			};
 
 			/// <summary>
-			///		适配器索引
+			///		SSR 加密列表
 			/// </summary>
-			public static int AdapterIndex = 0;
+			public static List<string> SSR = new List<string>()
+			{
+				"table",
+				"rc4",
+				"rc4-md5",
+				"aes-128-cfb",
+				"aes-192-cfb",
+				"aes-256-cfb",
+				"bf-cfb",
+				"camellia-128-cfb",
+				"camellia-192-cfb",
+				"camellia-256-cfb",
+				"cast5-cfb",
+				"des-cfb",
+				"idea-cfb",
+				"rc2-cfb",
+				"seed-cfb",
+				"salsa20",
+				"chacha20",
+				"chacha20-ietf"
+			};
+		}
 
-            /// <summary>
-            ///     适配器地址
-            /// </summary>
-            public static string AdapterAddress = "";
+		/// <summary>
+		///		SSR 协议列表
+		/// </summary>
+		public static List<string> Protocols = new List<string>()
+		{
+			"origin",
+			"verify_deflate",
+			"auth_sha1_v4",
+			"auth_aes128_md5",
+			"auth_aes128_sha1",
+			"auth_chain_a"
+		};
 
-            /// <summary>
-            ///     适配器网关
-            /// </summary>
-            public static string AdapterGateway = "";
+		/// <summary>
+		///		SSR 混淆列表
+		/// </summary>
+		public static List<string> OBFSs = new List<string>()
+		{
+			"plain",
+			"http_simple",
+			"http_post",
+			"tls1.2_ticket_auth"
+		};
 
-            /// <summary>
-            ///     TUN/TAP
-            /// </summary>
-            public static class TUNTAP
-            {
-				/// <summary>
-				///		索引
-				/// </summary>
-				public static int Index = 0;
+		/// <summary>
+		///		适配器
+		/// </summary>
+		public static class Adapter
+		{
+			/// <summary>
+			///		索引
+			/// </summary>
+			public static int Index = 0;
 
-				/// <summary>
-				///		组件 ID
-				/// </summary>
-				public static string ComponentID = "";
+			/// <summary>
+			///		地址
+			/// </summary>
+			public static IPAddress Address;
 
-				/// <summary>
-				///		名称
-				/// </summary>
-				public static string Name = "";
+			/// <summary>
+			///		网关
+			/// </summary>
+			public static IPAddress Gateway;
+		}
 
-                /// <summary>
-                ///     地址
-                /// </summary>
-                public static string Address = "10.0.236.10";
+		/// <summary>
+		///		TUN/TAP 适配器
+		/// </summary>
+		public static class TUNTAP
+		{
+			/// <summary>
+			///		索引
+			/// </summary>
+			public static int Index = 0;
 
-                /// <summary>
-                ///     掩码
-                /// </summary>
-                public static string Netmask = "255.255.255.0";
+			/// <summary>
+			///		组件 ID
+			/// </summary>
+			public static string ComponentID = String.Empty;
 
-                /// <summary>
-                ///     网关
-                /// </summary>
-                public static string Gateway = "10.0.236.1";
+			/// <summary>
+			///		名称
+			/// </summary>
+			public static string Name = String.Empty;
 
-				/// <summary>
-				///		DNS
-				/// </summary>
-				public static string DNS = "127.0.0.1";
+			/// <summary>
+			///		地址
+			/// </summary>
+			public static IPAddress Address;
 
-				/// <summary>
-				///		使用自定义 DNS 设置
-				/// </summary>
-				public static bool UseCustomDNS = false;
-            }
-        }
-    }
+			/// <summary>
+			///		掩码
+			/// </summary>
+			public static IPAddress Netmask;
+
+			/// <summary>
+			///		网关
+			/// </summary>
+			public static IPAddress Gateway;
+
+			/// <summary>
+			///		DNS
+			/// </summary>
+			public static List<IPAddress> DNS;
+
+			/// <summary>
+			///		使用自定义 DNS 设置
+			/// </summary>
+			public static bool UseCustomDNS;
+		}
+	}
 }
