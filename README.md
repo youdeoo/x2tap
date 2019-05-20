@@ -12,10 +12,11 @@ Can intercept all connections at the network layer and transfer them to Socks5, 
 ![](docs/en-US/screenshots/main.png)
 
 # Dependences
-- [TAP-Windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
-- [shadowsocksr-native](https://github.com/ShadowsocksR-Live/shadowsocksr-native)
-- [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
+- [tap-windows](https://build.openvpn.net/downloads/releases/latest/tap-windows-latest-stable.exe)
+- [shadowsocksr-libev](https://github.com/shadowsocksrr/shadowsocksr-libev/tree/Akkariiin/develop)
+- [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)
+- [v2ray-core](https://github.com/v2ray/v2ray-core/releases)
 - [tun2socks](https://github.com/eycorsican/go-tun2socks)
 - [x2tapCore](https://github.com/hacking001/x2tapCore)
 
